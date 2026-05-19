@@ -1,3 +1,4 @@
+// app/dashboard/page.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -6,6 +7,7 @@ import type { User } from "firebase/auth";
 
 import AuthGuard from "@/components/AuthGuard";
 import { signOutCurrentUser } from "@/lib/auth";
+import { auth } from "@/lib/firebaseClient";
 
 export default function DashboardPage() {
   return (
@@ -23,6 +25,13 @@ function DashboardView({ user }: { user: User }) {
     setLoggingOut(true);
     await signOutCurrentUser();
     router.replace("/login");
+  }
+
+  // TODO: TESTING ONLY — remove before merging to main
+  async function handleGetToken() {
+    const token = await auth.currentUser?.getIdToken();
+    console.log("TOKEN:", token);
+    alert("Token copied to console (Cmd+Option+J)");
   }
 
   return (
@@ -50,30 +59,36 @@ function DashboardView({ user }: { user: User }) {
             <p className="text-sm text-gray-600">{user.email}</p>
           </div>
         </div>
-        <button
-          type="button"
-          onClick={handleLogout}
-          disabled={loggingOut}
-          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
-        >
-          {loggingOut ? "Signing out..." : "Log out"}
-        </button>
+        <div className="flex items-center gap-2">
+          {/* TODO: TESTING ONLY — remove before merging to main */}
+          <button
+            type="button"
+            onClick={handleGetToken}
+            className="rounded-md border border-red-300 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-100"
+          >
+            Get Token (dev)
+          </button>
+          <button
+            type="button"
+            onClick={handleLogout}
+            disabled={loggingOut}
+            className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+          >
+            {loggingOut ? "Signing out..." : "Log out"}
+          </button>
+        </div>
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        {/*
-         * TODO: Wire these placeholder cards up to real features.
-         * - Browse Professors: list professor docs from a future `professors` collection.
-         * - Submit Review: form posting to `reviews` collection (course code,
-         *   numerical ratings, would-take-again, written review, optional tags).
-         * - AI Review Summaries: server route that aggregates reviews + IASystem
-         *   ratings and produces a model-generated overview.
-         * - IASystem Ratings: display numerical ordinal ratings per category.
-         */}
-        <PlaceholderCard
+        {/* ── Active card: Browse Professors ── */}
+        <ActionCard
           title="Browse Professors"
-          body="Search UW professors by name, course, or campus. Coming soon."
+          body="Search UW professors by name, course, or campus."
+          icon="🔍"
+          onClick={() => router.push("/search")}
         />
+
+        {/* ── Placeholder cards ── */}
         <PlaceholderCard
           title="Submit Review"
           body="Post a structured review with ratings, difficulty, and written feedback."
@@ -88,6 +103,35 @@ function DashboardView({ user }: { user: User }) {
         />
       </div>
     </section>
+  );
+}
+
+function ActionCard({
+  title,
+  body,
+  icon,
+  onClick,
+}: {
+  title: string;
+  body: string;
+  icon: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="rounded-lg border border-husky-purple/30 bg-white p-5 text-left shadow-sm transition hover:border-husky-purple hover:shadow-md focus:outline-none focus:ring-2 focus:ring-husky-purple"
+    >
+      <div className="flex items-start justify-between">
+        <span className="text-2xl">{icon}</span>
+        <span className="rounded-full bg-husky-light px-2 py-0.5 text-xs font-medium text-husky-purple">
+          Live
+        </span>
+      </div>
+      <h3 className="mt-3 font-semibold text-husky-purple">{title}</h3>
+      <p className="mt-1 text-sm text-gray-600">{body}</p>
+    </button>
   );
 }
 

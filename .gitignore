@@ -266,3 +266,4 @@ pnpm-debug.log*
 
 # Claude Code worktrees (scratch space — never commit)
 .claude/worktrees/
+firebase.js

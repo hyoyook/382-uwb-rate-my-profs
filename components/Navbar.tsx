@@ -1,7 +1,11 @@
+// components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import type { User } from "firebase/auth";
+import { subscribeToAuth, signOutCurrentUser } from "@/lib/auth";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -11,6 +15,18 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsub = subscribeToAuth((u) => setUser(u));
+    return () => unsub();
+  }, []);
+
+  async function handleSignOut() {
+    await signOutCurrentUser();
+    router.replace("/login");
+  }
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -23,6 +39,7 @@ export default function Navbar() {
             UW only
           </span>
         </Link>
+
         <ul className="flex items-center gap-6 text-sm">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
@@ -41,13 +58,24 @@ export default function Navbar() {
               </li>
             );
           })}
+
           <li>
-            <Link
-              href="/login"
-              className="rounded-md bg-husky-purple px-3 py-1.5 text-white hover:bg-husky-purple/90"
-            >
-              Sign in
-            </Link>
+            {user ? (
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="rounded-md bg-husky-purple px-3 py-1.5 text-sm text-white hover:bg-husky-purple/90 transition-colors"
+              >
+                Sign out
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className="rounded-md bg-husky-purple px-3 py-1.5 text-white hover:bg-husky-purple/90 transition-colors"
+              >
+                Sign in
+              </Link>
+            )}
           </li>
         </ul>
       </nav>
