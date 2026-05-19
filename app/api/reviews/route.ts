@@ -1,9 +1,9 @@
 // app/api/reviews/route.ts
 import { NextResponse, type NextRequest } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
-import { adminAuth } from "@/lib/firebaseAdmin";
-import { adminDb } from "@/lib/firebaseAdmin";
-import { flashModel } from "@/lib/gemini";
+import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
+
+// ← removed top-level import of flashModel
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,6 +22,17 @@ function extractBearerToken(req: NextRequest): string | null {
 }
 
 async function moderateReview(body: string): Promise<{ pass: boolean; reason: string }> {
+    // ← lazy init inside the function — only runs at request time, never at build time
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+        console.warn("[/api/reviews] GEMINI_API_KEY not set — skipping moderation");
+        return { pass: true, reason: "moderation_skipped_no_key" };
+    }
+
+    const { GoogleGenerativeAI } = await import("@google/generative-ai");
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
+
     const prompt = `
 You are a strict content moderator for a university professor review platform.
 Reject ANY review that meets one or more of these conditions:
@@ -39,7 +50,7 @@ Review: "${body.replace(/"/g, '\\"')}"
 `.trim();
 
     try {
-        const result = await flashModel.generateContent(prompt);
+        const result = await model.generateContent(prompt);
         const text = result.response.text().trim();
         return JSON.parse(text);
     } catch (err) {
@@ -91,7 +102,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
 
-    // 3. Rate limit — count reviews submitted by this user in last 24h
+    // 3. Rate limit
     const oneDayAgo = new Date(Date.now() - RATE_LIMIT_WINDOW_MS);
     const recentSnap = await adminDb
         .collection(REVIEWS_COLLECTION)
@@ -106,23 +117,22 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    // 4. Pre-filter obvious spam before hitting Gemini
+    // 4. Pre-filter obvious spam
     const spamPatterns = [
         /buy\s+my/i,
         /crypto/i,
         /http/i,
         /\bsucks\b/i,
-        /^[a-z\s]{1,6}(\s[a-z]{1,6}){3,}$/i, // repeated short random words
+        /^[a-z\s]{1,6}(\s[a-z]{1,6}){3,}$/i,
     ];
-    const isObviousSpam = spamPatterns.some((p) => p.test(reviewBody));
-    if (isObviousSpam) {
+    if (spamPatterns.some((p) => p.test(reviewBody))) {
         return NextResponse.json(
             { error: "Review did not pass moderation.", reason: "Contains spam or prohibited content." },
             { status: 400 }
         );
     }
 
-    // 5. Moderation — Gemini check for borderline cases
+    // 5. Gemini moderation
     const mod = await moderateReview(reviewBody);
     if (!mod.pass) {
         return NextResponse.json(
@@ -131,7 +141,7 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    // 5. Write to Firestore — composite key enforces one review per student/course/quarter
+    // 6. Write to Firestore
     const docId = `${netid}_${professor_id}_${course_code}_${quarter}${year}`;
     const ref = adminDb.collection(REVIEWS_COLLECTION).doc(docId);
 
@@ -154,13 +164,13 @@ export async function POST(req: NextRequest) {
     };
 
     try {
-        await ref.set(reviewDoc); // set = upsert (duplicate overwrites)
+        await ref.set(reviewDoc);
     } catch (err) {
         console.error("[/api/reviews] Firestore write failed:", err);
         return NextResponse.json({ error: "Failed to save review." }, { status: 500 });
     }
 
-    // 6. Update professor aggregate rating
+    // 7. Update professor aggregate
     try {
         const profRef = adminDb.collection(PROFESSORS_COLLECTION).doc(professor_id);
         await profRef.update({
@@ -169,7 +179,6 @@ export async function POST(req: NextRequest) {
         });
     } catch (err) {
         console.error("[/api/reviews] professor aggregate update failed:", err);
-        // non-fatal — review is saved, aggregate can be fixed later
     }
 
     return NextResponse.json({ ok: true, id: docId });
