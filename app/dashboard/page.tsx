@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { User } from "firebase/auth";
 
 import AuthGuard from "@/components/AuthGuard";
+import ProfessorSearchModal from "@/components/ProfessorSearchModal";
 import { signOutCurrentUser } from "@/lib/auth";
 import { auth } from "@/lib/firebaseClient";
 
@@ -20,6 +21,7 @@ export default function DashboardPage() {
 function DashboardView({ user }: { user: User }) {
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
   async function handleLogout() {
     setLoggingOut(true);
@@ -36,6 +38,11 @@ function DashboardView({ user }: { user: User }) {
 
   return (
     <section className="space-y-8">
+      <ProfessorSearchModal
+        open={reviewModalOpen}
+        onClose={() => setReviewModalOpen(false)}
+      />
+
       <header className="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-white p-6 shadow-sm">
         <div className="flex items-center gap-4">
           {user.photoURL ? (
@@ -88,11 +95,15 @@ function DashboardView({ user }: { user: User }) {
           onClick={() => router.push("/search")}
         />
 
-        {/* ── Placeholder cards ── */}
-        <PlaceholderCard
+        {/* ── Active card: Submit Review ── */}
+        <ActionCard
           title="Submit Review"
           body="Post a structured review with ratings, difficulty, and written feedback."
+          icon="✏️"
+          onClick={() => setReviewModalOpen(true)}
         />
+
+        {/* ── Placeholder cards ── */}
         <PlaceholderCard
           title="AI Review Summaries"
           body="Skim long review threads with model-generated overviews."
