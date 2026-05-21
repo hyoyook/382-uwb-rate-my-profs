@@ -148,6 +148,8 @@ function ReviewView({ user }: { user: User }) {
     const [wouldTakeAgain, setWouldTakeAgain] = useState<boolean | null>(null);
     const [review, setReview] = useState("");
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [customTagInput, setCustomTagInput] = useState("");
+    const MAX_CUSTOM_TAGS = 3;
     const [grade, setGrade] = useState("");
     const [attendanceMandatory, setAttendanceMandatory] = useState<string>("");
     const [textbookRequired, setTextbookRequired] = useState<string>("");
@@ -174,6 +176,16 @@ function ReviewView({ user }: { user: User }) {
         setSelectedTags((prev) =>
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
         );
+    }
+
+    function addCustomTag() {
+        const normalized = customTagInput.trim().toLowerCase().slice(0, 20);
+        if (!normalized) return;
+        if (selectedTags.includes(normalized)) { setCustomTagInput(""); return; }
+        const customCount = selectedTags.filter((t) => !TAGS.includes(t)).length;
+        if (customCount >= MAX_CUSTOM_TAGS) return;
+        setSelectedTags((prev) => [...prev, normalized]);
+        setCustomTagInput("");
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -570,7 +582,50 @@ function ReviewView({ user }: { user: User }) {
                                     {tag}
                                 </button>
                             ))}
+                            {/* Custom tags already added */}
+                            {selectedTags.filter((t) => !TAGS.includes(t)).map((tag) => (
+                                <span
+                                    key={tag}
+                                    className="flex items-center gap-1 rounded-full border border-husky-purple bg-husky-purple px-3 py-1 text-xs font-medium text-white"
+                                >
+                                    {tag}
+                                    <button
+                                        type="button"
+                                        onClick={() => toggleTag(tag)}
+                                        className="ml-0.5 leading-none hover:text-husky-gold focus:outline-none"
+                                        aria-label={`Remove tag ${tag}`}
+                                    >
+                                        ×
+                                    </button>
+                                </span>
+                            ))}
                         </div>
+                        {/* Custom tag input */}
+                        {selectedTags.filter((t) => !TAGS.includes(t)).length < MAX_CUSTOM_TAGS && (
+                            <div className="mt-2 flex items-center gap-2">
+                                <input
+                                    type="text"
+                                    placeholder="Add your own tag…"
+                                    value={customTagInput}
+                                    maxLength={20}
+                                    onChange={(e) => setCustomTagInput(e.target.value)}
+                                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } }}
+                                    className="rounded-full border border-dashed border-gray-300 px-3 py-1 text-xs text-gray-600 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple w-44"
+                                />
+                                {customTagInput.trim() && (
+                                    <button
+                                        type="button"
+                                        onClick={addCustomTag}
+                                        className="rounded-full border border-husky-purple px-3 py-1 text-xs font-medium text-husky-purple hover:bg-husky-purple hover:text-white transition-colors focus:outline-none"
+                                    >
+                                        Add
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                        {selectedTags.filter((t) => !TAGS.includes(t)).length >= MAX_CUSTOM_TAGS && (
+                            <p className="mt-1.5 text-xs text-gray-400">Maximum {MAX_CUSTOM_TAGS} custom tags reached.</p>
+                        )}
                     </div>
                 </section>
 

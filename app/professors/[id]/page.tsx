@@ -593,6 +593,12 @@ function ReviewCard({ review: r }: { review: Review }) {
             </span>
           )}
           <span className="text-xs text-gray-500">
+            Clarity: <span className="font-medium text-gray-700">{r.scores.clarity}/5</span>
+          </span>
+          <span className="text-xs text-gray-500">
+            Helpfulness: <span className="font-medium text-gray-700">{r.scores.helpfulness}/5</span>
+          </span>
+          <span className="text-xs text-gray-500">
             Difficulty: <span className="font-medium text-gray-700">{r.scores.difficulty}/5</span>
           </span>
           {r.scores.would_take_again
