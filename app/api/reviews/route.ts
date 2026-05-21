@@ -29,7 +29,7 @@ async function moderateReview(body: string): Promise<{ pass: boolean; reason: st
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
         console.warn("[/api/reviews] GEMINI_API_KEY not set — skipping moderation");
-        return { pass: true, reason: "moderation_skipped_no_key" };
+        return { pass: false, reason: "moderation_skipped_no_key" };
     }
 
     const { GoogleGenerativeAI } = await import("@google/generative-ai");
@@ -83,7 +83,7 @@ Review: "${body.replace(/"/g, '\\"')}"
             return { pass: false, reason: "moderation_unavailable_quota" };
         }
         // Other errors (parse failures, network blips) fail open to avoid blocking legit reviews
-        return { pass: true, reason: "parse_error_defaulted_pass" };
+        return { pass: false, reason: "parse_error_defaulted_pass" };
     }
 }
 
