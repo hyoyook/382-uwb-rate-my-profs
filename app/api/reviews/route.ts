@@ -3,8 +3,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
 import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
 
-// ← removed top-level import of flashModel
-
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -12,6 +10,8 @@ const REVIEWS_COLLECTION = "reviews";
 const PROFESSORS_COLLECTION = "professors";
 const RATE_LIMIT_MAX = 3;
 const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function extractBearerToken(req: NextRequest): string | null {
     const header = req.headers.get("authorization");
@@ -21,8 +21,11 @@ function extractBearerToken(req: NextRequest): string | null {
     return token;
 }
 
+function isValidScore(n: unknown, min = 1, max = 5): boolean {
+    return typeof n === "number" && Number.isInteger(n) && n >= min && n <= max;
+}
+
 async function moderateReview(body: string): Promise<{ pass: boolean; reason: string }> {
-    // ← lazy init inside the function — only runs at request time, never at build time
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
         console.warn("[/api/reviews] GEMINI_API_KEY not set — skipping moderation");
@@ -59,6 +62,8 @@ Review: "${body.replace(/"/g, '\\"')}"
     }
 }
 
+// ─── POST /api/reviews ────────────────────────────────────────────────────────
+
 export async function POST(req: NextRequest) {
     // 1. Auth
     const idToken = extractBearerToken(req);
@@ -80,15 +85,21 @@ export async function POST(req: NextRequest) {
     let data: {
         professor_id: string;
         course_code: string;
-        course_name: string;
+        course_name?: string;
         quarter: string;
         year: number;
-        scores: { overall: number; difficulty: number; clarity: number; helpfulness: number; would_take_again: boolean };
+        scores: {
+            overall: number;
+            difficulty: number;
+            clarity: number;
+            helpfulness: number;
+            would_take_again: boolean;
+        };
         body: string;
         tags?: string[];
-        attendance_mandatory?: boolean;
-        grade_received?: string;
-        textbook_required?: boolean;
+        attendance_mandatory?: boolean | null;
+        grade_received?: string | null;
+        textbook_required?: boolean | null;
     };
 
     try {
@@ -98,11 +109,27 @@ export async function POST(req: NextRequest) {
     }
 
     const { professor_id, course_code, quarter, year, scores, body: reviewBody } = data;
+
+    // 3. Required field presence
     if (!professor_id || !course_code || !quarter || !year || !scores || !reviewBody) {
         return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
 
-    // 3. Rate limit
+    // 4. Score range validation
+    if (
+        !isValidScore(scores.overall) ||
+        !isValidScore(scores.difficulty) ||
+        !isValidScore(scores.clarity) ||
+        !isValidScore(scores.helpfulness) ||
+        typeof scores.would_take_again !== "boolean"
+    ) {
+        return NextResponse.json(
+            { error: "Invalid scores. overall/difficulty/clarity/helpfulness must be 1–5; would_take_again must be boolean." },
+            { status: 400 }
+        );
+    }
+
+    // 5. Rate limit
     const oneDayAgo = new Date(Date.now() - RATE_LIMIT_WINDOW_MS);
     const recentSnap = await adminDb
         .collection(REVIEWS_COLLECTION)
@@ -112,12 +139,12 @@ export async function POST(req: NextRequest) {
 
     if (recentSnap.size >= RATE_LIMIT_MAX) {
         return NextResponse.json(
-            { error: "Rate limit reached. Max 3 reviews per 24 hours." },
+            { error: "Rate limit reached. Max 3 reviews per 24 hours.", remaining: 0 },
             { status: 429 }
         );
     }
 
-    // 4. Pre-filter obvious spam
+    // 6. Pre-filter obvious spam
     const spamPatterns = [
         /buy\s+my/i,
         /crypto/i,
@@ -132,7 +159,7 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    // 5. Gemini moderation
+    // 7. Gemini moderation
     const mod = await moderateReview(reviewBody);
     if (!mod.pass) {
         return NextResponse.json(
@@ -141,45 +168,80 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    // 6. Write to Firestore
-    const docId = `${netid}_${professor_id}_${course_code}_${quarter}${year}`;
-    const ref = adminDb.collection(REVIEWS_COLLECTION).doc(docId);
+    // 8. Read campus server-side from professor doc
+    const profRef = adminDb.collection(PROFESSORS_COLLECTION).doc(professor_id);
+    const profSnap = await profRef.get();
+
+    if (!profSnap.exists) {
+        return NextResponse.json({ error: "Professor not found." }, { status: 404 });
+    }
+
+    const profData = profSnap.data()!;
+    // campus is string[] on the professor doc; use the first entry as the canonical value.
+    // For multi-campus professors a future version could accept a campus param and validate
+    // it against this array — for now we derive it server-side to prevent spoofing.
+    const campus: string = Array.isArray(profData.campus)
+        ? profData.campus[0]
+        : (profData.campus ?? "Unknown");
+
+    // 9. Write review to Firestore
+    const campusSlug = campus.replace(/\s+/g, "");
+    const docId = `${netid}_${professor_id}_${course_code}_${campusSlug}_${quarter}${year}`;
+    const reviewRef = adminDb.collection(REVIEWS_COLLECTION).doc(docId);
 
     const reviewDoc = {
         id: docId,
         professor_id,
         author_id: decoded.uid,
+        verified: true,                        // always true — enforced by @uw.edu auth
         created_at: FieldValue.serverTimestamp(),
+        status: "published" as const,
+        flagged: false,
+        campus,
         course: { code: course_code, name: data.course_name ?? "" },
         term: { quarter, year },
         scores,
         body: reviewBody,
         tags: data.tags ?? [],
-        attendance_mandatory: data.attendance_mandatory ?? false,
         grade_received: data.grade_received ?? null,
-        textbook_required: data.textbook_required ?? false,
+        attendance_mandatory: data.attendance_mandatory ?? null,
+        textbook_required: data.textbook_required ?? null,
         votes: { helpful: 0, not_helpful: 0 },
-        flagged: false,
-        status: "published",
     };
 
     try {
-        await ref.set(reviewDoc);
+        await reviewRef.set(reviewDoc);
     } catch (err) {
         console.error("[/api/reviews] Firestore write failed:", err);
         return NextResponse.json({ error: "Failed to save review." }, { status: 500 });
     }
 
-    // 7. Update professor aggregate
+    // 10. Update professor aggregate (running average via transaction)
     try {
-        const profRef = adminDb.collection(PROFESSORS_COLLECTION).doc(professor_id);
-        await profRef.update({
-            ratings_count: FieldValue.increment(1),
-            overall_rating: scores.overall, // TODO: replace with running average in Phase 3
+        await adminDb.runTransaction(async (tx) => {
+            const snap = await tx.get(profRef);
+            if (!snap.exists) return;
+
+            const current = snap.data()!;
+            const prevCount: number = current.ratings_count ?? 0;
+            const prevAvg: number = current.overall_rating ?? 0;
+
+            const newCount = prevCount + 1;
+            const newAvg = Math.round(((prevAvg * prevCount + scores.overall) / newCount) * 10) / 10;
+
+            tx.update(profRef, {
+                ratings_count: newCount,
+                overall_rating: newAvg,
+            });
         });
     } catch (err) {
+        // Non-fatal — review is already written; aggregate will self-correct on next write
         console.error("[/api/reviews] professor aggregate update failed:", err);
     }
 
-    return NextResponse.json({ ok: true, id: docId });
+    return NextResponse.json({
+        ok: true,
+        id: docId,
+        remaining: RATE_LIMIT_MAX - recentSnap.size - 1,
+    });
 }

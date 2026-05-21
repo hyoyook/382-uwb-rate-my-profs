@@ -13,53 +13,65 @@ import type { User } from "firebase/auth";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type IAsystemRatings = {
-  overall_effectiveness: number;
-  explains_clearly: number;
-  available_for_help: number;
-  stimulates_interest: number;
-  assignments_valuable: number;
+type IAsystemEntry = {
+  course_code: string;
+  section: string;
+  quarter: string;
+  year: number;
+  responses: number;
+  enrollment: number;
+  overall_summative: number;   // 0–5
+  cei: number;                 // 1–7
+  summative_items: {
+    course_as_whole: number;
+    course_content: number;
+    instructor_contribution: number;
+    instructor_effectiveness: number;
+  };
+  ai_summary: string | null;
 };
 
 type Professor = {
   id: string;
   name: string;
   department: string;
-  campus: string[];           // string[] — multi-campus
+  campus: string[];
   email: string;
   bio: string;
-  photo_url: string | null;
   courses_taught: string[];
-  iasystem_ratings: IAsystemRatings;
+  iasystem_ratings: IAsystemEntry[];
   overall_rating: number;
   ratings_count: number;
   tags: string[];
   summary: string | null;
   summary_updated_at: { seconds: number } | null;
+  summary_review_count: number;
 };
 
 type Review = {
   id: string;
   professor_id: string;
-  course_code: string;
-  campus: string;             // which campus this course was at
-  quarter: string;
-  year: number;
-  rating: number;
-  difficulty: number;
-  would_take_again: boolean;
+  course: { code: string; name: string };
+  campus: string;
+  term: { quarter: string; year: number };
+  scores: {
+    overall: number;
+    difficulty: number;
+    clarity: number;
+    helpfulness: number;
+    would_take_again: boolean;
+  };
   body: string;
   tags: string[];
-  verified: boolean;          // true = UW peer review or IASystem; false = RMP/external
+  verified: boolean;
   created_at: { seconds: number } | null;
 };
 
-const IASYSTEM_LABELS: Record<keyof IAsystemRatings, string> = {
-  overall_effectiveness: "Overall Effectiveness",
-  explains_clearly: "Explains Clearly",
-  available_for_help: "Available for Help",
-  stimulates_interest: "Stimulates Interest",
-  assignments_valuable: "Assignments Valuable",
+const SUMMATIVE_LABELS: Record<keyof IAsystemEntry["summative_items"], string> = {
+  course_as_whole: "Course as a whole",
+  course_content: "Course content",
+  instructor_contribution: "Instructor contribution",
+  instructor_effectiveness: "Instructor effectiveness",
 };
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -107,7 +119,6 @@ function ProfessorView({ user: _user }: { user: User }) {
     load();
   }, [professorId]);
 
-  // All campuses that appear in reviews (for campus filter chip)
   const reviewCampuses = useMemo(() => {
     const s = new Set(reviews.map((r) => r.campus));
     return Array.from(s).sort();
@@ -115,8 +126,8 @@ function ProfessorView({ user: _user }: { user: User }) {
 
   const filteredReviews = useMemo(() => {
     return reviews.filter((r) => {
-      const starOk = starFilter === null || r.rating === starFilter;
-      const courseOk = courseFilter === "All" || r.course_code === courseFilter;
+      const starOk = starFilter === null || r.scores.overall === starFilter;
+      const courseOk = courseFilter === "All" || r.course.code === courseFilter;
       const campusOk = campusFilter === "All" || r.campus === campusFilter;
       const verifiedOk = !verifiedOnly || r.verified;
       return starOk && courseOk && campusOk && verifiedOk;
@@ -148,10 +159,10 @@ function ProfessorView({ user: _user }: { user: User }) {
   const verifiedCount = reviews.filter((r) => r.verified).length;
   const unverifiedCount = reviews.filter((r) => !r.verified).length;
   const verifiedAvg = verifiedCount > 0
-    ? Math.round((reviews.filter((r) => r.verified).reduce((s, r) => s + r.rating, 0) / verifiedCount) * 10) / 10
+    ? Math.round((reviews.filter((r) => r.verified).reduce((s, r) => s + r.scores.overall, 0) / verifiedCount) * 10) / 10
     : 0;
   const unverifiedAvg = unverifiedCount > 0
-    ? Math.round((reviews.filter((r) => !r.verified).reduce((s, r) => s + r.rating, 0) / unverifiedCount) * 10) / 10
+    ? Math.round((reviews.filter((r) => !r.verified).reduce((s, r) => s + r.scores.overall, 0) / unverifiedCount) * 10) / 10
     : 0;
 
   return (
@@ -175,7 +186,6 @@ function ProfessorView({ user: _user }: { user: User }) {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">{professor.name}</h1>
               <p className="text-sm text-gray-500">{professor.department}</p>
-              {/* campus array joined with slash */}
               <p className="text-xs text-husky-metallic mt-0.5">{professor.campus.join(" / ")}</p>
             </div>
           </div>
@@ -242,24 +252,7 @@ function ProfessorView({ user: _user }: { user: User }) {
       </div>
 
       {/* ── IASystem Ratings ─────────────────────────────────────────────────── */}
-      <div className="rounded-lg bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-4">IASystem Ratings</h2>
-        <div className="space-y-3">
-          {(Object.keys(IASYSTEM_LABELS) as Array<keyof IAsystemRatings>).map((key) => {
-            const val = professor.iasystem_ratings?.[key] ?? 0;
-            return (
-              <div key={key} className="flex items-center gap-3">
-                <span className="w-44 text-xs text-gray-600 shrink-0">{IASYSTEM_LABELS[key]}</span>
-                <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
-                  <div className="h-full rounded-full bg-husky-purple transition-all duration-500" style={{ width: `${(val / 5) * 100}%` }} />
-                </div>
-                <span className="text-xs font-medium text-gray-700 w-8 text-right">{val > 0 ? val.toFixed(1) : "—"}</span>
-              </div>
-            );
-          })}
-        </div>
-        <p className="mt-3 text-xs text-gray-400">Source: UW IASystem official evaluation data.</p>
-      </div>
+      <IAsystemPanel entries={professor.iasystem_ratings ?? []} />
 
       {/* ── AI Summary ────────────────────────────────────────────────────────── */}
       <AISummarySection
@@ -328,7 +321,7 @@ function ProfessorView({ user: _user }: { user: User }) {
                 </div>
               )}
 
-              {/* Verified filter — button group */}
+              {/* Verified filter */}
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-gray-500">Source:</span>
                 <button type="button" onClick={() => setVerifiedOnly(false)}
@@ -363,6 +356,132 @@ function ProfessorView({ user: _user }: { user: User }) {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// ─── IASystem Panel ───────────────────────────────────────────────────────────
+
+function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
+  const [selectedIdx, setSelectedIdx] = useState(0);
+
+  const selected = entries[selectedIdx] ?? null;
+
+  return (
+    <div className="rounded-lg bg-white p-6 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">IASystem Ratings</h2>
+
+        {entries.length > 0 && (
+          <select
+            value={selectedIdx}
+            onChange={(e) => setSelectedIdx(Number(e.target.value))}
+            className="rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 focus:outline-none focus:ring-1 focus:ring-husky-purple"
+          >
+            {entries.map((e, i) => (
+              <option key={i} value={i}>
+                {e.course_code} {e.section} · {e.quarter} {e.year}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
+
+      {!selected ? (
+        <div className="rounded-md border border-dashed border-gray-200 bg-gray-50 px-4 py-6 text-center">
+          <p className="text-sm text-gray-500">No IASystem data available for this professor.</p>
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {/* Left: 4 summative bar items */}
+            <div className="space-y-3">
+              {(Object.keys(SUMMATIVE_LABELS) as Array<keyof IAsystemEntry["summative_items"]>).map((key) => {
+                const val = selected.summative_items[key] ?? 0;
+                return (
+                  <div key={key} className="flex items-center gap-3">
+                    <span className="w-44 text-xs text-gray-600 shrink-0">{SUMMATIVE_LABELS[key]}</span>
+                    <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-husky-purple transition-all duration-500"
+                        style={{ width: `${(val / 5) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs font-medium text-gray-700 w-8 text-right">
+                      {val > 0 ? val.toFixed(1) : "—"}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Right: Overall Summative + CEI */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light py-4 px-6 gap-1">
+                <div className="flex items-center gap-1">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Overall Summative</span>
+                  <Tooltip text="Average of the four summative items. Reported on a 0–5 scale." />
+                </div>
+                <span className="text-3xl font-bold text-husky-purple">
+                  {selected.overall_summative > 0 ? selected.overall_summative.toFixed(1) : "—"}
+                </span>
+                <span className="text-xs text-gray-400">out of 5.0</span>
+              </div>
+
+              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light py-4 px-6 gap-1">
+                <div className="flex items-center gap-1">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">CEI</span>
+                  <Tooltip text="Course Evaluation Index — a composite score weighted across all evaluation items. Reported on a 1–7 scale." />
+                </div>
+                <span className="text-3xl font-bold text-husky-purple">
+                  {selected.cei > 0 ? selected.cei.toFixed(1) : "—"}
+                </span>
+                <span className="text-xs text-gray-400">out of 7.0</span>
+              </div>
+
+              <p className="text-xs text-gray-400 text-center">
+                {selected.responses} / {selected.enrollment} responses
+              </p>
+            </div>
+          </div>
+
+          {/* AI summary of written comments */}
+          {selected.ai_summary && (
+            <div className="mt-4 rounded-md border border-husky-light bg-husky-light/40 px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">Student Comments Summary</p>
+              <p className="text-sm text-gray-700 leading-relaxed">{selected.ai_summary}</p>
+            </div>
+          )}
+        </>
+      )}
+
+      <p className="mt-3 text-xs text-gray-400">Source: UW IASystem official evaluation data.</p>
+    </div>
+  );
+}
+
+// ─── Tooltip ──────────────────────────────────────────────────────────────────
+
+function Tooltip({ text }: { text: string }) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="relative inline-flex items-center">
+      <button
+        type="button"
+        onMouseEnter={() => setVisible(true)}
+        onMouseLeave={() => setVisible(false)}
+        onFocus={() => setVisible(true)}
+        onBlur={() => setVisible(false)}
+        className="flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 text-gray-400 text-xs hover:border-husky-purple hover:text-husky-purple focus:outline-none"
+        aria-label="More information"
+      >
+        i
+      </button>
+      {visible && (
+        <div className="absolute left-1/2 bottom-full mb-1.5 -translate-x-1/2 z-10 w-56 rounded-md border border-gray-100 bg-white px-3 py-2 text-xs text-gray-600 shadow-md">
+          {text}
+        </div>
+      )}
     </div>
   );
 }
@@ -455,15 +574,13 @@ function ReviewCard({ review: r }: { review: Review }) {
     <div className="rounded-lg border border-gray-100 bg-gray-50 p-4 space-y-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <StarRow rating={r.rating} size="sm" />
-          <span className="text-xs font-medium text-gray-700">{r.course_code}</span>
-          {/* campus on the review */}
+          <StarRow rating={r.scores.overall} size="sm" />
+          <span className="text-xs font-medium text-gray-700">{r.course.code}</span>
           <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">{r.campus}</span>
-          <span className="text-xs text-gray-400">{r.quarter} {r.year}</span>
+          <span className="text-xs text-gray-400">{r.term.quarter} {r.term.year}</span>
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Verified badge */}
           {r.verified ? (
             <span className="flex items-center gap-1 rounded-full bg-green-50 border border-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
               ✓ Verified
@@ -473,11 +590,10 @@ function ReviewCard({ review: r }: { review: Review }) {
               Unverified
             </span>
           )}
-
           <span className="text-xs text-gray-500">
-            Difficulty: <span className="font-medium text-gray-700">{r.difficulty}/5</span>
+            Difficulty: <span className="font-medium text-gray-700">{r.scores.difficulty}/5</span>
           </span>
-          {r.would_take_again
+          {r.scores.would_take_again
             ? <span className="text-xs text-green-600 font-medium">Would take again ✓</span>
             : <span className="text-xs text-red-500 font-medium">Wouldn't take again</span>}
           {date && <span className="text-xs text-gray-400">{date}</span>}
@@ -520,7 +636,7 @@ function BuzzWord({ tag, count, total }: { tag: string; count: number; total: nu
   const pct = Math.round((count / total) * 100);
   const weight = count / total;
   const size = weight > 0.5 ? "text-base" : weight > 0.3 ? "text-sm" : "text-xs";
-  const isNegative = ["disorganized", "no-curve", "fast-paced", "test-heavy", "disorganized"].includes(tag);
+  const isNegative = ["disorganized", "no-curve", "fast-paced", "test-heavy"].includes(tag);
 
   return (
     <div

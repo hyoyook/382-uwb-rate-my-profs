@@ -1,0 +1,5711 @@
+{
+  "generatedAt": "2026-05-21T03:52:28Z",
+  "courses": [
+    {
+      "courseCode": "CSS101",
+      "courseNumber": "CSS 101",
+      "title": "Digital Thinking",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "BJ",
+        "Kim,Jeffrey",
+        "Lin,Johnny",
+        "NIXON,DAVID",
+        "Oliver,Dawn-Marie",
+        "Pyle,Douglas M.",
+        "Rajanna,Madhu",
+        "Stanev,Roger",
+        "Stiber,Michael"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 18
+    },
+    {
+      "courseCode": "CSS107",
+      "courseNumber": "CSS 107",
+      "title": "Prog-Animated Story",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ahmed,Faisal",
+        "Browne,Connor Benjamin",
+        "Carlson,Tim",
+        "Gunnerson,Kim",
+        "Kalmin,Lesley",
+        "Kirson,Antonio",
+        "NIXON,DAVID",
+        "Oliver,Dawn-Marie"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 18
+    },
+    {
+      "courseCode": "CSS110",
+      "courseNumber": "CSS 110",
+      "title": "Intro Cybersecurity",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Deschene,Marie",
+        "MORGAN,JONATHAN",
+        "Pyle,Douglas M."
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS112",
+      "courseNumber": "CSS 112",
+      "title": "Intro Prog Sci App",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ezzeddine,Diala",
+        "Gunnerson,Kim",
+        "Hogg,Jim",
+        "Lin,Johnny",
+        "Melnikoff,Steven"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 18
+    },
+    {
+      "courseCode": "CSS123",
+      "courseNumber": "CSS 123",
+      "title": "Prog Data Sci",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Lin,Johnny"
+      ],
+      "mostRecentTerm": "SPR2025",
+      "termCount": 3
+    },
+    {
+      "courseCode": "CSS132",
+      "courseNumber": "CSS 132",
+      "title": "Compt Prog Engr I",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ewing,Katie",
+        "Pisan,Yusuf"
+      ],
+      "mostRecentTerm": "AUT2025",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS133",
+      "courseNumber": "CSS 133",
+      "title": "Compt Prog Engr Ii",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ewing,Katie",
+        "Pisan,Yusuf"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS142",
+      "courseNumber": "CSS 142",
+      "title": "Cmpt Prog I",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Champion,Mia",
+        "Chini,Morteza",
+        "Cobbe,Richard",
+        "Dailey,Dharma",
+        "Ewing,Katie",
+        "Gunnerson,Kim",
+        "Kalmin,Lesley",
+        "Kim,Jeffrey",
+        "Kim,John",
+        "Leblanc,David C",
+        "Lin,Johnny",
+        "Murphy,Sean",
+        "NIXON,DAVID",
+        "Oliver,Dawn-Marie",
+        "Ong,Hansel",
+        "Peter,Donald M",
+        "Pisan,Yusuf",
+        "Reel,Eric",
+        "Retik,Arkady",
+        "Stager,John",
+        "Stanev,Roger",
+        "Stride,Jeff",
+        "Uong,Ethan"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS143",
+      "courseNumber": "CSS 143",
+      "title": "Cmpt Prog Ii",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Browne,Connor Benjamin",
+        "Carlson,Tim",
+        "Chini,Morteza",
+        "Du,Peng",
+        "Ewing,Katie",
+        "Kalmin,Lesley",
+        "Lin,Johnny",
+        "NIXON,DAVID",
+        "Ong,Hansel",
+        "Pisan,Yusuf",
+        "Rahman,Muntasir Raihan",
+        "Stride,Jeff"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS173",
+      "courseNumber": "CSS 173",
+      "title": "Program Theory/App",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Lin,Johnny",
+        "Stanev,Roger",
+        "Zade,Himanshu"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS198",
+      "courseNumber": "CSS 198",
+      "title": "Supervised Study",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS199",
+      "courseNumber": "CSS 199",
+      "title": "Computing Research",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS211",
+      "courseNumber": "CSS 211",
+      "title": "Computers & Society",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Anderson,Laurie",
+        "Dailey,Dharma",
+        "Kool,Nancy L.",
+        "Lin,Johnny",
+        "Schenold,Terrence E.",
+        "Shaw,Carol A",
+        "Stanev,Roger"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 18
+    },
+    {
+      "courseCode": "CSS225",
+      "courseNumber": "CSS 225",
+      "title": "Phys/Chem Of Comp",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Gunnerson,Kim",
+        "Melnikoff,Steven",
+        "Stiber,Michael"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 4
+    },
+    {
+      "courseCode": "CSS290",
+      "courseNumber": "CSS 290",
+      "title": "Topics In Computing",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Anderson,Laurie",
+        "Folsom,Tyler",
+        "Gruenbaum,Peter E",
+        "Sung,Kelvin"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 8
+    },
+    {
+      "courseCode": "CSS295",
+      "courseNumber": "CSS 295",
+      "title": "K12 Computing Edu",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "G Kool,Nancy L.",
+        "Kool,Nancy L.",
+        "Retik,Arkady"
+      ],
+      "mostRecentTerm": "WIN2025",
+      "termCount": 17
+    },
+    {
+      "courseCode": "CSS301",
+      "courseNumber": "CSS 301",
+      "title": "Technical Writing",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Anderson,Laurie",
+        "Chini,Morteza",
+        "Dailey,Dharma",
+        "Kool,Nancy L.",
+        "Oliver,Dawn-Marie",
+        "Rubin,Zak",
+        "Shaw,Carol A",
+        "Stanev,Roger"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS310",
+      "courseNumber": "CSS 310",
+      "title": "Ia & Cybersecurity",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Awad,Ahmed",
+        "Chini,Morteza",
+        "Dupuis,Marc",
+        "Dupuis,Marc J.",
+        "Joshi,Sanjay",
+        "Kuzma,Bobby",
+        "Leblanc,David C",
+        "Lidster,William",
+        "THAMILARASU,GEETHA",
+        "WB"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS315",
+      "courseNumber": "CSS 315",
+      "title": "Cyber Ethics & Law",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Deschene,Marie",
+        "Joshi,Sanjay"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 2
+    },
+    {
+      "courseCode": "CSS320",
+      "courseNumber": "CSS 320",
+      "title": "Digital Forensics",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Kuzma,Bobby",
+        "Phillips,Chris"
+      ],
+      "mostRecentTerm": "AUT2025",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS337",
+      "courseNumber": "CSS 337",
+      "title": "Secure Systems",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Awad,A",
+        "Awad,Ahmed",
+        "Leblanc,David C",
+        "THAMILARASU,GEETHA"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 11
+    },
+    {
+      "courseCode": "CSS340",
+      "courseNumber": "CSS 340",
+      "title": "Appl Algorithmics",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Arian,Eyal",
+        "Dimpsey,Robert",
+        "Kim,Wooyoung",
+        "Stanev,Roger"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 13
+    },
+    {
+      "courseCode": "CSS342",
+      "courseNumber": "CSS 342",
+      "title": "Data, Alg, Math I",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ahmed,Faisal",
+        "Arian,Eyal",
+        "Awad,Ahmed",
+        "Ayhan,Murat",
+        "Browne,Connor Benjamin",
+        "Chenault,John",
+        "Dimpsey,Robert",
+        "Du,Peng",
+        "Ewing,Katie",
+        "Kalmin,Lesley",
+        "Kim,Wooyoung",
+        "Lagesse,Brent J",
+        "Mashhadi,Afra",
+        "Melnikoff,Steven",
+        "Olson,Clark",
+        "Ong,Hansel",
+        "Parsons,Erika",
+        "Pisan,Yusuf",
+        "Reel,Eric",
+        "Si,Dong",
+        "Stanev,Roger",
+        "Stiber,Michael",
+        "THAMILARASU,GEETHA",
+        "Wang,J",
+        "Wenger,Matt",
+        "Zander,Carol"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 22
+    },
+    {
+      "courseCode": "CSS343",
+      "courseNumber": "CSS 343",
+      "title": "Data, Alg, Math Ii",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Awad,Ahmed",
+        "Ayhan,Murat",
+        "Chen,Min",
+        "Kartha,Neelakantan",
+        "Kim,Wooyoung",
+        "Lagesse,Brent J",
+        "Mashhadi,Afra",
+        "Olson,Clark",
+        "Palmer,Robert",
+        "Pan,Bo",
+        "Pan,Boxiang",
+        "Pisan,Yusuf",
+        "Rahman,Muntasir Raihan",
+        "Reel,Eric",
+        "Si,Dong",
+        "Stiber,Michael",
+        "Wang,J",
+        "Zander,Carol"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS350",
+      "courseNumber": "CSS 350",
+      "title": "Mgt Principles",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Champion,Kaylea",
+        "Champion,Mia",
+        "Chini,Morteza",
+        "Dutta,Pampa",
+        "Kim,Jeffrey",
+        "Kochanski,Mark",
+        "Malhotra,Shiny",
+        "Pyle,Douglas M.",
+        "Retik,Arkady",
+        "Rubin,Zak",
+        "Wang,J",
+        "Zolyomi,Annuska"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 18
+    },
+    {
+      "courseCode": "CSS360",
+      "courseNumber": "CSS 360",
+      "title": "Software Engr",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Asuncion,Hazeline",
+        "Bantwal,Praveen",
+        "Champion,Kaylea",
+        "Chini,Morteza",
+        "Dailey,Dharma",
+        "Erdly,Bill",
+        "Ewing,Katie",
+        "Hamdan,Osama",
+        "Kalmin,Lesley",
+        "Kartha,Neelakantan",
+        "Kim,Jeffrey",
+        "Madasu,Lakshmi",
+        "Retik,Arkady",
+        "Rubin,Zak",
+        "Stride,Jeff",
+        "Uong,Ethan",
+        "Wang,J",
+        "Zade,Himanshu",
+        "Zolyomi,Annuska"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS370",
+      "courseNumber": "CSS 370",
+      "title": "Analysis And Design",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Asuncion,Hazeline",
+        "Bantwal,Praveen",
+        "Chini,Morteza",
+        "Dutta,Pampa",
+        "Esposito,Chris",
+        "Esposito,Christopher",
+        "Hamdan,Osama",
+        "Kalmin,Lesley",
+        "Kochanski,Mark",
+        "Kumar,Dharmesh",
+        "Phillips,Chris",
+        "Singhal,Dharmesh Kumar",
+        "Socha,David",
+        "Zade,Himanshu",
+        "Zolyomi,Annuska"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 18
+    },
+    {
+      "courseCode": "CSS371",
+      "courseNumber": "CSS 371",
+      "title": "Business Of Tech",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Carr,Matt",
+        "Joshi,Sanjay",
+        "Retik,Arkady",
+        "Shaw,Carol A",
+        "Stager,John"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 18
+    },
+    {
+      "courseCode": "CSS382",
+      "courseNumber": "CSS 382",
+      "title": "Intro To Ai",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Champion,Mia",
+        "Kartha,Neelakantan",
+        "Pisan,Yusuf",
+        "Stanev,Roger"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 16
+    },
+    {
+      "courseCode": "CSS383",
+      "courseNumber": "CSS 383",
+      "title": "Bioinformatics",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "JO",
+        "Zaneveld,Jesse"
+      ],
+      "mostRecentTerm": "SUM2025",
+      "termCount": 7
+    },
+    {
+      "courseCode": "CSS385",
+      "courseNumber": "CSS 385",
+      "title": "Intro To Game Dev",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ong,Hansel",
+        "Pisan,Yusuf",
+        "Reel,Eric",
+        "Sung,Kelvin"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 12
+    },
+    {
+      "courseCode": "CSS390",
+      "courseNumber": "CSS 390",
+      "title": "Special Topics",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Bernstein,Morris",
+        "Kochanski,Mark",
+        "Kool,Nancy L.",
+        "Malik,Sireen",
+        "Socha,David",
+        "Stangler,Shaun",
+        "Zade,Himanshu"
+      ],
+      "mostRecentTerm": "WIN2023",
+      "termCount": 13
+    },
+    {
+      "courseCode": "CSS397",
+      "courseNumber": "CSS 397",
+      "title": "Computing Internship",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS411",
+      "courseNumber": "CSS 411",
+      "title": "Cmpt & Pub Policy",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Kool,Nancy L.",
+        "Stanev,Roger"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 12
+    },
+    {
+      "courseCode": "CSS415",
+      "courseNumber": "CSS 415",
+      "title": "Topics In Cyersec",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Lidster,William",
+        "Murphy,Sean",
+        "THAMILARASU,GEETHA"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS421",
+      "courseNumber": "CSS 421",
+      "title": "Cmpt Hw & O/S",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Anderson,Laurie",
+        "Candelaria,Jared",
+        "Fukuda,Munehiro",
+        "Kim,Jeffrey",
+        "Oliver,Dawn-Marie",
+        "Rahman,Muntasir Raihan"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 12
+    },
+    {
+      "courseCode": "CSS422",
+      "courseNumber": "CSS 422",
+      "title": "Hardware & Comp Org",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Alicherry,Mansoor",
+        "Awad,A",
+        "Awad,Ahmed",
+        "Browne,Connor Benjamin",
+        "Fukuda,Munehiro",
+        "Hogg,Jim",
+        "Joshi,Sanjay",
+        "Kim,Wooyoung",
+        "Peng,Yang",
+        "Pisan,Yusuf"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS427",
+      "courseNumber": "CSS 427",
+      "title": "Embedded Systems",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Folsom,Tyler",
+        "G Folsom,T",
+        "Peng,Yang"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 12
+    },
+    {
+      "courseCode": "CSS430",
+      "courseNumber": "CSS 430",
+      "title": "Operating Systems",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ahmed,Faisal",
+        "DAME,STEVE",
+        "Dimpsey,Robert",
+        "Fukuda,Munehiro",
+        "Hogg,Jim",
+        "Palmer,Robert",
+        "Parsons,Erika",
+        "Peng,Yang",
+        "Pisan,Yusuf",
+        "Rahman,Muntasir Raihan"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 22
+    },
+    {
+      "courseCode": "CSS431",
+      "courseNumber": "CSS 431",
+      "title": "Network Archt & Mgmt",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Lidster,William"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS432",
+      "courseNumber": "CSS 432",
+      "title": "Computer Networking",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Atov,Irena",
+        "Awad,Ahmed",
+        "Joshi,Sanjay",
+        "Lagesse,Brent J",
+        "Pan,B",
+        "Pan,Bo",
+        "Pan,Boxiang",
+        "Peng,Yang"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 13
+    },
+    {
+      "courseCode": "CSS434",
+      "courseNumber": "CSS 434",
+      "title": "Para Distr Computing",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Alicherry,Mansoor",
+        "Fukuda,Munehiro",
+        "Joshi,Sanjay"
+      ],
+      "mostRecentTerm": "SPR2022",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS436",
+      "courseNumber": "CSS 436",
+      "title": "Cloud Computing",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "DAME,STEVE",
+        "Dimpsey,Robert",
+        "Haque,Atiq"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 8
+    },
+    {
+      "courseCode": "CSS444",
+      "courseNumber": "CSS 444",
+      "title": "Analyzing Biases",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "B Mashhadi,Afra",
+        "Mashhadi,Afra",
+        "Zade,Himanshu"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 4
+    },
+    {
+      "courseCode": "CSS448",
+      "courseNumber": "CSS 448",
+      "title": "Intro To Compilers",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Hogg,Jim",
+        "Rahman,Muntasir Raihan"
+      ],
+      "mostRecentTerm": "WIN2022",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS449",
+      "courseNumber": "CSS 449",
+      "title": "Dsgn & Anlys Algrthm",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Olson,Clark",
+        "Rahman,Muntasir Raihan"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS451",
+      "courseNumber": "CSS 451",
+      "title": "3-D Computer Graphic",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Melnikoff,Steven",
+        "Sung,Kelvin"
+      ],
+      "mostRecentTerm": "AUT2025",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS452",
+      "courseNumber": "CSS 452",
+      "title": "Game Engine Dev",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Sung,Kelvin"
+      ],
+      "mostRecentTerm": "WIN2024",
+      "termCount": 4
+    },
+    {
+      "courseCode": "CSS458",
+      "courseNumber": "CSS 458",
+      "title": "Computer Simulation",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Lin,Johnny"
+      ],
+      "mostRecentTerm": "SPR2025",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS461",
+      "courseNumber": "CSS 461",
+      "title": "Software Proj Mgmt",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Retik,Arkady"
+      ],
+      "mostRecentTerm": "WIN2025",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS473",
+      "courseNumber": "CSS 473",
+      "title": "Entrepreneurshp Sem",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Fleming,Brandon",
+        "Fleming,Brandon Edward",
+        "Leong,Alan"
+      ],
+      "mostRecentTerm": "WIN2022",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS474",
+      "courseNumber": "CSS 474",
+      "title": "Product Devel Lab",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Gonzalez,Alan",
+        "Leong,Alan"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 7
+    },
+    {
+      "courseCode": "CSS475",
+      "courseNumber": "CSS 475",
+      "title": "Database Systems",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Bantwal,Praveen",
+        "Chen,Min",
+        "Chenault,John",
+        "Cobbe,Richard",
+        "Kochanski,Mark",
+        "Olson,Trevor",
+        "Parsons,Erika",
+        "Stiber,Michael",
+        "Zade,Himanshu"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS478",
+      "courseNumber": "CSS 478",
+      "title": "Usability Engr",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Dailey,Dharma",
+        "Lund,Arnie",
+        "Rajanna,Madhu",
+        "Zolyomi,Annuska"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 17
+    },
+    {
+      "courseCode": "CSS480",
+      "courseNumber": "CSS 480",
+      "title": "Human-Comp Interact",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Erdly,Bill",
+        "Lund,Arnie",
+        "Zolyomi,Annuska"
+      ],
+      "mostRecentTerm": "SUM2024",
+      "termCount": 11
+    },
+    {
+      "courseCode": "CSS481",
+      "courseNumber": "CSS 481",
+      "title": "Web Prog & Appl",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Palmer,Robert",
+        "Stager,John",
+        "Uong,Ethan",
+        "Zade,Himanshu"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 9
+    },
+    {
+      "courseCode": "CSS483",
+      "courseNumber": "CSS 483",
+      "title": "Bioinformatics Alg",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Kim,Wooyoung"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS484",
+      "courseNumber": "CSS 484",
+      "title": "Multimedia Process",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Chen,Min"
+      ],
+      "mostRecentTerm": "WIN2023",
+      "termCount": 4
+    },
+    {
+      "courseCode": "CSS485",
+      "courseNumber": "CSS 485",
+      "title": "Artif Neural Nets",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Rahman,Muntasir Raihan",
+        "Stiber,Michael"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS486",
+      "courseNumber": "CSS 486",
+      "title": "Machine Intelligence",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Mashhadi,Afra",
+        "Si,Dong"
+      ],
+      "mostRecentTerm": "WIN2025",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS487",
+      "courseNumber": "CSS 487",
+      "title": "Computer Vision",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Olson,Clark"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS488",
+      "courseNumber": "CSS 488",
+      "title": "Nat Lang Processing",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ali,Shiza"
+      ],
+      "mostRecentTerm": "SPR2025",
+      "termCount": 1
+    },
+    {
+      "courseCode": "CSS490",
+      "courseNumber": "CSS 490",
+      "title": "Special Topics",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Champion,Kaylea",
+        "Chenault,John",
+        "Dupuis,Marc",
+        "Folsom,Tyler",
+        "G Folsom,Tyler",
+        "Gregory,Wanda",
+        "Mashhadi,Afra",
+        "Parsons,Erika",
+        "Peng,Yang",
+        "Retik,Arkady",
+        "Sen,Ranjan Kumar",
+        "Stride,Jeff"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 19
+    },
+    {
+      "courseCode": "CSS495",
+      "courseNumber": "CSS 495",
+      "title": "A Cmpt Internship",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 22
+    },
+    {
+      "courseCode": "CSS496",
+      "courseNumber": "CSS 496",
+      "title": "Appl Cmpt Capstone",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Kochanski,Mark"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 17
+    },
+    {
+      "courseCode": "CSS497",
+      "courseNumber": "CSS 497",
+      "title": "Cs & Se Capstone",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS498",
+      "courseNumber": "CSS 498",
+      "title": "Independent Study",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS499",
+      "courseNumber": "CSS 499",
+      "title": "Undergrad Research",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS501",
+      "courseNumber": "CSS 501",
+      "title": "Data Struct & Oop I",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Awad,Ahmed",
+        "Browne,Connor Benjamin",
+        "Haque,Atiq",
+        "Kim,Wooyoung",
+        "Stiber,Michael"
+      ],
+      "mostRecentTerm": "AUT2025",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS502",
+      "courseNumber": "CSS 502",
+      "title": "Data Struc & Oop Ii",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Chen,Min",
+        "Olson,Clark",
+        "Si,Dong"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS503",
+      "courseNumber": "CSS 503",
+      "title": "Systems Programming",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Bernstein,M",
+        "Browne,Connor Benjamin",
+        "Dai,Xiaoguang",
+        "Dimpsey,Robert"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS506",
+      "courseNumber": "CSS 506",
+      "title": "Soft Devl Processes",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Brechner,E",
+        "Brechner,Eric",
+        "Erdly,Bill",
+        "JA",
+        "Kim,Jeffrey"
+      ],
+      "mostRecentTerm": "AUT2025",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS507",
+      "courseNumber": "CSS 507",
+      "title": "Software Modeling",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Brechner,E",
+        "Brechner,Eric",
+        "JA",
+        "Kim,Jeffrey",
+        "Socha,David"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS508",
+      "courseNumber": "CSS 508",
+      "title": "Sftwre Test & Qual",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Brechner,Eric",
+        "Kochanski,Mark",
+        "Ong,Hansel",
+        "Socha - he,his, David",
+        "Stangler,Shaun"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS517",
+      "courseNumber": "CSS 517",
+      "title": "Info Assrnce & Cyber",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Awad,Ahmed",
+        "Dupuis,Marc",
+        "Lidster,William"
+      ],
+      "mostRecentTerm": "AUT2025",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS518",
+      "courseNumber": "CSS 518",
+      "title": "Human Factors Cyber",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "BJ",
+        "Dupuis,Marc"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS519",
+      "courseNumber": "CSS 519",
+      "title": "Incidt Resp&Risk Mgt",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Leblanc,D",
+        "Leblanc,David C",
+        "Ong,Hansel"
+      ],
+      "mostRecentTerm": "WIN2025",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS527",
+      "courseNumber": "CSS 527",
+      "title": "Cryptography",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Awad,Ahmed",
+        "Perlman,Radia"
+      ],
+      "mostRecentTerm": "WIN2021",
+      "termCount": 3
+    },
+    {
+      "courseCode": "CSS532",
+      "courseNumber": "CSS 532",
+      "title": "Internet Of Things",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Champion,Mia",
+        "Peng,Yang"
+      ],
+      "mostRecentTerm": "WIN2021",
+      "termCount": 4
+    },
+    {
+      "courseCode": "CSS533",
+      "courseNumber": "CSS 533",
+      "title": "Distributed Comp",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Fukuda,Munehiro",
+        "Palmer,Robert"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS534",
+      "courseNumber": "CSS 534",
+      "title": "Par Prog Grid Cloud",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Fukuda,Munehiro"
+      ],
+      "mostRecentTerm": "AUT2025",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS535",
+      "courseNumber": "CSS 535",
+      "title": "High Perf Comp",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Parsons,Erika"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS537",
+      "courseNumber": "CSS 537",
+      "title": "Network Systems Sec",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Awad,Ahmed",
+        "BJ",
+        "THAMILARASU,GEETHA"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS538",
+      "courseNumber": "CSS 538",
+      "title": "Wireless Security",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Leblanc,David C",
+        "THAMILARASU,GEETHA"
+      ],
+      "mostRecentTerm": "SPR2021",
+      "termCount": 4
+    },
+    {
+      "courseCode": "CSS539",
+      "courseNumber": "CSS 539",
+      "title": "Sec In Emerging Env",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Awad,Ahmed",
+        "Lagesse,Brent J",
+        "Lidster,William"
+      ],
+      "mostRecentTerm": "WIN2024",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS545",
+      "courseNumber": "CSS 545",
+      "title": "Mobile Computing",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ong,Hansel"
+      ],
+      "mostRecentTerm": "SPR2024",
+      "termCount": 3
+    },
+    {
+      "courseCode": "CSS549",
+      "courseNumber": "CSS 549",
+      "title": "Algrtm Desn&Anlsys",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Olson,Clark"
+      ],
+      "mostRecentTerm": "WIN2024",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS551",
+      "courseNumber": "CSS 551",
+      "title": "Adv 3D Comp Graph",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Sung,Kelvin"
+      ],
+      "mostRecentTerm": "AUT2025",
+      "termCount": 4
+    },
+    {
+      "courseCode": "CSS552",
+      "courseNumber": "CSS 552",
+      "title": "Topics In Rendering",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Sung,Kelvin"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 2
+    },
+    {
+      "courseCode": "CSS553",
+      "courseNumber": "CSS 553",
+      "title": "Software Arch",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Asuncion,Hazeline",
+        "Gavriliu,Marcel",
+        "JO"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS555",
+      "courseNumber": "CSS 555",
+      "title": "Eval Software Desgn",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Hamdan,O",
+        "Hamdan,Osama",
+        "Phillips,Chris",
+        "Stager,John"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS565",
+      "courseNumber": "CSS 565",
+      "title": "Rsrch Meth Sw Dev",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Dupuis,Marc",
+        "Erdly,Bill",
+        "Kim,Wooyoung"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS566",
+      "courseNumber": "CSS 566",
+      "title": "Software Management",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Bantwal,Praveen",
+        "Carr,Matt",
+        "Champion,Mia",
+        "Garg,Vijay",
+        "Strickland,Cedric J"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS572",
+      "courseNumber": "CSS 572",
+      "title": "Evid-Based Design",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Dutta,Pampa",
+        "Socha,David",
+        "Zolyomi,Annuska"
+      ],
+      "mostRecentTerm": "SPR2024",
+      "termCount": 3
+    },
+    {
+      "courseCode": "CSS576",
+      "courseNumber": "CSS 576",
+      "title": "Cybersecurity And Ai",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Lagesse,Brent J"
+      ],
+      "mostRecentTerm": "WIN2023",
+      "termCount": 1
+    },
+    {
+      "courseCode": "CSS577",
+      "courseNumber": "CSS 577",
+      "title": "Secure Software Dev",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Leblanc,D",
+        "Leblanc,David C"
+      ],
+      "mostRecentTerm": "SPR2026",
+      "termCount": 6
+    },
+    {
+      "courseCode": "CSS578",
+      "courseNumber": "CSS 578",
+      "title": "Ethical Pen Testing",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Lidster,William",
+        "Phillips,Chris"
+      ],
+      "mostRecentTerm": "SPR2025",
+      "termCount": 3
+    },
+    {
+      "courseCode": "CSS579",
+      "courseNumber": "CSS 579",
+      "title": "Malware Reverse Eng",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Lagesse,Brent J"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 3
+    },
+    {
+      "courseCode": "CSS581",
+      "courseNumber": "CSS 581",
+      "title": "Machine Learning",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Ahmad,M",
+        "Ahmad,Muhammad Aurangzeb",
+        "BJ",
+        "Champion,Mia",
+        "Mashhadi,Afra",
+        "Si,Dong"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 10
+    },
+    {
+      "courseCode": "CSS583",
+      "courseNumber": "CSS 583",
+      "title": "Knowledge Mgt Sys",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Kartha,Neelakantan"
+      ],
+      "mostRecentTerm": "WIN2024",
+      "termCount": 1
+    },
+    {
+      "courseCode": "CSS584",
+      "courseNumber": "CSS 584",
+      "title": "Multimedia Db Sys",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Chen,Min"
+      ],
+      "mostRecentTerm": "WIN2022",
+      "termCount": 2
+    },
+    {
+      "courseCode": "CSS586",
+      "courseNumber": "CSS 586",
+      "title": "Deep Learning & Ai",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Champion,Mia",
+        "Si,Dong"
+      ],
+      "mostRecentTerm": "WIN2022",
+      "termCount": 5
+    },
+    {
+      "courseCode": "CSS587",
+      "courseNumber": "CSS 587",
+      "title": "Adv Computer Vision",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Olson,Clark"
+      ],
+      "mostRecentTerm": "SPR2023",
+      "termCount": 3
+    },
+    {
+      "courseCode": "CSS590",
+      "courseNumber": "CSS 590",
+      "title": "Special Topic Cmptg",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Asuncion,Hazeline",
+        "BJ",
+        "Mashhadi,Afra",
+        "Parsons,Erika",
+        "Stiber,Michael",
+        "THAMILARASU,GEETHA",
+        "Zolyomi,Annuska"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 10
+    },
+    {
+      "courseCode": "CSS595",
+      "courseNumber": "CSS 595",
+      "title": "Masters Project",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS599",
+      "courseNumber": "CSS 599",
+      "title": "Faculty Res Seminar",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [
+        "Dupuis,Marc",
+        "Erdly,Bill",
+        "Mashhadi,Afra",
+        "Pisan,Yusuf",
+        "Socha,David",
+        "THAMILARASU,GEETHA"
+      ],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 12
+    },
+    {
+      "courseCode": "CSS600",
+      "courseNumber": "CSS 600",
+      "title": "Indepdnt Stdy/Rsch",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS601",
+      "courseNumber": "CSS 601",
+      "title": "Internship",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    },
+    {
+      "courseCode": "CSS700",
+      "courseNumber": "CSS 700",
+      "title": "Masters Thesis",
+      "credits": null,
+      "description": "",
+      "campus": "UW Bothell",
+      "knownInstructors": [],
+      "mostRecentTerm": "WIN2026",
+      "termCount": 23
+    }
+  ],
+  "professors": [
+    {
+      "id": "awad_a",
+      "name": "A Awad",
+      "rawKey": "Awad,A",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS337": [
+          "SPR2022"
+        ],
+        "CSS422": [
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2022"
+    },
+    {
+      "id": "b_mashhadi_afra",
+      "name": "Afra B Mashhadi",
+      "rawKey": "B Mashhadi,Afra",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS444": [
+          "WIN2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "mashhadi_afra",
+      "name": "Afra Mashhadi",
+      "rawKey": "Mashhadi,Afra",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS342": [
+          "WIN2021",
+          "WIN2021",
+          "AUT2021",
+          "AUT2021"
+        ],
+        "CSS599": [
+          "WIN2021"
+        ],
+        "CSS490": [
+          "SPR2021"
+        ],
+        "CSS444": [
+          "WIN2024",
+          "WIN2022"
+        ],
+        "CSS343": [
+          "SPR2024",
+          "AUT2022"
+        ],
+        "CSS581": [
+          "WIN2025",
+          "WIN2025",
+          "AUT2023"
+        ],
+        "CSS486": [
+          "WIN2025"
+        ],
+        "CSS590": [
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "awad_ahmed",
+      "name": "Ahmed Awad",
+      "rawKey": "Awad,Ahmed",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS422": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2022",
+          "WIN2021",
+          "SUM2025",
+          "SUM2024",
+          "SUM2023",
+          "SUM2022",
+          "SUM2021",
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "SPR2023",
+          "SPR2021",
+          "AUT2025",
+          "AUT2024",
+          "AUT2023",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS432": [
+          "AUT2020"
+        ],
+        "CSS527": [
+          "WIN2021",
+          "AUT2022"
+        ],
+        "CSS337": [
+          "WIN2025",
+          "SPR2021"
+        ],
+        "CSS343": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "SUM2021"
+        ],
+        "CSS501": [
+          "AUT2021"
+        ],
+        "CSS517": [
+          "AUT2022"
+        ],
+        "CSS537": [
+          "WIN2023"
+        ],
+        "CSS342": [
+          "AUT2025",
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS310": [
+          "WIN2026",
+          "SPR2024"
+        ],
+        "CSS539": [
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "gonzalez_alan",
+      "name": "Alan Gonzalez",
+      "rawKey": "Gonzalez,Alan",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS474": [
+          "SPR2026",
+          "AUT2025",
+          "AUT2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2026"
+    },
+    {
+      "id": "leong_alan",
+      "name": "Alan Leong",
+      "rawKey": "Leong,Alan",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS474": [
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS473": [
+          "WIN2022",
+          "SPR2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "zolyomi_annuska",
+      "name": "Annuska Zolyomi",
+      "rawKey": "Zolyomi,Annuska",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS478": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021",
+          "SPR2023",
+          "SPR2022",
+          "SPR2021",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS350": [
+          "WIN2023",
+          "WIN2022",
+          "AUT2021"
+        ],
+        "CSS360": [
+          "WIN2023",
+          "SPR2022"
+        ],
+        "CSS480": [
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2023"
+        ],
+        "CSS370": [
+          "WIN2025",
+          "AUT2024"
+        ],
+        "CSS572": [
+          "AUT2025"
+        ],
+        "CSS590": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "kirson_antonio",
+      "name": "Antonio Kirson",
+      "rawKey": "Kirson,Antonio",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS107": [
+          "AUT2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "AUT2024"
+    },
+    {
+      "id": "retik_arkady",
+      "name": "Arkady Retik",
+      "rawKey": "Retik,Arkady",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS295": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "SPR2026",
+          "SPR2021",
+          "AUT2025",
+          "AUT2023",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS350": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021",
+          "SPR2026",
+          "SPR2026",
+          "SPR2024",
+          "SPR2022",
+          "AUT2020"
+        ],
+        "CSS360": [
+          "WIN2021",
+          "SUM2025",
+          "SUM2024",
+          "SUM2023",
+          "SUM2022",
+          "SUM2021",
+          "SPR2023",
+          "AUT2025",
+          "AUT2025",
+          "AUT2023",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS142": [
+          "WIN2021"
+        ],
+        "CSS461": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "SPR2026",
+          "SPR2021"
+        ],
+        "CSS490": [
+          "WIN2026",
+          "SPR2025",
+          "SPR2023",
+          "SPR2022"
+        ],
+        "CSS371": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "lund_arnie",
+      "name": "Arnie Lund",
+      "rawKey": "Lund,Arnie",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS478": [
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS480": [
+          "SPR2022",
+          "SPR2021",
+          "AUT2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "haque_atiq",
+      "name": "Atiq Haque",
+      "rawKey": "Haque,Atiq",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS501": [
+          "AUT2023"
+        ],
+        "CSS436": [
+          "WIN2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "pan_b",
+      "name": "B Pan",
+      "rawKey": "Pan,B",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS432": [
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "AUT2022"
+    },
+    {
+      "id": "bj",
+      "name": "BJ",
+      "rawKey": "BJ",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS101": [
+          "WIN2023",
+          "WIN2022",
+          "SPR2022",
+          "AUT2021"
+        ],
+        "CSS590": [
+          "SPR2022",
+          "SPR2022"
+        ],
+        "CSS581": [
+          "WIN2023",
+          "WIN2023"
+        ],
+        "CSS518": [
+          "WIN2026",
+          "WIN2026",
+          "WIN2025",
+          "WIN2025",
+          "WIN2024",
+          "WIN2024"
+        ],
+        "CSS537": [
+          "WIN2024",
+          "WIN2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "erdly_bill",
+      "name": "Bill Erdly",
+      "rawKey": "Erdly,Bill",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS506": [
+          "AUT2022",
+          "AUT2021",
+          "AUT2020",
+          "AUT2020"
+        ],
+        "CSS565": [
+          "WIN2023",
+          "WIN2022",
+          "SPR2021"
+        ],
+        "CSS480": [
+          "SUM2024",
+          "SUM2023",
+          "SUM2022",
+          "SUM2021"
+        ],
+        "CSS599": [
+          "WIN2026",
+          "WIN2025",
+          "AUT2025",
+          "AUT2024"
+        ],
+        "CSS360": [
+          "WIN2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "pan_bo",
+      "name": "Bo Pan",
+      "rawKey": "Pan,Bo",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS343": [
+          "SUM2023"
+        ],
+        "CSS432": [
+          "WIN2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "kuzma_bobby",
+      "name": "Bobby Kuzma",
+      "rawKey": "Kuzma,Bobby",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS320": [
+          "AUT2024",
+          "AUT2023",
+          "AUT2021"
+        ],
+        "CSS310": [
+          "WIN2023",
+          "WIN2022",
+          "SUM2024",
+          "SUM2023",
+          "SUM2022",
+          "SPR2023",
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "pan_boxiang",
+      "name": "Boxiang Pan",
+      "rawKey": "Pan,Boxiang",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS432": [
+          "AUT2021"
+        ],
+        "CSS343": [
+          "SUM2022",
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SUM2022"
+    },
+    {
+      "id": "fleming_brandon_edward",
+      "name": "Brandon Edward Fleming",
+      "rawKey": "Fleming,Brandon Edward",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS473": [
+          "SPR2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2024"
+    },
+    {
+      "id": "fleming_brandon",
+      "name": "Brandon Fleming",
+      "rawKey": "Fleming,Brandon",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS473": [
+          "SPR2026",
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2026"
+    },
+    {
+      "id": "lagesse_brent_j",
+      "name": "Brent J Lagesse",
+      "rawKey": "Lagesse,Brent J",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS539": [
+          "WIN2024",
+          "WIN2022",
+          "AUT2020"
+        ],
+        "CSS343": [
+          "WIN2023",
+          "WIN2021"
+        ],
+        "CSS432": [
+          "SPR2021",
+          "AUT2025",
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS579": [
+          "WIN2026",
+          "AUT2024",
+          "AUT2021"
+        ],
+        "CSS342": [
+          "WIN2022",
+          "AUT2025",
+          "AUT2022"
+        ],
+        "CSS576": [
+          "WIN2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "shaw_carol_a",
+      "name": "Carol A Shaw",
+      "rawKey": "Shaw,Carol A",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS301": [
+          "WIN2026",
+          "WIN2026",
+          "SPR2025",
+          "SPR2023",
+          "AUT2025",
+          "AUT2024"
+        ],
+        "CSS211": [
+          "WIN2025",
+          "SPR2024",
+          "AUT2025",
+          "AUT2023"
+        ],
+        "CSS371": [
+          "SPR2026",
+          "SPR2025",
+          "SPR2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "zander_carol",
+      "name": "Carol Zander",
+      "rawKey": "Zander,Carol",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS343": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021",
+          "SPR2025",
+          "SPR2024",
+          "AUT2024",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS342": [
+          "SPR2021",
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "strickland_cedric_j",
+      "name": "Cedric J Strickland",
+      "rawKey": "Strickland,Cedric J",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS566": [
+          "SPR2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2023"
+    },
+    {
+      "id": "esposito_chris",
+      "name": "Chris Esposito",
+      "rawKey": "Esposito,Chris",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS370": [
+          "WIN2022",
+          "SPR2021",
+          "AUT2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "phillips_chris",
+      "name": "Chris Phillips",
+      "rawKey": "Phillips,Chris",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS555": [
+          "WIN2026",
+          "WIN2024"
+        ],
+        "CSS578": [
+          "SPR2025",
+          "SPR2024"
+        ],
+        "CSS370": [
+          "SPR2025",
+          "AUT2025"
+        ],
+        "CSS320": [
+          "AUT2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "esposito_christopher",
+      "name": "Christopher Esposito",
+      "rawKey": "Esposito,Christopher",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS370": [
+          "WIN2021",
+          "AUT2020"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2021"
+    },
+    {
+      "id": "olson_clark",
+      "name": "Clark Olson",
+      "rawKey": "Olson,Clark",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS487": [
+          "SPR2026",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS549": [
+          "WIN2024",
+          "AUT2025",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS502": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS343": [
+          "SPR2021"
+        ],
+        "CSS587": [
+          "SPR2023",
+          "SPR2021",
+          "AUT2025"
+        ],
+        "CSS449": [
+          "SPR2026",
+          "SPR2024",
+          "SPR2023",
+          "SPR2022"
+        ],
+        "CSS342": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "browne_connor_benjamin",
+      "name": "Connor Benjamin Browne",
+      "rawKey": "Browne,Connor Benjamin",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS107": [
+          "AUT2023"
+        ],
+        "CSS342": [
+          "WIN2025",
+          "AUT2023"
+        ],
+        "CSS143": [
+          "WIN2024"
+        ],
+        "CSS422": [
+          "SPR2025",
+          "SPR2024"
+        ],
+        "CSS503": [
+          "SPR2024"
+        ],
+        "CSS501": [
+          "AUT2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "leblanc_d",
+      "name": "D Leblanc",
+      "rawKey": "Leblanc,D",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS577": [
+          "SPR2022",
+          "SPR2021"
+        ],
+        "CSS519": [
+          "WIN2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "nixon_david",
+      "name": "DAVID NIXON",
+      "rawKey": "NIXON,DAVID",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS142": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2021",
+          "SPR2025"
+        ],
+        "CSS143": [
+          "WIN2026",
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2022",
+          "WIN2021",
+          "SUM2024",
+          "SUM2023",
+          "SUM2022",
+          "SUM2021",
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2024",
+          "SPR2023",
+          "SPR2023",
+          "SPR2022",
+          "SPR2022",
+          "SPR2021",
+          "SPR2021"
+        ],
+        "CSS101": [
+          "WIN2025"
+        ],
+        "CSS107": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "leblanc_david_c",
+      "name": "David C Leblanc",
+      "rawKey": "Leblanc,David C",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS142": [
+          "AUT2020"
+        ],
+        "CSS519": [
+          "WIN2025",
+          "WIN2021",
+          "AUT2023"
+        ],
+        "CSS538": [
+          "AUT2021"
+        ],
+        "CSS337": [
+          "WIN2023"
+        ],
+        "CSS577": [
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2023"
+        ],
+        "CSS310": [
+          "AUT2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "socha_david",
+      "name": "David Socha",
+      "rawKey": "Socha,David",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS507": [
+          "WIN2021"
+        ],
+        "CSS390": [
+          "WIN2022",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021"
+        ],
+        "CSS572": [
+          "AUT2021"
+        ],
+        "CSS599": [
+          "WIN2022"
+        ],
+        "CSS370": [
+          "WIN2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "oliver_dawn_marie",
+      "name": "Dawn-Marie Oliver",
+      "rawKey": "Oliver,Dawn-Marie",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS107": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2025",
+          "WIN2024",
+          "WIN2024",
+          "WIN2022",
+          "WIN2021",
+          "WIN2021",
+          "SPR2026",
+          "SPR2025",
+          "SPR2025",
+          "SPR2024",
+          "SPR2024",
+          "SPR2023",
+          "SPR2022",
+          "AUT2025",
+          "AUT2024",
+          "AUT2023",
+          "AUT2021",
+          "AUT2021"
+        ],
+        "CSS142": [
+          "WIN2026",
+          "WIN2026",
+          "WIN2022",
+          "SPR2022",
+          "SPR2021",
+          "AUT2025"
+        ],
+        "CSS421": [
+          "WIN2023",
+          "WIN2022"
+        ],
+        "CSS301": [
+          "AUT2024",
+          "AUT2024"
+        ],
+        "CSS101": [
+          "AUT2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "dailey_dharma",
+      "name": "Dharma Dailey",
+      "rawKey": "Dailey,Dharma",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS211": [
+          "WIN2026",
+          "SPR2022"
+        ],
+        "CSS478": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "SPR2025",
+          "SPR2024",
+          "AUT2025"
+        ],
+        "CSS360": [
+          "WIN2024"
+        ],
+        "CSS142": [
+          "WIN2025",
+          "SPR2025",
+          "SPR2025",
+          "AUT2024",
+          "AUT2024"
+        ],
+        "CSS301": [
+          "AUT2025",
+          "AUT2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "kumar_dharmesh",
+      "name": "Dharmesh Kumar",
+      "rawKey": "Kumar,Dharmesh",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS370": [
+          "SPR2026",
+          "AUT2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2026"
+    },
+    {
+      "id": "singhal_dharmesh_kumar",
+      "name": "Dharmesh Kumar Singhal",
+      "rawKey": "Singhal,Dharmesh Kumar",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS370": [
+          "SPR2022",
+          "SPR2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2022"
+    },
+    {
+      "id": "ezzeddine_diala",
+      "name": "Diala Ezzeddine",
+      "rawKey": "Ezzeddine,Diala",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS112": [
+          "WIN2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "peter_donald_m",
+      "name": "Donald M Peter",
+      "rawKey": "Peter,Donald M",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS142": [
+          "WIN2022",
+          "WIN2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "si_dong",
+      "name": "Dong Si",
+      "rawKey": "Si,Dong",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS343": [
+          "SPR2024",
+          "SPR2022",
+          "AUT2020"
+        ],
+        "CSS486": [
+          "AUT2025",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS502": [
+          "WIN2024",
+          "WIN2021"
+        ],
+        "CSS581": [
+          "WIN2021",
+          "AUT2025"
+        ],
+        "CSS586": [
+          "WIN2022",
+          "SPR2026",
+          "SPR2023",
+          "SPR2021"
+        ],
+        "CSS342": [
+          "SUM2022",
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "pyle_douglas_m_",
+      "name": "Douglas M. Pyle",
+      "rawKey": "Pyle,Douglas M.",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS350": [
+          "SPR2024",
+          "AUT2025",
+          "AUT2024"
+        ],
+        "CSS110": [
+          "WIN2025"
+        ],
+        "CSS101": [
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "brechner_e",
+      "name": "E Brechner",
+      "rawKey": "Brechner,E",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS506": [
+          "AUT2022"
+        ],
+        "CSS507": [
+          "WIN2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "brechner_eric",
+      "name": "Eric Brechner",
+      "rawKey": "Brechner,Eric",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS506": [
+          "AUT2025",
+          "AUT2024",
+          "AUT2023",
+          "AUT2021"
+        ],
+        "CSS507": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "WIN2022"
+        ],
+        "CSS508": [
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "reel_eric",
+      "name": "Eric Reel",
+      "rawKey": "Reel,Eric",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS142": [
+          "AUT2024"
+        ],
+        "CSS342": [
+          "WIN2025",
+          "SUM2025"
+        ],
+        "CSS343": [
+          "WIN2026",
+          "WIN2026",
+          "SPR2026",
+          "SPR2025"
+        ],
+        "CSS385": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "parsons_erika",
+      "name": "Erika Parsons",
+      "rawKey": "Parsons,Erika",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS430": [
+          "WIN2024",
+          "WIN2022",
+          "WIN2021",
+          "SPR2026",
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS490": [
+          "SPR2021",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS535": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS475": [
+          "WIN2023",
+          "SPR2025",
+          "SPR2023",
+          "SPR2021",
+          "AUT2025",
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS590": [
+          "WIN2026",
+          "SPR2022",
+          "AUT2022"
+        ],
+        "CSS342": [
+          "WIN2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "uong_ethan",
+      "name": "Ethan Uong",
+      "rawKey": "Uong,Ethan",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS142": [
+          "WIN2024",
+          "SPR2024"
+        ],
+        "CSS481": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "SPR2026",
+          "SPR2025",
+          "AUT2024"
+        ],
+        "CSS360": [
+          "SPR2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "arian_eyal",
+      "name": "Eyal Arian",
+      "rawKey": "Arian,Eyal",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS340": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "SPR2025",
+          "AUT2020"
+        ],
+        "CSS342": [
+          "WIN2025",
+          "WIN2024",
+          "SUM2023",
+          "SPR2024",
+          "AUT2025",
+          "AUT2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "ahmed_faisal",
+      "name": "Faisal Ahmed",
+      "rawKey": "Ahmed,Faisal",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS107": [
+          "WIN2023"
+        ],
+        "CSS342": [
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS430": [
+          "SPR2025",
+          "SPR2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "thamilarasu_geetha",
+      "name": "GEETHA THAMILARASU",
+      "rawKey": "THAMILARASU,GEETHA",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS342": [
+          "AUT2020"
+        ],
+        "CSS599": [
+          "AUT2020"
+        ],
+        "CSS337": [
+          "WIN2026",
+          "WIN2024",
+          "WIN2022",
+          "WIN2021",
+          "SPR2026",
+          "SPR2025",
+          "SPR2024"
+        ],
+        "CSS537": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS538": [
+          "SPR2021",
+          "AUT2025",
+          "AUT2024"
+        ],
+        "CSS310": [
+          "SPR2022"
+        ],
+        "CSS415": [
+          "WIN2025",
+          "SPR2022"
+        ],
+        "CSS590": [
+          "AUT2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "ong_hansel",
+      "name": "Hansel Ong",
+      "rawKey": "Ong,Hansel",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS342": [
+          "WIN2021"
+        ],
+        "CSS142": [
+          "SPR2022",
+          "SPR2021"
+        ],
+        "CSS385": [
+          "SPR2022",
+          "AUT2025",
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS545": [
+          "SPR2024",
+          "SPR2024",
+          "AUT2024",
+          "AUT2022"
+        ],
+        "CSS143": [
+          "SPR2026"
+        ],
+        "CSS508": [
+          "SPR2026"
+        ],
+        "CSS519": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2021"
+    },
+    {
+      "id": "asuncion_hazeline",
+      "name": "Hazeline Asuncion",
+      "rawKey": "Asuncion,Hazeline",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS360": [
+          "WIN2024",
+          "AUT2024",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS590": [
+          "AUT2020"
+        ],
+        "CSS370": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021",
+          "AUT2021"
+        ],
+        "CSS553": [
+          "SPR2023",
+          "SPR2022",
+          "SPR2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "zade_himanshu",
+      "name": "Himanshu Zade",
+      "rawKey": "Zade,Himanshu",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS370": [
+          "WIN2026",
+          "SPR2026",
+          "SPR2024"
+        ],
+        "CSS475": [
+          "SPR2026",
+          "SPR2025",
+          "SPR2024"
+        ],
+        "CSS360": [
+          "SPR2025",
+          "AUT2024"
+        ],
+        "CSS390": [
+          "AUT2025"
+        ],
+        "CSS481": [
+          "AUT2025"
+        ],
+        "CSS173": [
+          "WIN2026"
+        ],
+        "CSS444": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "atov_irena",
+      "name": "Irena Atov",
+      "rawKey": "Atov,Irena",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS432": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "wang_j",
+      "name": "J Wang",
+      "rawKey": "Wang,J",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS343": [
+          "SUM2025"
+        ],
+        "CSS350": [
+          "AUT2025"
+        ],
+        "CSS342": [
+          "WIN2026",
+          "SPR2026"
+        ],
+        "CSS360": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "ja",
+      "name": "JA",
+      "rawKey": "JA",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS507": [
+          "WIN2024",
+          "WIN2024"
+        ],
+        "CSS506": [
+          "AUT2024",
+          "AUT2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "jo",
+      "name": "JO",
+      "rawKey": "JO",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS383": [
+          "SUM2025",
+          "SPR2026",
+          "SPR2025",
+          "SPR2023",
+          "SPR2022"
+        ],
+        "CSS553": [
+          "SPR2025",
+          "SPR2025",
+          "SPR2024",
+          "SPR2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SUM2025"
+    },
+    {
+      "id": "morgan_jonathan",
+      "name": "JONATHAN MORGAN",
+      "rawKey": "MORGAN,JONATHAN",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS110": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "candelaria_jared",
+      "name": "Jared Candelaria",
+      "rawKey": "Candelaria,Jared",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS421": [
+          "SPR2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2023"
+    },
+    {
+      "id": "stride_jeff",
+      "name": "Jeff Stride",
+      "rawKey": "Stride,Jeff",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS143": [
+          "WIN2026",
+          "WIN2026",
+          "WIN2025",
+          "WIN2025",
+          "SPR2025",
+          "SPR2025",
+          "AUT2025",
+          "AUT2024"
+        ],
+        "CSS360": [
+          "AUT2025",
+          "AUT2024"
+        ],
+        "CSS490": [
+          "SPR2026",
+          "SPR2025"
+        ],
+        "CSS142": [
+          "SPR2026",
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "kim_jeffrey",
+      "name": "Jeffrey Kim",
+      "rawKey": "Kim,Jeffrey",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS101": [
+          "WIN2024",
+          "WIN2021",
+          "SPR2024",
+          "SPR2021",
+          "AUT2024",
+          "AUT2020"
+        ],
+        "CSS360": [
+          "WIN2026",
+          "WIN2023",
+          "WIN2022",
+          "SPR2024",
+          "SPR2023",
+          "SPR2022",
+          "SPR2021",
+          "AUT2025",
+          "AUT2023",
+          "AUT2022",
+          "AUT2020"
+        ],
+        "CSS350": [
+          "WIN2021",
+          "SPR2023"
+        ],
+        "CSS507": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS142": [
+          "WIN2024",
+          "SUM2025",
+          "SUM2024",
+          "SUM2023",
+          "SUM2021",
+          "SPR2023",
+          "AUT2021"
+        ],
+        "CSS506": [
+          "AUT2025",
+          "AUT2023"
+        ],
+        "CSS421": [
+          "WIN2026",
+          "WIN2025",
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "zaneveld_jesse",
+      "name": "Jesse Zaneveld",
+      "rawKey": "Zaneveld,Jesse",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS383": [
+          "SUM2021",
+          "SPR2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SUM2021"
+    },
+    {
+      "id": "hogg_jim",
+      "name": "Jim Hogg",
+      "rawKey": "Hogg,Jim",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS448": [
+          "WIN2022",
+          "WIN2021",
+          "AUT2023",
+          "AUT2022"
+        ],
+        "CSS422": [
+          "SPR2021"
+        ],
+        "CSS430": [
+          "SPR2021"
+        ],
+        "CSS112": [
+          "AUT2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "chenault_john",
+      "name": "John Chenault",
+      "rawKey": "Chenault,John",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS490": [
+          "WIN2022",
+          "WIN2021",
+          "SPR2023"
+        ],
+        "CSS475": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "SPR2026",
+          "SPR2022",
+          "SPR2021"
+        ],
+        "CSS342": [
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "kim_john",
+      "name": "John Kim",
+      "rawKey": "Kim,John",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS142": [
+          "SUM2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SUM2022"
+    },
+    {
+      "id": "stager_john",
+      "name": "John Stager",
+      "rawKey": "Stager,John",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS142": [
+          "AUT2020"
+        ],
+        "CSS371": [
+          "WIN2021",
+          "SPR2021",
+          "AUT2020"
+        ],
+        "CSS481": [
+          "WIN2021"
+        ],
+        "CSS555": [
+          "WIN2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2021"
+    },
+    {
+      "id": "lin_johnny",
+      "name": "Johnny Lin",
+      "rawKey": "Lin,Johnny",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS112": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2021",
+          "SPR2026",
+          "SPR2025",
+          "SPR2022",
+          "SPR2021",
+          "AUT2025",
+          "AUT2024",
+          "AUT2022",
+          "AUT2020"
+        ],
+        "CSS173": [
+          "WIN2023",
+          "AUT2020"
+        ],
+        "CSS142": [
+          "WIN2025",
+          "WIN2022",
+          "WIN2022",
+          "SPR2026",
+          "SPR2021",
+          "AUT2024",
+          "AUT2022"
+        ],
+        "CSS211": [
+          "AUT2021"
+        ],
+        "CSS458": [
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "AUT2025",
+          "AUT2021"
+        ],
+        "CSS143": [
+          "SPR2022",
+          "AUT2023"
+        ],
+        "CSS101": [
+          "AUT2022"
+        ],
+        "CSS123": [
+          "SPR2025",
+          "SPR2024",
+          "SPR2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "ewing_katie",
+      "name": "Katie Ewing",
+      "rawKey": "Ewing,Katie",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS132": [
+          "AUT2025",
+          "AUT2024",
+          "AUT2023",
+          "AUT2022"
+        ],
+        "CSS133": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "WIN2023"
+        ],
+        "CSS142": [
+          "SPR2023"
+        ],
+        "CSS342": [
+          "SPR2024"
+        ],
+        "CSS360": [
+          "WIN2026",
+          "SPR2025"
+        ],
+        "CSS143": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "champion_kaylea",
+      "name": "Kaylea Champion",
+      "rawKey": "Champion,Kaylea",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS360": [
+          "WIN2026",
+          "AUT2025"
+        ],
+        "CSS350": [
+          "WIN2026"
+        ],
+        "CSS490": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "sung_kelvin",
+      "name": "Kelvin Sung",
+      "rawKey": "Sung,Kelvin",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS385": [
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS451": [
+          "AUT2025",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS551": [
+          "AUT2025",
+          "AUT2023",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS452": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS552": [
+          "WIN2026",
+          "WIN2023"
+        ],
+        "CSS290": [
+          "AUT2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "gunnerson_kim",
+      "name": "Kim Gunnerson",
+      "rawKey": "Gunnerson,Kim",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS107": [
+          "SPR2021",
+          "AUT2020",
+          "AUT2020"
+        ],
+        "CSS142": [
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS112": [
+          "WIN2023",
+          "SPR2024",
+          "SPR2023",
+          "AUT2021"
+        ],
+        "CSS225": [
+          "SPR2024",
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "madasu_lakshmi",
+      "name": "Lakshmi Madasu",
+      "rawKey": "Madasu,Lakshmi",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS360": [
+          "WIN2025",
+          "AUT2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "anderson_laurie",
+      "name": "Laurie Anderson",
+      "rawKey": "Anderson,Laurie",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS421": [
+          "WIN2021",
+          "SUM2022",
+          "SUM2021"
+        ],
+        "CSS290": [
+          "SPR2024",
+          "SPR2022"
+        ],
+        "CSS301": [
+          "SUM2022",
+          "SPR2026",
+          "SPR2023",
+          "AUT2025",
+          "AUT2024",
+          "AUT2024"
+        ],
+        "CSS211": [
+          "WIN2025",
+          "WIN2024",
+          "SUM2024",
+          "SUM2023",
+          "SPR2026",
+          "AUT2024",
+          "AUT2023",
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "kalmin_lesley",
+      "name": "Lesley Kalmin",
+      "rawKey": "Kalmin,Lesley",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS143": [
+          "WIN2021",
+          "AUT2022",
+          "AUT2021",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS370": [
+          "AUT2023",
+          "AUT2020"
+        ],
+        "CSS360": [
+          "WIN2022",
+          "WIN2021",
+          "SPR2022",
+          "SPR2021"
+        ],
+        "CSS107": [
+          "SPR2023",
+          "SPR2021",
+          "AUT2022"
+        ],
+        "CSS342": [
+          "WIN2023",
+          "WIN2022",
+          "SPR2022"
+        ],
+        "CSS142": [
+          "WIN2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "ahmad_m",
+      "name": "M Ahmad",
+      "rawKey": "Ahmad,M",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS581": [
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "AUT2022"
+    },
+    {
+      "id": "bernstein_m",
+      "name": "M Bernstein",
+      "rawKey": "Bernstein,M",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS503": [
+          "SPR2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2021"
+    },
+    {
+      "id": "rajanna_madhu",
+      "name": "Madhu Rajanna",
+      "rawKey": "Rajanna,Madhu",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS478": [
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS101": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2026"
+    },
+    {
+      "id": "alicherry_mansoor",
+      "name": "Mansoor Alicherry",
+      "rawKey": "Alicherry,Mansoor",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS422": [
+          "WIN2024",
+          "AUT2021"
+        ],
+        "CSS434": [
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "dupuis_marc",
+      "name": "Marc Dupuis",
+      "rawKey": "Dupuis,Marc",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS517": [
+          "AUT2025",
+          "AUT2024",
+          "AUT2023",
+          "AUT2020"
+        ],
+        "CSS518": [
+          "SPR2023",
+          "AUT2020"
+        ],
+        "CSS310": [
+          "SUM2025",
+          "SUM2021",
+          "AUT2025",
+          "AUT2022"
+        ],
+        "CSS599": [
+          "WIN2023",
+          "AUT2023",
+          "AUT2022"
+        ],
+        "CSS490": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024"
+        ],
+        "CSS565": [
+          "WIN2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "dupuis_marc_j_",
+      "name": "Marc J. Dupuis",
+      "rawKey": "Dupuis,Marc J.",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS310": [
+          "WIN2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2021"
+    },
+    {
+      "id": "gavriliu_marcel",
+      "name": "Marcel Gavriliu",
+      "rawKey": "Gavriliu,Marcel",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS553": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2026"
+    },
+    {
+      "id": "deschene_marie",
+      "name": "Marie Deschene",
+      "rawKey": "Deschene,Marie",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS110": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS315": [
+          "WIN2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "kochanski_mark",
+      "name": "Mark Kochanski",
+      "rawKey": "Kochanski,Mark",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS350": [
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS475": [
+          "WIN2024",
+          "WIN2022",
+          "WIN2021",
+          "SUM2024",
+          "SUM2023",
+          "SUM2022",
+          "SUM2021"
+        ],
+        "CSS370": [
+          "WIN2023",
+          "SPR2024",
+          "SPR2022",
+          "SPR2021"
+        ],
+        "CSS496": [
+          "WIN2022",
+          "AUT2021"
+        ],
+        "CSS390": [
+          "WIN2023",
+          "SUM2022",
+          "SPR2024",
+          "SPR2023",
+          "SPR2022"
+        ],
+        "CSS508": [
+          "SPR2024",
+          "SPR2023",
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "carr_matt",
+      "name": "Matt Carr",
+      "rawKey": "Carr,Matt",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS371": [
+          "WIN2025",
+          "AUT2025"
+        ],
+        "CSS566": [
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "wenger_matt",
+      "name": "Matt Wenger",
+      "rawKey": "Wenger,Matt",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS342": [
+          "SPR2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2021"
+    },
+    {
+      "id": "champion_mia",
+      "name": "Mia Champion",
+      "rawKey": "Champion,Mia",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS532": [
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS566": [
+          "SPR2026",
+          "SPR2024"
+        ],
+        "CSS581": [
+          "WIN2026",
+          "AUT2024"
+        ],
+        "CSS350": [
+          "WIN2026",
+          "WIN2025"
+        ],
+        "CSS586": [
+          "SPR2025"
+        ],
+        "CSS142": [
+          "AUT2025",
+          "AUT2025"
+        ],
+        "CSS382": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "stiber_michael",
+      "name": "Michael Stiber",
+      "rawKey": "Stiber,Michael",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS501": [
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS343": [
+          "WIN2021"
+        ],
+        "CSS485": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2021"
+        ],
+        "CSS342": [
+          "WIN2022",
+          "SPR2021"
+        ],
+        "CSS475": [
+          "WIN2025"
+        ],
+        "CSS101": [
+          "WIN2026"
+        ],
+        "CSS225": [
+          "SPR2026"
+        ],
+        "CSS590": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "chen_min",
+      "name": "Min Chen",
+      "rawKey": "Chen,Min",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS475": [
+          "WIN2021",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS343": [
+          "SPR2021",
+          "AUT2023"
+        ],
+        "CSS484": [
+          "WIN2023",
+          "WIN2022",
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS502": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2023",
+          "WIN2022"
+        ],
+        "CSS584": [
+          "WIN2022",
+          "AUT2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "bernstein_morris",
+      "name": "Morris Bernstein",
+      "rawKey": "Bernstein,Morris",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS390": [
+          "AUT2020"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "AUT2020"
+    },
+    {
+      "id": "chini_morteza",
+      "name": "Morteza Chini",
+      "rawKey": "Chini,Morteza",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS350": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021",
+          "SPR2021",
+          "SPR2021",
+          "AUT2023"
+        ],
+        "CSS142": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2025",
+          "WIN2024",
+          "SPR2024",
+          "SPR2023",
+          "SPR2022",
+          "AUT2025",
+          "AUT2023"
+        ],
+        "CSS370": [
+          "WIN2026",
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "AUT2025"
+        ],
+        "CSS360": [
+          "WIN2025",
+          "WIN2024",
+          "SPR2025",
+          "SPR2024",
+          "AUT2024"
+        ],
+        "CSS301": [
+          "AUT2024",
+          "AUT2024"
+        ],
+        "CSS143": [
+          "AUT2025"
+        ],
+        "CSS310": [
+          "WIN2026",
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "ahmad_muhammad_aurangzeb",
+      "name": "Muhammad Aurangzeb Ahmad",
+      "rawKey": "Ahmad,Muhammad Aurangzeb",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS581": [
+          "AUT2021",
+          "AUT2020"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "AUT2021"
+    },
+    {
+      "id": "fukuda_munehiro",
+      "name": "Munehiro Fukuda",
+      "rawKey": "Fukuda,Munehiro",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS430": [
+          "WIN2023",
+          "SPR2022",
+          "AUT2025",
+          "AUT2020"
+        ],
+        "CSS534": [
+          "AUT2025",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS422": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021",
+          "SPR2026"
+        ],
+        "CSS434": [
+          "SPR2022",
+          "SPR2021",
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS533": [
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "SPR2021"
+        ],
+        "CSS421": [
+          "WIN2024",
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "rahman_muntasir_raihan",
+      "name": "Muntasir Raihan Rahman",
+      "rawKey": "Rahman,Muntasir Raihan",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS143": [
+          "WIN2023"
+        ],
+        "CSS343": [
+          "SUM2024",
+          "SPR2023"
+        ],
+        "CSS430": [
+          "AUT2023"
+        ],
+        "CSS421": [
+          "SPR2024"
+        ],
+        "CSS448": [
+          "AUT2024"
+        ],
+        "CSS485": [
+          "WIN2026",
+          "WIN2025"
+        ],
+        "CSS449": [
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "ayhan_murat",
+      "name": "Murat Ayhan",
+      "rawKey": "Ayhan,Murat",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS342": [
+          "WIN2026",
+          "SPR2026",
+          "AUT2025"
+        ],
+        "CSS343": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "g_kool_nancy_l_",
+      "name": "Nancy L. G Kool",
+      "rawKey": "G Kool,Nancy L.",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS295": [
+          "SPR2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2023"
+    },
+    {
+      "id": "kool_nancy_l_",
+      "name": "Nancy L. Kool",
+      "rawKey": "Kool,Nancy L.",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS295": [
+          "WIN2025",
+          "WIN2021",
+          "SPR2025",
+          "SPR2022",
+          "AUT2024"
+        ],
+        "CSS390": [
+          "SUM2022",
+          "SPR2023",
+          "SPR2022",
+          "SPR2021"
+        ],
+        "CSS411": [
+          "SPR2026",
+          "AUT2025",
+          "AUT2024"
+        ],
+        "CSS301": [
+          "WIN2026",
+          "SPR2026",
+          "SPR2025",
+          "AUT2025"
+        ],
+        "CSS211": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "kartha_neelakantan",
+      "name": "Neelakantan Kartha",
+      "rawKey": "Kartha,Neelakantan",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS360": [
+          "WIN2023",
+          "WIN2022",
+          "AUT2021"
+        ],
+        "CSS382": [
+          "SPR2025",
+          "SPR2022"
+        ],
+        "CSS583": [
+          "WIN2024"
+        ],
+        "CSS343": [
+          "WIN2026",
+          "WIN2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "hamdan_o",
+      "name": "O Hamdan",
+      "rawKey": "Hamdan,O",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS555": [
+          "WIN2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "hamdan_osama",
+      "name": "Osama Hamdan",
+      "rawKey": "Hamdan,Osama",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS360": [
+          "WIN2021",
+          "SPR2021"
+        ],
+        "CSS555": [
+          "WIN2022"
+        ],
+        "CSS370": [
+          "SPR2023",
+          "SPR2022",
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "dutta_pampa",
+      "name": "Pampa Dutta",
+      "rawKey": "Dutta,Pampa",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS370": [
+          "SPR2025",
+          "SPR2023",
+          "AUT2024"
+        ],
+        "CSS350": [
+          "WIN2025",
+          "WIN2024",
+          "AUT2023"
+        ],
+        "CSS572": [
+          "SPR2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "du_peng",
+      "name": "Peng Du",
+      "rawKey": "Du,Peng",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS143": [
+          "WIN2024",
+          "SUM2025",
+          "SPR2024",
+          "SPR2023",
+          "SPR2021",
+          "AUT2023",
+          "AUT2022",
+          "AUT2020"
+        ],
+        "CSS342": [
+          "SUM2024",
+          "SPR2025",
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "gruenbaum_peter_e",
+      "name": "Peter E Gruenbaum",
+      "rawKey": "Gruenbaum,Peter E",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS290": [
+          "SPR2026",
+          "SPR2025",
+          "SPR2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2026"
+    },
+    {
+      "id": "bantwal_praveen",
+      "name": "Praveen Bantwal",
+      "rawKey": "Bantwal,Praveen",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS360": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021",
+          "AUT2020"
+        ],
+        "CSS475": [
+          "WIN2026",
+          "SUM2025",
+          "SPR2022"
+        ],
+        "CSS566": [
+          "SPR2022"
+        ],
+        "CSS370": [
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "perlman_radia",
+      "name": "Radia Perlman",
+      "rawKey": "Perlman,Radia",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS527": [
+          "AUT2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "AUT2025"
+    },
+    {
+      "id": "sen_ranjan_kumar",
+      "name": "Ranjan Kumar Sen",
+      "rawKey": "Sen,Ranjan Kumar",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS490": [
+          "AUT2020"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "AUT2020"
+    },
+    {
+      "id": "cobbe_richard",
+      "name": "Richard Cobbe",
+      "rawKey": "Cobbe,Richard",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS142": [
+          "WIN2023",
+          "AUT2022"
+        ],
+        "CSS475": [
+          "SPR2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "dimpsey_robert",
+      "name": "Robert Dimpsey",
+      "rawKey": "Dimpsey,Robert",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS342": [
+          "WIN2024",
+          "WIN2024",
+          "WIN2023",
+          "SPR2024",
+          "AUT2025",
+          "AUT2024",
+          "AUT2023",
+          "AUT2023",
+          "AUT2022",
+          "AUT2022",
+          "AUT2021",
+          "AUT2021",
+          "AUT2020",
+          "AUT2020"
+        ],
+        "CSS436": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS430": [
+          "WIN2022",
+          "WIN2021",
+          "SPR2023",
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS340": [
+          "SPR2022",
+          "SPR2021",
+          "AUT2022"
+        ],
+        "CSS503": [
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "SPR2022",
+          "SPR2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "palmer_robert",
+      "name": "Robert Palmer",
+      "rawKey": "Palmer,Robert",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS430": [
+          "AUT2022",
+          "AUT2021"
+        ],
+        "CSS343": [
+          "WIN2022"
+        ],
+        "CSS533": [
+          "SPR2022"
+        ],
+        "CSS481": [
+          "WIN2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "stanev_roger",
+      "name": "Roger Stanev",
+      "rawKey": "Stanev,Roger",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS411": [
+          "SPR2024",
+          "SPR2023",
+          "SPR2022",
+          "SPR2021",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS382": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "SUM2024",
+          "SUM2023",
+          "SUM2022",
+          "SUM2021",
+          "SPR2024"
+        ],
+        "CSS340": [
+          "AUT2021"
+        ],
+        "CSS211": [
+          "WIN2023",
+          "WIN2022",
+          "SPR2025",
+          "SPR2023"
+        ],
+        "CSS101": [
+          "SPR2023",
+          "AUT2023"
+        ],
+        "CSS173": [
+          "WIN2025",
+          "WIN2024"
+        ],
+        "CSS342": [
+          "WIN2024",
+          "SPR2025",
+          "AUT2024",
+          "AUT2024"
+        ],
+        "CSS142": [
+          "SPR2024"
+        ],
+        "CSS301": [
+          "AUT2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2025"
+    },
+    {
+      "id": "dame_steve",
+      "name": "STEVE DAME",
+      "rawKey": "DAME,STEVE",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS430": [
+          "WIN2026",
+          "WIN2025"
+        ],
+        "CSS436": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "joshi_sanjay",
+      "name": "Sanjay Joshi",
+      "rawKey": "Joshi,Sanjay",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS371": [
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "SPR2023",
+          "SPR2022",
+          "AUT2024",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021"
+        ],
+        "CSS310": [
+          "WIN2025",
+          "WIN2024",
+          "SPR2026",
+          "SPR2024"
+        ],
+        "CSS432": [
+          "WIN2025"
+        ],
+        "CSS434": [
+          "AUT2025"
+        ],
+        "CSS315": [
+          "WIN2026"
+        ],
+        "CSS422": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "murphy_sean",
+      "name": "Sean Murphy",
+      "rawKey": "Murphy,Sean",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS415": [
+          "WIN2024",
+          "SPR2023"
+        ],
+        "CSS142": [
+          "AUT2023"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "stangler_shaun",
+      "name": "Shaun Stangler",
+      "rawKey": "Stangler,Shaun",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS390": [
+          "AUT2024"
+        ],
+        "CSS508": [
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2025"
+    },
+    {
+      "id": "malhotra_shiny",
+      "name": "Shiny Malhotra",
+      "rawKey": "Malhotra,Shiny",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS350": [
+          "SPR2023",
+          "SPR2022",
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2023"
+    },
+    {
+      "id": "ali_shiza",
+      "name": "Shiza Ali",
+      "rawKey": "Ali,Shiza",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS488": [
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2025"
+    },
+    {
+      "id": "malik_sireen",
+      "name": "Sireen Malik",
+      "rawKey": "Malik,Sireen",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS390": [
+          "AUT2020"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "AUT2020"
+    },
+    {
+      "id": "melnikoff_steven",
+      "name": "Steven Melnikoff",
+      "rawKey": "Melnikoff,Steven",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS451": [
+          "AUT2024"
+        ],
+        "CSS225": [
+          "SPR2025"
+        ],
+        "CSS342": [
+          "SPR2025"
+        ],
+        "CSS112": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "g_folsom_t",
+      "name": "T G Folsom",
+      "rawKey": "G Folsom,T",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS427": [
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2022"
+    },
+    {
+      "id": "schenold_terrence_e_",
+      "name": "Terrence E. Schenold",
+      "rawKey": "Schenold,Terrence E.",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS211": [
+          "SPR2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2021"
+    },
+    {
+      "id": "carlson_tim",
+      "name": "Tim Carlson",
+      "rawKey": "Carlson,Tim",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS143": [
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS107": [
+          "AUT2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "olson_trevor",
+      "name": "Trevor Olson",
+      "rawKey": "Olson,Trevor",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS475": [
+          "SPR2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2024"
+    },
+    {
+      "id": "folsom_tyler",
+      "name": "Tyler Folsom",
+      "rawKey": "Folsom,Tyler",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS427": [
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "SPR2021",
+          "AUT2025",
+          "AUT2023"
+        ],
+        "CSS490": [
+          "WIN2023"
+        ],
+        "CSS290": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "g_folsom_tyler",
+      "name": "Tyler G Folsom",
+      "rawKey": "G Folsom,Tyler",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS490": [
+          "WIN2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2022"
+    },
+    {
+      "id": "garg_vijay",
+      "name": "Vijay Garg",
+      "rawKey": "Garg,Vijay",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS566": [
+          "AUT2020"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "AUT2020"
+    },
+    {
+      "id": "wb",
+      "name": "WB",
+      "rawKey": "WB",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS310": [
+          "SPR2025"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2025"
+    },
+    {
+      "id": "gregory_wanda",
+      "name": "Wanda Gregory",
+      "rawKey": "Gregory,Wanda",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS490": [
+          "WIN2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2024"
+    },
+    {
+      "id": "lidster_william",
+      "name": "William Lidster",
+      "rawKey": "Lidster,William",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS310": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2022",
+          "WIN2021",
+          "SPR2023",
+          "SPR2021",
+          "AUT2023",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS415": [
+          "WIN2026",
+          "SPR2021"
+        ],
+        "CSS517": [
+          "AUT2021"
+        ],
+        "CSS578": [
+          "SPR2022"
+        ],
+        "CSS431": [
+          "SPR2026",
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "AUT2025"
+        ],
+        "CSS539": [
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "kim_wooyoung",
+      "name": "Wooyoung Kim",
+      "rawKey": "Kim,Wooyoung",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS342": [
+          "AUT2020"
+        ],
+        "CSS501": [
+          "AUT2025",
+          "AUT2023",
+          "AUT2022",
+          "AUT2020"
+        ],
+        "CSS483": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "WIN2021"
+        ],
+        "CSS422": [
+          "SPR2023",
+          "SPR2021",
+          "AUT2022"
+        ],
+        "CSS343": [
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "SPR2026",
+          "AUT2024"
+        ],
+        "CSS340": [
+          "AUT2025",
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS565": [
+          "WIN2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "dai_xiaoguang",
+      "name": "Xiaoguang Dai",
+      "rawKey": "Dai,Xiaoguang",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS503": [
+          "SPR2023",
+          "SPR2022"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2023"
+    },
+    {
+      "id": "peng_yang",
+      "name": "Yang Peng",
+      "rawKey": "Peng,Yang",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS422": [
+          "WIN2023",
+          "SPR2025",
+          "SPR2022",
+          "AUT2025",
+          "AUT2022",
+          "AUT2020"
+        ],
+        "CSS427": [
+          "SPR2026",
+          "AUT2024",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS432": [
+          "WIN2023",
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS532": [
+          "WIN2021",
+          "AUT2021"
+        ],
+        "CSS490": [
+          "SPR2022",
+          "AUT2025"
+        ],
+        "CSS430": [
+          "SUM2024",
+          "SUM2023",
+          "SUM2022",
+          "AUT2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2023"
+    },
+    {
+      "id": "pisan_yusuf",
+      "name": "Yusuf Pisan",
+      "rawKey": "Pisan,Yusuf",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS132": [
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS342": [
+          "WIN2023",
+          "AUT2023",
+          "AUT2022",
+          "AUT2021",
+          "AUT2020"
+        ],
+        "CSS133": [
+          "WIN2022",
+          "WIN2021"
+        ],
+        "CSS343": [
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "WIN2022",
+          "WIN2021",
+          "SPR2025",
+          "SPR2023",
+          "AUT2025",
+          "AUT2025",
+          "AUT2023"
+        ],
+        "CSS382": [
+          "WIN2022",
+          "WIN2021",
+          "SPR2026",
+          "SPR2023",
+          "SPR2021"
+        ],
+        "CSS385": [
+          "SPR2025",
+          "SPR2024",
+          "SPR2023",
+          "SPR2021",
+          "AUT2022"
+        ],
+        "CSS430": [
+          "WIN2026",
+          "WIN2026",
+          "WIN2025",
+          "WIN2024",
+          "WIN2023",
+          "SPR2021",
+          "AUT2025"
+        ],
+        "CSS142": [
+          "AUT2021"
+        ],
+        "CSS422": [
+          "SPR2024",
+          "AUT2024",
+          "AUT2023"
+        ],
+        "CSS599": [
+          "WIN2024"
+        ],
+        "CSS143": [
+          "WIN2025",
+          "AUT2024"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "rubin_zak",
+      "name": "Zak Rubin",
+      "rawKey": "Rubin,Zak",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS301": [
+          "WIN2026",
+          "SPR2026",
+          "AUT2025",
+          "AUT2025"
+        ],
+        "CSS350": [
+          "WIN2026"
+        ],
+        "CSS360": [
+          "SPR2026",
+          "SPR2026"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "WIN2026"
+    },
+    {
+      "id": "socha_he_his_david",
+      "name": "his, David Socha - he",
+      "rawKey": "Socha - he,his, David",
+      "email": "",
+      "rank": "",
+      "profileUrl": "",
+      "campus": "UW Bothell",
+      "department": "Computing & Software Systems",
+      "courses": {
+        "CSS508": [
+          "SPR2021",
+          "SPR2021"
+        ]
+      },
+      "iaSystemRatings": {},
+      "mostRecentTerm": "SPR2021"
+    }
+  ],
+  "stats": {
+    "courseCount": 109,
+    "professorCount": 131
+  }
+}

@@ -22,7 +22,6 @@ type SubmitState = "idle" | "submitting" | "success" | "error" | "moderated";
 
 const QUARTERS = ["Winter", "Spring", "Summer", "Autumn"];
 const YEARS = ["2022", "2023", "2024", "2025", "2026"];
-const CAMPUSES = ["UW Bothell", "UW Seattle", "UW Tacoma"];
 const GRADES = ["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F", "Prefer not to say"];
 const TAGS = [
     "Engaging lecturer",
@@ -110,8 +109,8 @@ function DifficultyPicker({
                         onClick={() => onChange(n)}
                         title={labels[n]}
                         className={`h-9 w-9 rounded-full border text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-husky-purple focus:ring-offset-1 ${value === n
-                                ? "border-husky-purple bg-husky-purple text-white"
-                                : "border-gray-300 bg-white text-gray-600 hover:border-husky-purple hover:text-husky-purple"
+                            ? "border-husky-purple bg-husky-purple text-white"
+                            : "border-gray-300 bg-white text-gray-600 hover:border-husky-purple hover:text-husky-purple"
                             }`}
                     >
                         {n}
@@ -137,17 +136,18 @@ function ReviewView({ user }: { user: User }) {
 
     // Form state
     const [courseCode, setCourseCode] = useState("");
-    const [campus, setCampus] = useState("");
     const [quarter, setQuarter] = useState("");
     const [year, setYear] = useState("");
-    const [rating, setRating] = useState(0);
+    const [overall, setOverall] = useState(0);
     const [difficulty, setDifficulty] = useState(0);
+    const [clarity, setClarity] = useState(0);
+    const [helpfulness, setHelpfulness] = useState(0);
     const [wouldTakeAgain, setWouldTakeAgain] = useState<boolean | null>(null);
     const [review, setReview] = useState("");
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [grade, setGrade] = useState("");
-    const [attendanceRequired, setAttendanceRequired] = useState("");
-    const [textbookUsed, setTextbookUsed] = useState("");
+    const [attendanceMandatory, setAttendanceMandatory] = useState<string>("");
+    const [textbookRequired, setTextbookRequired] = useState<string>("");
 
     // Submission state
     const [submitState, setSubmitState] = useState<SubmitState>("idle");
@@ -174,15 +174,16 @@ function ReviewView({ user }: { user: User }) {
     }
 
     // Validation
-    const MIN_REVIEW_LENGTH = 50;
+    const MIN_REVIEW_LENGTH = 30;
     const reviewTooShort = review.trim().length > 0 && review.trim().length < MIN_REVIEW_LENGTH;
     const isValid =
         courseCode.trim().length > 0 &&
-        campus.length > 0 &&
         quarter.length > 0 &&
         year.length > 0 &&
-        rating > 0 &&
+        overall > 0 &&
         difficulty > 0 &&
+        clarity > 0 &&
+        helpfulness > 0 &&
         wouldTakeAgain !== null &&
         review.trim().length >= MIN_REVIEW_LENGTH;
 
@@ -204,18 +205,20 @@ function ReviewView({ user }: { user: User }) {
                 body: JSON.stringify({
                     professor_id: id,
                     course_code: courseCode.trim().toUpperCase(),
-                    campus,
                     quarter,
                     year: parseInt(year),
-                    rating,
-                    difficulty,
-                    would_take_again: wouldTakeAgain,
-                    review: review.trim(),
+                    scores: {
+                        overall,
+                        difficulty,
+                        clarity,
+                        helpfulness,
+                        would_take_again: wouldTakeAgain,
+                    },
+                    body: review.trim(),
                     tags: selectedTags,
-                    grade: grade || null,
-                    attendance_required: attendanceRequired || null,
-                    textbook_used: textbookUsed || null,
-                    verified: true,
+                    grade_received: grade || null,
+                    attendance_mandatory: attendanceMandatory === "yes" ? true : attendanceMandatory === "no" ? false : null,
+                    textbook_required: textbookRequired === "yes" ? true : textbookRequired === "no" ? false : null,
                 }),
             });
 
@@ -227,9 +230,9 @@ function ReviewView({ user }: { user: User }) {
                 setRemainingToday(0);
                 return;
             }
-            if (res.status === 403) {
+            if (res.status === 400 && data.reason) {
                 setSubmitState("moderated");
-                setErrorMsg(data.reason ?? "Your review was flagged for moderation and won't be published automatically.");
+                setErrorMsg(data.reason);
                 return;
             }
             if (!res.ok) {
@@ -239,7 +242,8 @@ function ReviewView({ user }: { user: User }) {
             }
 
             setSubmitState("success");
-            setRemainingToday((r) => Math.max(0, r - 1));
+            // Use server-returned remaining count if available, otherwise decrement locally
+            setRemainingToday(data.remaining ?? ((r: number) => Math.max(0, r - 1)));
         } catch {
             setSubmitState("error");
             setErrorMsg("Network error — check your connection and try again.");
@@ -353,20 +357,6 @@ function ReviewView({ user }: { user: User }) {
 
                         <div>
                             <label className="mb-1 block text-sm font-medium text-gray-700">
-                                Campus <span className="text-red-500">*</span>
-                            </label>
-                            <select
-                                value={campus}
-                                onChange={(e) => setCampus(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                            >
-                                <option value="">Select campus…</option>
-                                {CAMPUSES.map((c) => <option key={c} value={c}>{c}</option>)}
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">
                                 Quarter <span className="text-red-500">*</span>
                             </label>
                             <select
@@ -403,8 +393,20 @@ function ReviewView({ user }: { user: User }) {
 
                     <StarRating
                         label={<>Overall Rating <span className="text-red-500">*</span></>}
-                        value={rating}
-                        onChange={setRating}
+                        value={overall}
+                        onChange={setOverall}
+                    />
+
+                    <StarRating
+                        label={<>Clarity <span className="text-red-500">*</span></>}
+                        value={clarity}
+                        onChange={setClarity}
+                    />
+
+                    <StarRating
+                        label={<>Helpfulness <span className="text-red-500">*</span></>}
+                        value={helpfulness}
+                        onChange={setHelpfulness}
                     />
 
                     <DifficultyPicker value={difficulty} onChange={setDifficulty} />
@@ -420,8 +422,8 @@ function ReviewView({ user }: { user: User }) {
                                     type="button"
                                     onClick={() => setWouldTakeAgain(val)}
                                     className={`rounded-md border px-5 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-husky-purple focus:ring-offset-1 ${wouldTakeAgain === val
-                                            ? "border-husky-purple bg-husky-purple text-white"
-                                            : "border-gray-300 bg-white text-gray-600 hover:border-husky-purple hover:text-husky-purple"
+                                        ? "border-husky-purple bg-husky-purple text-white"
+                                        : "border-gray-300 bg-white text-gray-600 hover:border-husky-purple hover:text-husky-purple"
                                         }`}
                                 >
                                     {val ? "Yes" : "No"}
@@ -447,8 +449,8 @@ function ReviewView({ user }: { user: User }) {
                             value={review}
                             onChange={(e) => setReview(e.target.value)}
                             className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 ${reviewTooShort
-                                    ? "border-red-400 focus:border-red-400 focus:ring-red-400"
-                                    : "border-gray-300 focus:border-husky-purple focus:ring-husky-purple"
+                                ? "border-red-400 focus:border-red-400 focus:ring-red-400"
+                                : "border-gray-300 focus:border-husky-purple focus:ring-husky-purple"
                                 }`}
                         />
                         <div className="mt-1 flex justify-between text-xs">
@@ -476,8 +478,8 @@ function ReviewView({ user }: { user: User }) {
                                     type="button"
                                     onClick={() => toggleTag(tag)}
                                     className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors focus:outline-none ${selectedTags.includes(tag)
-                                            ? "border-husky-purple bg-husky-purple text-white"
-                                            : "border-gray-300 bg-white text-gray-600 hover:border-husky-purple hover:text-husky-purple"
+                                        ? "border-husky-purple bg-husky-purple text-white"
+                                        : "border-gray-300 bg-white text-gray-600 hover:border-husky-purple hover:text-husky-purple"
                                         }`}
                                 >
                                     {tag}
@@ -509,22 +511,21 @@ function ReviewView({ user }: { user: User }) {
                         <div>
                             <label className="mb-1 block text-sm font-medium text-gray-700">Attendance Required</label>
                             <select
-                                value={attendanceRequired}
-                                onChange={(e) => setAttendanceRequired(e.target.value)}
+                                value={attendanceMandatory}
+                                onChange={(e) => setAttendanceMandatory(e.target.value)}
                                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
                             >
                                 <option value="">Select…</option>
                                 <option value="yes">Yes</option>
                                 <option value="no">No</option>
-                                <option value="sometimes">Sometimes</option>
                             </select>
                         </div>
 
                         <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">Textbook Used</label>
+                            <label className="mb-1 block text-sm font-medium text-gray-700">Textbook Required</label>
                             <select
-                                value={textbookUsed}
-                                onChange={(e) => setTextbookUsed(e.target.value)}
+                                value={textbookRequired}
+                                onChange={(e) => setTextbookRequired(e.target.value)}
                                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
                             >
                                 <option value="">Select…</option>
@@ -538,8 +539,8 @@ function ReviewView({ user }: { user: User }) {
                 {/* ── Error / moderation banner ── */}
                 {(submitState === "error" || submitState === "moderated") && (
                     <div className={`rounded-md border px-4 py-3 text-sm ${submitState === "moderated"
-                            ? "border-amber-300 bg-amber-50 text-amber-800"
-                            : "border-red-300 bg-red-50 text-red-700"
+                        ? "border-amber-300 bg-amber-50 text-amber-800"
+                        : "border-red-300 bg-red-50 text-red-700"
                         }`}>
                         {submitState === "moderated" && (
                             <p className="mb-0.5 font-medium">Review flagged for moderation</p>
