@@ -105,11 +105,13 @@ function ProfessorView({ user: _user }: { user: User }) {
 
         const reviewsQ = query(
           collection(db, "reviews"),
-          where("professor_id", "==", professorId),
-          orderBy("created_at", "desc")
+          where("professor_id", "==", professorId)
         );
         const reviewsSnap = await getDocs(reviewsQ);
-        setReviews(reviewsSnap.docs.map((d) => ({ id: d.id, ...d.data() } as Review)));
+        const fetched = reviewsSnap.docs.map((d) => ({ id: d.id, ...d.data() } as Review));
+        // Sort client-side — avoids needing a Firestore composite index on professor_id + created_at
+        fetched.sort((a, b) => (b.created_at?.seconds ?? 0) - (a.created_at?.seconds ?? 0));
+        setReviews(fetched);
       } catch (err) {
         console.error("Failed to load professor:", err);
       } finally {
@@ -590,6 +592,12 @@ function ReviewCard({ review: r }: { review: Review }) {
               Unverified
             </span>
           )}
+          <span className="text-xs text-gray-500">
+            Clarity: <span className="font-medium text-gray-700">{r.scores.clarity}/5</span>
+          </span>
+          <span className="text-xs text-gray-500">
+            Helpfulness: <span className="font-medium text-gray-700">{r.scores.helpfulness}/5</span>
+          </span>
           <span className="text-xs text-gray-500">
             Difficulty: <span className="font-medium text-gray-700">{r.scores.difficulty}/5</span>
           </span>

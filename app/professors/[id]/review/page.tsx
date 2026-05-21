@@ -16,6 +16,7 @@ interface Professor {
     name: string;
     department: string;
     campus: string[];
+    courses_taught: string[];
 }
 
 type SubmitState = "idle" | "submitting" | "success" | "error" | "moderated";
@@ -135,7 +136,9 @@ function ReviewView({ user }: { user: User }) {
     const [remainingToday, setRemainingToday] = useState(3);
 
     // Form state
-    const [courseCode, setCourseCode] = useState("");
+    const [courseCodeSelect, setCourseCodeSelect] = useState(""); // dropdown value; "other" = free-text mode
+    const [courseCodeOther, setCourseCodeOther] = useState("");   // free-text input when "other" selected
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [quarter, setQuarter] = useState("");
     const [year, setYear] = useState("");
     const [overall, setOverall] = useState(0);
@@ -145,6 +148,8 @@ function ReviewView({ user }: { user: User }) {
     const [wouldTakeAgain, setWouldTakeAgain] = useState<boolean | null>(null);
     const [review, setReview] = useState("");
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [customTagInput, setCustomTagInput] = useState("");
+    const MAX_CUSTOM_TAGS = 3;
     const [grade, setGrade] = useState("");
     const [attendanceMandatory, setAttendanceMandatory] = useState<string>("");
     const [textbookRequired, setTextbookRequired] = useState<string>("");
@@ -173,11 +178,38 @@ function ReviewView({ user }: { user: User }) {
         );
     }
 
+    function addCustomTag() {
+        const normalized = customTagInput.trim().toLowerCase().slice(0, 20);
+        if (!normalized) return;
+        if (selectedTags.includes(normalized)) { setCustomTagInput(""); return; }
+        const customCount = selectedTags.filter((t) => !TAGS.includes(t)).length;
+        if (customCount >= MAX_CUSTOM_TAGS) return;
+        setSelectedTags((prev) => [...prev, normalized]);
+        setCustomTagInput("");
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────────────────
+
+    // Normalize course code: uppercase, collapse spaces, ensure single space between prefix and number.
+    // Handles "&" in prefixes (e.g. "B & A 300" → "B & A 300" stays intact after collapse).
+    function normalizeCourseCode(raw: string): string {
+        const upper = raw.toUpperCase().trim();
+        // Insert space between a letter/& run and the numeric part if missing
+        return upper.replace(/([A-Z&]+)\s*(\d)/, "$1 $2").replace(/\s{2,}/g, " ");
+    }
+
+    // Derive the effective course code from dropdown + other field
+    const courseCode =
+        courseCodeSelect === "other"
+            ? normalizeCourseCode(courseCodeOther)
+            : courseCodeSelect;
+
     // Validation
     const MIN_REVIEW_LENGTH = 30;
     const reviewTooShort = review.trim().length > 0 && review.trim().length < MIN_REVIEW_LENGTH;
     const isValid =
         courseCode.trim().length > 0 &&
+        (courseCodeSelect !== "other" || courseCodeOther.trim().length > 0) &&
         quarter.length > 0 &&
         year.length > 0 &&
         overall > 0 &&
@@ -187,8 +219,29 @@ function ReviewView({ user }: { user: User }) {
         wouldTakeAgain !== null &&
         review.trim().length >= MIN_REVIEW_LENGTH;
 
+    function getValidationErrors(): string[] {
+        const errors: string[] = [];
+        if (!courseCode.trim()) errors.push("Course Code is required");
+        if (courseCodeSelect === "other" && !courseCodeOther.trim()) errors.push("Please enter a course code");
+        if (!quarter) errors.push("Quarter is required");
+        if (!year) errors.push("Year is required");
+        if (overall === 0) errors.push("Overall Rating is required");
+        if (clarity === 0) errors.push("Clarity rating is required");
+        if (helpfulness === 0) errors.push("Helpfulness rating is required");
+        if (difficulty === 0) errors.push("Difficulty rating is required");
+        if (wouldTakeAgain === null) errors.push("Please answer: Would you take this professor again?");
+        if (review.trim().length < MIN_REVIEW_LENGTH) errors.push(`Written Review must be at least ${MIN_REVIEW_LENGTH} characters`);
+        return errors;
+    }
+
     async function handleSubmit() {
-        if (!isValid) return;
+        const errors = getValidationErrors();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+        setValidationErrors([]);
         setSubmitState("submitting");
         setErrorMsg("");
 
@@ -204,7 +257,7 @@ function ReviewView({ user }: { user: User }) {
                 },
                 body: JSON.stringify({
                     professor_id: id,
-                    course_code: courseCode.trim().toUpperCase(),
+                    course_code: courseCode,
                     quarter,
                     year: parseInt(year),
                     scores: {
@@ -232,7 +285,10 @@ function ReviewView({ user }: { user: User }) {
             }
             if (res.status === 400 && data.reason) {
                 setSubmitState("moderated");
-                setErrorMsg(data.reason);
+                const reasonMessages: Record<string, string> = {
+                    moderation_unavailable_quota: "Our moderation system is temporarily unavailable (API quota exhausted). Reviews can't be submitted right now — try again later or tomorrow.",
+                };
+                setErrorMsg(reasonMessages[data.reason] ?? data.reason);
                 return;
             }
             if (!res.ok) {
@@ -243,7 +299,7 @@ function ReviewView({ user }: { user: User }) {
 
             setSubmitState("success");
             // Use server-returned remaining count if available, otherwise decrement locally
-            setRemainingToday(data.remaining ?? ((r: number) => Math.max(0, r - 1)));
+            setRemainingToday((prev) => data.remaining ?? Math.max(0, prev - 1));
         } catch {
             setSubmitState("error");
             setErrorMsg("Network error — check your connection and try again.");
@@ -325,14 +381,34 @@ function ReviewView({ user }: { user: User }) {
                         </p>
                     </div>
                     {/* Rate limit indicator */}
-                    <div className="rounded-md border border-gray-200 px-3 py-2 text-right">
-                        <p className="text-xs text-gray-500">Reviews left today</p>
+                    <div className="group relative rounded-md border border-gray-200 px-3 py-2 text-right cursor-default">
+                        <p className="flex items-center justify-end gap-1 text-xs text-gray-500">
+                            Reviews left today
+                            <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-gray-400 text-[9px] font-bold text-gray-400 leading-none select-none">i</span>
+                        </p>
                         <p className={`text-lg font-bold ${remainingToday === 0 ? "text-red-500" : "text-husky-purple"}`}>
                             {remainingToday}/3
                         </p>
+                        {/* Tooltip */}
+                        <div className="pointer-events-none absolute right-0 top-full mt-2 w-56 rounded-md border border-gray-200 bg-white px-3 py-2.5 text-left text-xs text-gray-600 shadow-md opacity-0 transition-opacity group-hover:opacity-100 z-10">
+                            <p className="font-medium text-gray-800 mb-0.5">Why only 3? 😅</p>
+                            <p>We limit reviews to keep things genuine — no spam, no brigading. You can submit up to 3 reviews every 24 hours.</p>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {/* Validation errors */}
+            {validationErrors.length > 0 && (
+                <div className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    <p className="mb-1.5 font-semibold">Please fix the following before submitting:</p>
+                    <ul className="list-disc list-inside space-y-0.5">
+                        {validationErrors.map((e) => (
+                            <li key={e}>{e}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             {/* Form card */}
             <div className="rounded-lg bg-white px-8 py-7 shadow-sm space-y-8">
@@ -342,17 +418,38 @@ function ReviewView({ user }: { user: User }) {
                     <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">Course Details</h2>
 
                     <div className="grid gap-5 sm:grid-cols-2">
-                        <div>
+                        <div className="sm:col-span-2">
                             <label className="mb-1 block text-sm font-medium text-gray-700">
                                 Course Code <span className="text-red-500">*</span>
                             </label>
-                            <input
-                                type="text"
-                                placeholder="e.g. CSS 343"
-                                value={courseCode}
-                                onChange={(e) => setCourseCode(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                            />
+                            <select
+                                value={courseCodeSelect}
+                                onChange={(e) => { setCourseCodeSelect(e.target.value); setCourseCodeOther(""); }}
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                            >
+                                <option value="">Select a course…</option>
+                                {(professor.courses_taught ?? []).map((c) => (
+                                    <option key={c} value={c}>{c}</option>
+                                ))}
+                                <option value="other">Other (type it in)</option>
+                            </select>
+                            {courseCodeSelect === "other" && (
+                                <div className="mt-2">
+                                    <input
+                                        type="text"
+                                        placeholder="e.g. CSS 343 or B & A 300"
+                                        value={courseCodeOther}
+                                        onChange={(e) => setCourseCodeOther(e.target.value)}
+                                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                        autoFocus
+                                    />
+                                    {courseCodeOther.trim() && (
+                                        <p className="mt-1 text-xs text-gray-400">
+                                            Will be saved as: <span className="font-medium text-gray-700">{normalizeCourseCode(courseCodeOther)}</span>
+                                        </p>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
                         <div>
@@ -485,7 +582,50 @@ function ReviewView({ user }: { user: User }) {
                                     {tag}
                                 </button>
                             ))}
+                            {/* Custom tags already added */}
+                            {selectedTags.filter((t) => !TAGS.includes(t)).map((tag) => (
+                                <span
+                                    key={tag}
+                                    className="flex items-center gap-1 rounded-full border border-husky-purple bg-husky-purple px-3 py-1 text-xs font-medium text-white"
+                                >
+                                    {tag}
+                                    <button
+                                        type="button"
+                                        onClick={() => toggleTag(tag)}
+                                        className="ml-0.5 leading-none hover:text-husky-gold focus:outline-none"
+                                        aria-label={`Remove tag ${tag}`}
+                                    >
+                                        ×
+                                    </button>
+                                </span>
+                            ))}
                         </div>
+                        {/* Custom tag input */}
+                        {selectedTags.filter((t) => !TAGS.includes(t)).length < MAX_CUSTOM_TAGS && (
+                            <div className="mt-2 flex items-center gap-2">
+                                <input
+                                    type="text"
+                                    placeholder="Add your own tag…"
+                                    value={customTagInput}
+                                    maxLength={20}
+                                    onChange={(e) => setCustomTagInput(e.target.value)}
+                                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } }}
+                                    className="rounded-full border border-dashed border-gray-300 px-3 py-1 text-xs text-gray-600 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple w-44"
+                                />
+                                {customTagInput.trim() && (
+                                    <button
+                                        type="button"
+                                        onClick={addCustomTag}
+                                        className="rounded-full border border-husky-purple px-3 py-1 text-xs font-medium text-husky-purple hover:bg-husky-purple hover:text-white transition-colors focus:outline-none"
+                                    >
+                                        Add
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                        {selectedTags.filter((t) => !TAGS.includes(t)).length >= MAX_CUSTOM_TAGS && (
+                            <p className="mt-1.5 text-xs text-gray-400">Maximum {MAX_CUSTOM_TAGS} custom tags reached.</p>
+                        )}
                     </div>
                 </section>
 

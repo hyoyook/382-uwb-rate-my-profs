@@ -29,12 +29,12 @@ async function moderateReview(body: string): Promise<{ pass: boolean; reason: st
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
         console.warn("[/api/reviews] GEMINI_API_KEY not set — skipping moderation");
-        return { pass: true, reason: "moderation_skipped_no_key" };
+        return { pass: false, reason: "moderation_skipped_no_key" };
     }
 
     const { GoogleGenerativeAI } = await import("@google/generative-ai");
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const prompt = `
 You are a strict content moderator for a university professor review platform.
@@ -54,11 +54,36 @@ Review: "${body.replace(/"/g, '\\"')}"
 
     try {
         const result = await model.generateContent(prompt);
-        const text = result.response.text().trim();
-        return JSON.parse(text);
+        const raw = result.response.text().trim();
+        // Gemini sometimes wraps JSON in ```json fences despite instructions — strip them
+        const text = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/, "");
+        const parsed = JSON.parse(text);
+
+        // Write moderation log to file for debugging
+        const { appendFileSync } = await import("fs");
+        const logLine = JSON.stringify({
+            ts: new Date().toISOString(),
+            reviewBody: body.slice(0, 120),
+            raw,
+            parsed,
+        }) + "\n";
+        appendFileSync("moderation.log", logLine);
+
+        return parsed;
     } catch (err) {
-        console.error("[/api/reviews] moderation parse error:", err);
-        return { pass: true, reason: "parse_error_defaulted_pass" };
+        const { appendFileSync } = await import("fs");
+        const errStr = String(err);
+        appendFileSync("moderation.log", JSON.stringify({
+            ts: new Date().toISOString(),
+            error: errStr,
+            reviewBody: body.slice(0, 120),
+        }) + "\n");
+        // If Gemini is rate-limited, fail closed — don't let unmoderated reviews through
+        if (errStr.includes("429") || errStr.includes("quota")) {
+            return { pass: false, reason: "moderation_unavailable_quota" };
+        }
+        // Other errors (parse failures, network blips) fail open to avoid blocking legit reviews
+        return { pass: false, reason: "parse_error_defaulted_pass" };
     }
 }
 
@@ -186,7 +211,8 @@ export async function POST(req: NextRequest) {
 
     // 9. Write review to Firestore
     const campusSlug = campus.replace(/\s+/g, "");
-    const docId = `${netid}_${professor_id}_${course_code}_${campusSlug}_${quarter}${year}`;
+    const courseSlug = course_code.replace(/\s+/g, ""); // e.g. "CSS 343" → "CSS343"
+    const docId = `${netid}_${professor_id}_${courseSlug}_${campusSlug}_${quarter}${year}`;
     const reviewRef = adminDb.collection(REVIEWS_COLLECTION).doc(docId);
 
     const reviewDoc = {
