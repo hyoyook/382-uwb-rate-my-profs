@@ -2,6 +2,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
 import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
+import { flashModel } from "@/lib/gemini";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,20 +27,15 @@ function isValidScore(n: unknown, min = 1, max = 5): boolean {
 }
 
 async function moderateReview(body: string): Promise<{ pass: boolean; reason: string }> {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
+    if (!process.env.GEMINI_API_KEY) {
         console.warn("[/api/reviews] GEMINI_API_KEY not set — skipping moderation");
         return { pass: false, reason: "moderation_skipped_no_key" };
     }
 
-    const { GoogleGenerativeAI } = await import("@google/generative-ai");
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
     const prompt = `
 You are a strict content moderator for a university professor review platform.
 Reject ANY review that meets one or more of these conditions:
-- Contains promotional content, links, or spam (e.g. "buy my crypto", "visit my site")
+- Contains promotional content, links, or spam (e.g. "buy my", "visit my site")
 - Is a personal attack with zero academic content
 - Contains no mention of teaching, course content, workload, exams, or classroom experience
 - Is gibberish or completely off-topic
@@ -52,39 +48,56 @@ Reply with JSON only, no markdown:
 Review: "${body.replace(/"/g, '\\"')}"
 `.trim();
 
-    try {
-        const result = await model.generateContent(prompt);
-        const raw = result.response.text().trim();
-        // Gemini sometimes wraps JSON in ```json fences despite instructions — strip them
-        const text = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/, "");
-        const parsed = JSON.parse(text);
+    // Retry up to 3 times with exponential backoff on quota/rate-limit errors
+    const MAX_ATTEMPTS = 3;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        try {
+            const result = await flashModel.generateContent(prompt);
+            const raw = result.response.text().trim();
+            // Gemini sometimes wraps JSON in ```json fences despite instructions — strip them
+            const text = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/, "");
+            const parsed = JSON.parse(text);
 
-        // Write moderation log to file for debugging
-        const { appendFileSync } = await import("fs");
-        const logLine = JSON.stringify({
-            ts: new Date().toISOString(),
-            reviewBody: body.slice(0, 120),
-            raw,
-            parsed,
-        }) + "\n";
-        appendFileSync("moderation.log", logLine);
+            // Write moderation log to file for debugging
+            const { appendFileSync } = await import("fs");
+            const logLine = JSON.stringify({
+                ts: new Date().toISOString(),
+                reviewBody: body.slice(0, 120),
+                raw,
+                parsed,
+            }) + "\n";
+            appendFileSync("moderation.log", logLine);
 
-        return parsed;
-    } catch (err) {
-        const { appendFileSync } = await import("fs");
-        const errStr = String(err);
-        appendFileSync("moderation.log", JSON.stringify({
-            ts: new Date().toISOString(),
-            error: errStr,
-            reviewBody: body.slice(0, 120),
-        }) + "\n");
-        // If Gemini is rate-limited, fail closed — don't let unmoderated reviews through
-        if (errStr.includes("429") || errStr.includes("quota")) {
-            return { pass: false, reason: "moderation_unavailable_quota" };
+            return parsed;
+        } catch (err) {
+            const errStr = String(err);
+            const isQuotaError = errStr.includes("429") || errStr.includes("quota") || errStr.includes("RESOURCE_EXHAUSTED");
+
+            // On quota errors, wait and retry (except on the last attempt)
+            if (isQuotaError && attempt < MAX_ATTEMPTS) {
+                const backoffMs = 2000 * attempt; // 2s, then 4s
+                console.warn(`[/api/reviews] Gemini quota hit (attempt ${attempt}/${MAX_ATTEMPTS}), retrying in ${backoffMs}ms`);
+                await new Promise((res) => setTimeout(res, backoffMs));
+                continue;
+            }
+
+            const { appendFileSync } = await import("fs");
+            appendFileSync("moderation.log", JSON.stringify({
+                ts: new Date().toISOString(),
+                error: errStr,
+                attempt,
+                reviewBody: body.slice(0, 120),
+            }) + "\n");
+
+            if (isQuotaError) {
+                return { pass: false, reason: "moderation_unavailable_quota" };
+            }
+            // Other errors (parse failures, network blips) fail open to avoid blocking legit reviews
+            return { pass: false, reason: "parse_error_defaulted_pass" };
         }
-        // Other errors (parse failures, network blips) fail open to avoid blocking legit reviews
-        return { pass: false, reason: "parse_error_defaulted_pass" };
     }
+
+    return { pass: false, reason: "moderation_failed_unknown" };
 }
 
 // ─── POST /api/reviews ────────────────────────────────────────────────────────
