@@ -171,7 +171,6 @@ export async function POST(req: NextRequest) {
     // 6. Pre-filter obvious spam
     const spamPatterns = [
         /buy\s+my/i,
-        /crypto/i,
         /http/i,
         /\bsucks\b/i,
         /^[a-z\s]{1,6}(\s[a-z]{1,6}){3,}$/i,
