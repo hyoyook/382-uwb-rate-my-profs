@@ -8,5 +8,5 @@ if (!process.env.GEMINI_API_KEY) {
 const gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export const flashModel = gemini.getGenerativeModel({
-    model: "gemini-2.0-flash",
+    model: "gemini-2.5-flash",
 });
