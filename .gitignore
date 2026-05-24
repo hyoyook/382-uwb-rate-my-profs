@@ -267,3 +267,5 @@ pnpm-debug.log*
 # Claude Code worktrees (scratch space — never commit)
 .claude/worktrees/
 firebase.js
+moderation_test_result.txt
+scripts/test_moderation.ts
