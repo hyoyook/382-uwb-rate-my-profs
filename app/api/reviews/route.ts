@@ -58,15 +58,7 @@ Review: "${body.replace(/"/g, '\\"')}"
             const text = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/, "");
             const parsed = JSON.parse(text);
 
-            // Write moderation log to file for debugging
-            const { appendFileSync } = await import("fs");
-            const logLine = JSON.stringify({
-                ts: new Date().toISOString(),
-                reviewBody: body.slice(0, 120),
-                raw,
-                parsed,
-            }) + "\n";
-            appendFileSync("moderation.log", logLine);
+            console.log("[moderation] passed:", { reviewBody: body.slice(0, 120), parsed });
 
             return parsed;
         } catch (err) {
@@ -81,13 +73,7 @@ Review: "${body.replace(/"/g, '\\"')}"
                 continue;
             }
 
-            const { appendFileSync } = await import("fs");
-            appendFileSync("moderation.log", JSON.stringify({
-                ts: new Date().toISOString(),
-                error: errStr,
-                attempt,
-                reviewBody: body.slice(0, 120),
-            }) + "\n");
+            console.error("[moderation] error:", { attempt, error: errStr, reviewBody: body.slice(0, 120) });
 
             if (isQuotaError) {
                 return { pass: false, reason: "moderation_unavailable_quota" };
