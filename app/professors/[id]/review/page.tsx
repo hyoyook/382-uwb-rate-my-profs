@@ -62,7 +62,7 @@ function StarRating({
 
     return (
         <div>
-            <span className="mb-1 block text-sm font-medium text-gray-700">{label}</span>
+            <span className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
             <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -74,13 +74,13 @@ function StarRating({
                         className="text-2xl leading-none transition-transform hover:scale-110 focus:outline-none"
                         aria-label={`${star} star${star !== 1 ? "s" : ""}`}
                     >
-                        <span className={star <= (hovered || value) ? "text-husky-gold" : "text-gray-300"}>
+                        <span className={star <= (hovered || value) ? "text-husky-gold" : "text-gray-300 dark:text-gray-600"}>
                             ★
                         </span>
                     </button>
                 ))}
                 {value > 0 && (
-                    <span className="ml-2 self-center text-sm text-gray-500">{value}/5</span>
+                    <span className="ml-2 self-center text-sm text-gray-500 dark:text-gray-400">{value}/5</span>
                 )}
             </div>
         </div>
@@ -99,8 +99,8 @@ function DifficultyPicker({
     const labels = ["", "Very Easy", "Easy", "Medium", "Hard", "Very Hard"];
     return (
         <div>
-            <span className="mb-1 block text-sm font-medium text-gray-700">
-                Difficulty <span className="text-red-500">*</span>
+            <span className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Difficulty <span className="text-red-500 dark:text-red-400">*</span>
             </span>
             <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((n) => (
@@ -111,14 +111,14 @@ function DifficultyPicker({
                         title={labels[n]}
                         className={`h-9 w-9 rounded-full border text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-husky-purple focus:ring-offset-1 ${value === n
                             ? "border-husky-purple bg-husky-purple text-white"
-                            : "border-gray-300 bg-white text-gray-600 hover:border-husky-purple hover:text-husky-purple"
+                            : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight"
                             }`}
                     >
                         {n}
                     </button>
                 ))}
                 {value > 0 && (
-                    <span className="self-center text-sm text-gray-500">{labels[value]}</span>
+                    <span className="self-center text-sm text-gray-500 dark:text-gray-400">{labels[value]}</span>
                 )}
             </div>
         </div>
@@ -318,9 +318,9 @@ function ReviewView({ user }: { user: User }) {
     // ── Professor not found ────────────────────────────────────────────────────
     if (!professor) {
         return (
-            <div className="rounded-lg bg-white p-8 shadow-sm text-center">
-                <p className="text-gray-600">Professor not found.</p>
-                <Link href="/search" className="mt-4 inline-block text-sm text-husky-purple hover:underline">
+            <div className="rounded-lg bg-white dark:bg-gray-800 p-8 shadow-sm text-center">
+                <p className="text-gray-600 dark:text-gray-300">Professor not found.</p>
+                <Link href="/search" className="mt-4 inline-block text-sm text-husky-purple dark:text-husky-purpleLight hover:underline">
                     ← Back to search
                 </Link>
             </div>
@@ -330,14 +330,14 @@ function ReviewView({ user }: { user: User }) {
     // ── Success ────────────────────────────────────────────────────────────────
     if (submitState === "success") {
         return (
-            <div className="rounded-lg bg-white p-10 shadow-sm text-center space-y-4">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-                    <svg className="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div className="rounded-lg bg-white dark:bg-gray-800 p-10 shadow-sm text-center space-y-4">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                    <svg className="h-7 w-7 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900">Review submitted!</h2>
-                <p className="text-sm text-gray-500">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Review submitted!</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                     Your review for <span className="font-medium">{professor.name}</span> has been published.
                 </p>
                 <div className="flex justify-center gap-3 pt-2">
@@ -349,7 +349,7 @@ function ReviewView({ user }: { user: User }) {
                     </Link>
                     <Link
                         href="/search"
-                        className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        className="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900"
                     >
                         Browse more professors
                     </Link>
@@ -363,35 +363,35 @@ function ReviewView({ user }: { user: User }) {
         <div className="space-y-6">
 
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-sm text-gray-500">
-                <Link href="/search" className="hover:text-husky-purple">Search</Link>
+            <nav className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
+                <Link href="/search" className="hover:text-husky-purple dark:hover:text-husky-purpleLight">Search</Link>
                 <span>›</span>
-                <Link href={`/professors/${id}`} className="hover:text-husky-purple">{professor.name}</Link>
+                <Link href={`/professors/${id}`} className="hover:text-husky-purple dark:hover:text-husky-purpleLight">{professor.name}</Link>
                 <span>›</span>
-                <span className="text-gray-900">Write a Review</span>
+                <span className="text-gray-900 dark:text-gray-100">Write a Review</span>
             </nav>
 
             {/* Header card */}
-            <div className="rounded-lg bg-white px-8 py-6 shadow-sm">
+            <div className="rounded-lg bg-white dark:bg-gray-800 px-8 py-6 shadow-sm">
                 <div className="flex items-start justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-husky-purple">{professor.name}</h1>
-                        <p className="mt-0.5 text-sm text-gray-500">
+                        <h1 className="text-2xl font-bold text-husky-purple dark:text-husky-purpleLight">{professor.name}</h1>
+                        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
                             {professor.department} · {professor.campus?.join(", ")}
                         </p>
                     </div>
                     {/* Rate limit indicator */}
-                    <div className="group relative rounded-md border border-gray-200 px-3 py-2 text-right cursor-default">
-                        <p className="flex items-center justify-end gap-1 text-xs text-gray-500">
+                    <div className="group relative rounded-md border border-gray-200 dark:border-gray-700 px-3 py-2 text-right cursor-default">
+                        <p className="flex items-center justify-end gap-1 text-xs text-gray-500 dark:text-gray-400">
                             Reviews left today
-                            <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-gray-400 text-[9px] font-bold text-gray-400 leading-none select-none">i</span>
+                            <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-gray-400 dark:border-gray-500 text-[9px] font-bold text-gray-400 dark:text-gray-500 leading-none select-none">i</span>
                         </p>
-                        <p className={`text-lg font-bold ${remainingToday === 0 ? "text-red-500" : "text-husky-purple"}`}>
+                        <p className={`text-lg font-bold ${remainingToday === 0 ? "text-red-500 dark:text-red-400" : "text-husky-purple dark:text-husky-purpleLight"}`}>
                             {remainingToday}/3
                         </p>
                         {/* Tooltip */}
-                        <div className="pointer-events-none absolute right-0 top-full mt-2 w-56 rounded-md border border-gray-200 bg-white px-3 py-2.5 text-left text-xs text-gray-600 shadow-md opacity-0 transition-opacity group-hover:opacity-100 z-10">
-                            <p className="font-medium text-gray-800 mb-0.5">Why only 3? 😅</p>
+                        <div className="pointer-events-none absolute right-0 top-full mt-2 w-56 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2.5 text-left text-xs text-gray-600 dark:text-gray-300 shadow-md opacity-0 transition-opacity group-hover:opacity-100 z-10">
+                            <p className="font-medium text-gray-800 dark:text-gray-200 mb-0.5">Why only 3? 😅</p>
                             <p>We limit reviews to keep things genuine — no spam, no brigading. You can submit up to 3 reviews every 24 hours.</p>
                         </div>
                     </div>
@@ -400,7 +400,7 @@ function ReviewView({ user }: { user: User }) {
 
             {/* Validation errors */}
             {validationErrors.length > 0 && (
-                <div className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <div className="rounded-md border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-4 py-3 text-sm text-red-700 dark:text-red-400">
                     <p className="mb-1.5 font-semibold">Please fix the following before submitting:</p>
                     <ul className="list-disc list-inside space-y-0.5">
                         {validationErrors.map((e) => (
@@ -411,21 +411,21 @@ function ReviewView({ user }: { user: User }) {
             )}
 
             {/* Form card */}
-            <div className="rounded-lg bg-white px-8 py-7 shadow-sm space-y-8">
+            <div className="rounded-lg bg-white dark:bg-gray-800 px-8 py-7 shadow-sm space-y-8">
 
                 {/* ── Section 1: Course info ── */}
                 <section className="space-y-5">
-                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">Course Details</h2>
+                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Course Details</h2>
 
                     <div className="grid gap-5 sm:grid-cols-2">
                         <div className="sm:col-span-2">
-                            <label className="mb-1 block text-sm font-medium text-gray-700">
-                                Course Code <span className="text-red-500">*</span>
+                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Course Code <span className="text-red-500 dark:text-red-400">*</span>
                             </label>
                             <select
                                 value={courseCodeSelect}
                                 onChange={(e) => { setCourseCodeSelect(e.target.value); setCourseCodeOther(""); }}
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
                             >
                                 <option value="">Select a course…</option>
                                 {(professor.courses_taught ?? []).map((c) => (
@@ -440,12 +440,12 @@ function ReviewView({ user }: { user: User }) {
                                         placeholder="e.g. CSS 343 or B & A 300"
                                         value={courseCodeOther}
                                         onChange={(e) => setCourseCodeOther(e.target.value)}
-                                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                        className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
                                         autoFocus
                                     />
                                     {courseCodeOther.trim() && (
-                                        <p className="mt-1 text-xs text-gray-400">
-                                            Will be saved as: <span className="font-medium text-gray-700">{normalizeCourseCode(courseCodeOther)}</span>
+                                        <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+                                            Will be saved as: <span className="font-medium text-gray-700 dark:text-gray-300">{normalizeCourseCode(courseCodeOther)}</span>
                                         </p>
                                     )}
                                 </div>
@@ -453,13 +453,13 @@ function ReviewView({ user }: { user: User }) {
                         </div>
 
                         <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">
-                                Quarter <span className="text-red-500">*</span>
+                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Quarter <span className="text-red-500 dark:text-red-400">*</span>
                             </label>
                             <select
                                 value={quarter}
                                 onChange={(e) => setQuarter(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
                             >
                                 <option value="">Select quarter…</option>
                                 {QUARTERS.map((q) => <option key={q} value={q}>{q}</option>)}
@@ -467,13 +467,13 @@ function ReviewView({ user }: { user: User }) {
                         </div>
 
                         <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">
-                                Year <span className="text-red-500">*</span>
+                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Year <span className="text-red-500 dark:text-red-400">*</span>
                             </label>
                             <select
                                 value={year}
                                 onChange={(e) => setYear(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
                             >
                                 <option value="">Select year…</option>
                                 {[...YEARS].reverse().map((y) => <option key={y} value={y}>{y}</option>)}
@@ -482,26 +482,26 @@ function ReviewView({ user }: { user: User }) {
                     </div>
                 </section>
 
-                <hr className="border-gray-100" />
+                <hr className="border-gray-100 dark:border-gray-700" />
 
                 {/* ── Section 2: Ratings ── */}
                 <section className="space-y-5">
-                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">Ratings</h2>
+                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Ratings</h2>
 
                     <StarRating
-                        label={<>Overall Rating <span className="text-red-500">*</span></>}
+                        label={<>Overall Rating <span className="text-red-500 dark:text-red-400">*</span></>}
                         value={overall}
                         onChange={setOverall}
                     />
 
                     <StarRating
-                        label={<>Clarity <span className="text-red-500">*</span></>}
+                        label={<>Clarity <span className="text-red-500 dark:text-red-400">*</span></>}
                         value={clarity}
                         onChange={setClarity}
                     />
 
                     <StarRating
-                        label={<>Helpfulness <span className="text-red-500">*</span></>}
+                        label={<>Helpfulness <span className="text-red-500 dark:text-red-400">*</span></>}
                         value={helpfulness}
                         onChange={setHelpfulness}
                     />
@@ -509,8 +509,8 @@ function ReviewView({ user }: { user: User }) {
                     <DifficultyPicker value={difficulty} onChange={setDifficulty} />
 
                     <div>
-                        <span className="mb-1 block text-sm font-medium text-gray-700">
-                            Would you take this professor again? <span className="text-red-500">*</span>
+                        <span className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Would you take this professor again? <span className="text-red-500 dark:text-red-400">*</span>
                         </span>
                         <div className="flex gap-3">
                             {([true, false] as const).map((val) => (
@@ -520,7 +520,7 @@ function ReviewView({ user }: { user: User }) {
                                     onClick={() => setWouldTakeAgain(val)}
                                     className={`rounded-md border px-5 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-husky-purple focus:ring-offset-1 ${wouldTakeAgain === val
                                         ? "border-husky-purple bg-husky-purple text-white"
-                                        : "border-gray-300 bg-white text-gray-600 hover:border-husky-purple hover:text-husky-purple"
+                                        : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight"
                                         }`}
                                 >
                                     {val ? "Yes" : "No"}
@@ -530,15 +530,15 @@ function ReviewView({ user }: { user: User }) {
                     </div>
                 </section>
 
-                <hr className="border-gray-100" />
+                <hr className="border-gray-100 dark:border-gray-700" />
 
                 {/* ── Section 3: Written review ── */}
                 <section className="space-y-4">
-                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">Your Review</h2>
+                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Your Review</h2>
 
                     <div>
-                        <label className="mb-1 block text-sm font-medium text-gray-700">
-                            Written Review <span className="text-red-500">*</span>
+                        <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Written Review <span className="text-red-500 dark:text-red-400">*</span>
                         </label>
                         <textarea
                             rows={5}
@@ -547,26 +547,26 @@ function ReviewView({ user }: { user: User }) {
                             onChange={(e) => setReview(e.target.value)}
                             className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 ${reviewTooShort
                                 ? "border-red-400 focus:border-red-400 focus:ring-red-400"
-                                : "border-gray-300 focus:border-husky-purple focus:ring-husky-purple"
+                                : "border-gray-300 dark:border-gray-600 focus:border-husky-purple focus:ring-husky-purple"
                                 }`}
                         />
                         <div className="mt-1 flex justify-between text-xs">
                             {reviewTooShort ? (
-                                <span className="text-red-500">
+                                <span className="text-red-500 dark:text-red-400">
                                     {MIN_REVIEW_LENGTH - review.trim().length} more characters needed
                                 </span>
                             ) : (
-                                <span className="text-gray-400">Minimum {MIN_REVIEW_LENGTH} characters</span>
+                                <span className="text-gray-400 dark:text-gray-500">Minimum {MIN_REVIEW_LENGTH} characters</span>
                             )}
-                            <span className={review.trim().length >= MIN_REVIEW_LENGTH ? "text-green-600" : "text-gray-400"}>
+                            <span className={review.trim().length >= MIN_REVIEW_LENGTH ? "text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500"}>
                                 {review.trim().length} / {MIN_REVIEW_LENGTH}+
                             </span>
                         </div>
                     </div>
 
                     <div>
-                        <span className="mb-2 block text-sm font-medium text-gray-700">
-                            Tags <span className="font-normal text-gray-400">(optional)</span>
+                        <span className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Tags <span className="font-normal text-gray-400 dark:text-gray-500">(optional)</span>
                         </span>
                         <div className="flex flex-wrap gap-2">
                             {TAGS.map((tag) => (
@@ -576,7 +576,7 @@ function ReviewView({ user }: { user: User }) {
                                     onClick={() => toggleTag(tag)}
                                     className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors focus:outline-none ${selectedTags.includes(tag)
                                         ? "border-husky-purple bg-husky-purple text-white"
-                                        : "border-gray-300 bg-white text-gray-600 hover:border-husky-purple hover:text-husky-purple"
+                                        : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight"
                                         }`}
                                 >
                                     {tag}
@@ -610,13 +610,13 @@ function ReviewView({ user }: { user: User }) {
                                     maxLength={20}
                                     onChange={(e) => setCustomTagInput(e.target.value)}
                                     onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } }}
-                                    className="rounded-full border border-dashed border-gray-300 px-3 py-1 text-xs text-gray-600 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple w-44"
+                                    className="rounded-full border border-dashed border-gray-300 dark:border-gray-600 px-3 py-1 text-xs text-gray-600 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple w-44"
                                 />
                                 {customTagInput.trim() && (
                                     <button
                                         type="button"
                                         onClick={addCustomTag}
-                                        className="rounded-full border border-husky-purple px-3 py-1 text-xs font-medium text-husky-purple hover:bg-husky-purple hover:text-white transition-colors focus:outline-none"
+                                        className="rounded-full border border-husky-purple px-3 py-1 text-xs font-medium text-husky-purple dark:text-husky-purpleLight hover:bg-husky-purple hover:text-white transition-colors focus:outline-none"
                                     >
                                         Add
                                     </button>
@@ -624,24 +624,24 @@ function ReviewView({ user }: { user: User }) {
                             </div>
                         )}
                         {selectedTags.filter((t) => !TAGS.includes(t)).length >= MAX_CUSTOM_TAGS && (
-                            <p className="mt-1.5 text-xs text-gray-400">Maximum {MAX_CUSTOM_TAGS} custom tags reached.</p>
+                            <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Maximum {MAX_CUSTOM_TAGS} custom tags reached.</p>
                         )}
                     </div>
                 </section>
 
-                <hr className="border-gray-100" />
+                <hr className="border-gray-100 dark:border-gray-700" />
 
                 {/* ── Section 4: Optional extras ── */}
                 <section className="space-y-5">
-                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">Optional Details</h2>
+                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Optional Details</h2>
 
                     <div className="grid gap-5 sm:grid-cols-3">
                         <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">Grade Received</label>
+                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Grade Received</label>
                             <select
                                 value={grade}
                                 onChange={(e) => setGrade(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
                             >
                                 <option value="">Select…</option>
                                 {GRADES.map((g) => <option key={g} value={g}>{g}</option>)}
@@ -649,11 +649,11 @@ function ReviewView({ user }: { user: User }) {
                         </div>
 
                         <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">Attendance Required</label>
+                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Attendance Required</label>
                             <select
                                 value={attendanceMandatory}
                                 onChange={(e) => setAttendanceMandatory(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
                             >
                                 <option value="">Select…</option>
                                 <option value="yes">Yes</option>
@@ -662,11 +662,11 @@ function ReviewView({ user }: { user: User }) {
                         </div>
 
                         <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">Textbook Required</label>
+                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Textbook Required</label>
                             <select
                                 value={textbookRequired}
                                 onChange={(e) => setTextbookRequired(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
                             >
                                 <option value="">Select…</option>
                                 <option value="yes">Yes</option>
@@ -679,8 +679,8 @@ function ReviewView({ user }: { user: User }) {
                 {/* ── Error / moderation banner ── */}
                 {(submitState === "error" || submitState === "moderated") && (
                     <div className={`rounded-md border px-4 py-3 text-sm ${submitState === "moderated"
-                        ? "border-amber-300 bg-amber-50 text-amber-800"
-                        : "border-red-300 bg-red-50 text-red-700"
+                        ? "border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-300"
+                        : "border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400"
                         }`}>
                         {submitState === "moderated" && (
                             <p className="mb-0.5 font-medium">Review flagged for moderation</p>
@@ -691,7 +691,7 @@ function ReviewView({ user }: { user: User }) {
 
                 {/* ── Submit row ── */}
                 <div className="flex items-center justify-between pt-1">
-                    <Link href={`/professors/${id}`} className="text-sm text-gray-500 hover:text-husky-purple">
+                    <Link href={`/professors/${id}`} className="text-sm text-gray-500 dark:text-gray-400 hover:text-husky-purple dark:hover:text-husky-purpleLight">
                         ← Cancel
                     </Link>
                     <button
@@ -711,7 +711,7 @@ function ReviewView({ user }: { user: User }) {
                     </button>
                 </div>
 
-                <p className="text-center text-xs text-gray-400">
+                <p className="text-center text-xs text-gray-400 dark:text-gray-500">
                     Submitting a review for a course you've already reviewed will overwrite your previous one.
                 </p>
             </div>

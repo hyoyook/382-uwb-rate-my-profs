@@ -151,8 +151,8 @@ function ProfessorView({ user }: { user: User }) {
   if (notFound || !professor) {
     return (
       <div className="flex flex-col items-center gap-4 py-24 text-center">
-        <p className="text-lg font-semibold text-gray-700">Professor not found.</p>
-        <Link href="/search" className="text-sm text-husky-purple hover:underline">← Back to search</Link>
+        <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">Professor not found.</p>
+        <Link href="/search" className="text-sm text-husky-purple dark:text-husky-purpleLight hover:underline">← Back to search</Link>
       </div>
     );
   }
@@ -170,25 +170,25 @@ function ProfessorView({ user }: { user: User }) {
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-gray-500">
-        <Link href="/dashboard" className="hover:text-husky-purple transition-colors">Dashboard</Link>
-        <span className="text-gray-300">/</span>
-        <Link href="/search" className="hover:text-husky-purple transition-colors">Browse Professors</Link>
-        <span className="text-gray-300">/</span>
-        <span className="text-gray-700 font-medium">{professor.name}</span>
+      <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+        <Link href="/dashboard" className="hover:text-husky-purple dark:hover:text-husky-purpleLight transition-colors">Dashboard</Link>
+        <span className="text-gray-300 dark:text-gray-600">/</span>
+        <Link href="/search" className="hover:text-husky-purple dark:hover:text-husky-purpleLight transition-colors">Browse Professors</Link>
+        <span className="text-gray-300 dark:text-gray-600">/</span>
+        <span className="text-gray-700 dark:text-gray-300 font-medium">{professor.name}</span>
       </nav>
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
-      <div className="rounded-lg bg-white p-6 shadow-sm">
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-husky-light text-husky-purple text-2xl font-bold">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-husky-light dark:bg-husky-purple/20 text-husky-purple dark:text-husky-purpleLight text-2xl font-bold">
               {professor.name[0]}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{professor.name}</h1>
-              <p className="text-sm text-gray-500">{professor.department}</p>
-              <p className="text-xs text-husky-metallic mt-0.5">{professor.campus.join(" / ")}</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{professor.name}</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{professor.department}</p>
+              <p className="text-xs text-husky-metallic dark:text-husky-gold mt-0.5">{professor.campus.join(" / ")}</p>
             </div>
           </div>
 
@@ -202,52 +202,52 @@ function ProfessorView({ user }: { user: User }) {
         </div>
 
         {professor.bio && (
-          <p className="mt-4 text-sm text-gray-600 leading-relaxed">{professor.bio}</p>
+          <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{professor.bio}</p>
         )}
 
         <div className="mt-5 grid grid-cols-3 gap-3">
           {/* Overall rating */}
-          <div className="flex flex-col items-center py-5 px-4 gap-1 rounded-2xl bg-husky-light">
-            <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Overall</span>
-            <span className="text-3xl font-bold text-husky-purple">
+          <div className="flex flex-col items-center py-5 px-4 gap-1 rounded-2xl bg-husky-light dark:bg-husky-purple/20">
+            <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Overall</span>
+            <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
               {professor.overall_rating > 0 ? professor.overall_rating.toFixed(1) : "—"}
             </span>
             <StarRow rating={professor.overall_rating} size="sm" />
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               {professor.ratings_count} review{professor.ratings_count !== 1 ? "s" : ""}
             </span>
           </div>
 
           {/* Verified rating */}
-          <div className="flex flex-col items-center py-5 px-4 gap-1 rounded-2xl bg-green-50 border border-green-100">
-            <span className="text-xs font-semibold uppercase tracking-wide text-green-600">✓ Verified</span>
-            <span className="text-3xl font-bold text-husky-purple">
+          <div className="flex flex-col items-center py-5 px-4 gap-1 rounded-2xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800">
+            <span className="text-xs font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">✓ Verified</span>
+            <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
               {verifiedAvg > 0 ? verifiedAvg.toFixed(1) : "—"}
             </span>
             <StarRow rating={verifiedAvg} size="sm" />
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               {verifiedCount} review{verifiedCount !== 1 ? "s" : ""}
             </span>
           </div>
 
           {/* Unverified rating */}
-          <div className="flex flex-col items-center py-5 px-4 gap-1 rounded-2xl bg-gray-50 border border-gray-100">
-            <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Unverified</span>
-            <span className="text-3xl font-bold text-husky-purple">
+          <div className="flex flex-col items-center py-5 px-4 gap-1 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700">
+            <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Unverified</span>
+            <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
               {unverifiedAvg > 0 ? unverifiedAvg.toFixed(1) : "—"}
             </span>
             <StarRow rating={unverifiedAvg} size="sm" />
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               {unverifiedCount} review{unverifiedCount !== 1 ? "s" : ""}
             </span>
           </div>
         </div>
 
         <div className="mt-5">
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Courses Taught</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-2">Courses Taught</p>
           <div className="flex flex-wrap gap-2">
             {professor.courses_taught.map((c) => (
-              <span key={c} className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700">{c}</span>
+              <span key={c} className="rounded-full border border-gray-200 dark:border-gray-700 px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300">{c}</span>
             ))}
           </div>
         </div>
@@ -267,8 +267,8 @@ function ProfessorView({ user }: { user: User }) {
 
       {/* ── Buzz-words ───────────────────────────────────────────────────────── */}
       {buzzWords.length > 0 && (
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-3">What Students Say</h2>
+        <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-3">What Students Say</h2>
           <div className="flex flex-wrap gap-2">
             {buzzWords.map(([tag, count]) => (
               <BuzzWord key={tag} tag={tag} count={count} total={reviews.length} />
@@ -278,25 +278,25 @@ function ProfessorView({ user }: { user: User }) {
       )}
 
       {/* ── Reviews ──────────────────────────────────────────────────────────── */}
-      <div className="rounded-lg bg-white p-6 shadow-sm space-y-5">
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-semibold text-gray-900">
+          <h2 className="font-semibold text-gray-900 dark:text-gray-100">
             Student Reviews
-            {hasReviews && <span className="ml-2 text-sm font-normal text-gray-400">({reviews.length})</span>}
+            {hasReviews && <span className="ml-2 text-sm font-normal text-gray-400 dark:text-gray-500">({reviews.length})</span>}
           </h2>
 
           {hasReviews && (
             <div className="flex flex-wrap gap-3">
               {/* Star filter */}
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-gray-500">Stars:</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">Stars:</span>
                 <button type="button" onClick={() => setStarFilter(null)}
-                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${starFilter === null ? "bg-husky-purple text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${starFilter === null ? "bg-husky-purple text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
                   All
                 </button>
                 {[5, 4, 3, 2, 1].map((s) => (
                   <button key={s} type="button" onClick={() => setStarFilter(starFilter === s ? null : s)}
-                    className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${starFilter === s ? "bg-husky-purple text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+                    className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${starFilter === s ? "bg-husky-purple text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
                     {s}★
                   </button>
                 ))}
@@ -304,9 +304,9 @@ function ProfessorView({ user }: { user: User }) {
 
               {/* Course filter */}
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-gray-500">Course:</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">Course:</span>
                 <select value={courseFilter} onChange={(e) => setCourseFilter(e.target.value)}
-                  className="rounded-md border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-husky-purple">
+                  className="rounded-md border border-gray-200 dark:border-gray-700 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-husky-purple">
                   <option value="All">All</option>
                   {professor.courses_taught.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
@@ -315,9 +315,9 @@ function ProfessorView({ user }: { user: User }) {
               {/* Campus filter — only shows when reviews span multiple campuses */}
               {reviewCampuses.length > 1 && (
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-gray-500">Campus:</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Campus:</span>
                   <select value={campusFilter} onChange={(e) => setCampusFilter(e.target.value)}
-                    className="rounded-md border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-husky-purple">
+                    className="rounded-md border border-gray-200 dark:border-gray-700 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-husky-purple">
                     <option value="All">All</option>
                     {reviewCampuses.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
@@ -326,13 +326,13 @@ function ProfessorView({ user }: { user: User }) {
 
               {/* Verified filter */}
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-gray-500">Source:</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">Source:</span>
                 <button type="button" onClick={() => setVerifiedOnly(false)}
-                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${!verifiedOnly ? "bg-husky-purple text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${!verifiedOnly ? "bg-husky-purple text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
                   All
                 </button>
                 <button type="button" onClick={() => setVerifiedOnly(true)}
-                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${verifiedOnly ? "bg-green-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${verifiedOnly ? "bg-green-600 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
                   ✓ Verified
                 </button>
               </div>
@@ -343,13 +343,13 @@ function ProfessorView({ user }: { user: User }) {
         {!hasReviews ? (
           <NoReviewsState professorId={professor.id} />
         ) : filteredReviews.length === 0 ? (
-          <p className="py-8 text-center text-sm text-gray-400">No reviews match your filters.</p>
+          <p className="py-8 text-center text-sm text-gray-400 dark:text-gray-500">No reviews match your filters.</p>
         ) : (
           <div className="space-y-4">
             {verifiedCount < 5 && (
-              <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2">
-                <span className="text-amber-600 text-sm">⚠</span>
-                <p className="text-xs text-amber-700">
+              <div className="flex items-center gap-2 rounded-md border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-3 py-2">
+                <span className="text-amber-600 dark:text-amber-400 text-sm">⚠</span>
+                <p className="text-xs text-amber-700 dark:text-amber-300">
                   <span className="font-semibold">Limited verified data</span> — fewer than 5 verified reviews.
                   AI summary not yet available.
                 </p>
@@ -371,15 +371,15 @@ function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
   const selected = entries[selectedIdx] ?? null;
 
   return (
-    <div className="rounded-lg bg-white p-6 shadow-sm">
+    <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">IASystem Ratings</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">IASystem Ratings</h2>
 
         {entries.length > 0 && (
           <select
             value={selectedIdx}
             onChange={(e) => setSelectedIdx(Number(e.target.value))}
-            className="rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 focus:outline-none focus:ring-1 focus:ring-husky-purple"
+            className="rounded-md border border-gray-200 dark:border-gray-700 px-2 py-1 text-xs text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-husky-purple"
           >
             {entries.map((e, i) => (
               <option key={i} value={i}>
@@ -391,8 +391,8 @@ function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
       </div>
 
       {!selected ? (
-        <div className="rounded-md border border-dashed border-gray-200 bg-gray-50 px-4 py-6 text-center">
-          <p className="text-sm text-gray-500">No IASystem data available for this professor.</p>
+        <div className="rounded-md border border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-6 text-center">
+          <p className="text-sm text-gray-500 dark:text-gray-400">No IASystem data available for this professor.</p>
         </div>
       ) : (
         <>
@@ -403,14 +403,14 @@ function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
                 const val = selected.summative_items[key] ?? 0;
                 return (
                   <div key={key} className="flex items-center gap-3">
-                    <span className="w-44 text-xs text-gray-600 shrink-0">{SUMMATIVE_LABELS[key]}</span>
-                    <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
+                    <span className="w-44 text-xs text-gray-600 dark:text-gray-300 shrink-0">{SUMMATIVE_LABELS[key]}</span>
+                    <div className="flex-1 h-2 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
                       <div
                         className="h-full rounded-full bg-husky-purple transition-all duration-500"
                         style={{ width: `${(val / 5) * 100}%` }}
                       />
                     </div>
-                    <span className="text-xs font-medium text-gray-700 w-8 text-right">
+                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300 w-8 text-right">
                       {val > 0 ? val.toFixed(1) : "—"}
                     </span>
                   </div>
@@ -420,29 +420,29 @@ function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
 
             {/* Right: Overall Summative + CEI */}
             <div className="flex flex-col gap-3">
-              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light py-4 px-6 gap-1">
+              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light dark:bg-husky-purple/20 py-4 px-6 gap-1">
                 <div className="flex items-center gap-1">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Overall Summative</span>
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Overall Summative</span>
                   <Tooltip text="Average of the four summative items. Reported on a 0–5 scale." />
                 </div>
-                <span className="text-3xl font-bold text-husky-purple">
+                <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
                   {selected.overall_summative > 0 ? selected.overall_summative.toFixed(1) : "—"}
                 </span>
-                <span className="text-xs text-gray-400">out of 5.0</span>
+                <span className="text-xs text-gray-400 dark:text-gray-500">out of 5.0</span>
               </div>
 
-              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light py-4 px-6 gap-1">
+              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light dark:bg-husky-purple/20 py-4 px-6 gap-1">
                 <div className="flex items-center gap-1">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">CEI</span>
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">CEI</span>
                   <Tooltip text="Course Evaluation Index — a composite score weighted across all evaluation items. Reported on a 1–7 scale." />
                 </div>
-                <span className="text-3xl font-bold text-husky-purple">
+                <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
                   {selected.cei > 0 ? selected.cei.toFixed(1) : "—"}
                 </span>
-                <span className="text-xs text-gray-400">out of 7.0</span>
+                <span className="text-xs text-gray-400 dark:text-gray-500">out of 7.0</span>
               </div>
 
-              <p className="text-xs text-gray-400 text-center">
+              <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
                 {selected.responses} / {selected.enrollment} responses
               </p>
             </div>
@@ -450,15 +450,15 @@ function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
 
           {/* AI summary of written comments */}
           {selected.ai_summary && (
-            <div className="mt-4 rounded-md border border-husky-light bg-husky-light/40 px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">Student Comments Summary</p>
-              <p className="text-sm text-gray-700 leading-relaxed">{selected.ai_summary}</p>
+            <div className="mt-4 rounded-md border border-husky-light dark:border-husky-purple/30 bg-husky-light/40 dark:bg-husky-purple/10 px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-1">Student Comments Summary</p>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{selected.ai_summary}</p>
             </div>
           )}
         </>
       )}
 
-      <p className="mt-3 text-xs text-gray-400">Source: UW IASystem official evaluation data.</p>
+      <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">Source: UW IASystem official evaluation data.</p>
     </div>
   );
 }
@@ -475,13 +475,13 @@ function Tooltip({ text }: { text: string }) {
         onMouseLeave={() => setVisible(false)}
         onFocus={() => setVisible(true)}
         onBlur={() => setVisible(false)}
-        className="flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 text-gray-400 text-xs hover:border-husky-purple hover:text-husky-purple focus:outline-none"
+        className="flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500 text-xs hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight focus:outline-none"
         aria-label="More information"
       >
         i
       </button>
       {visible && (
-        <div className="absolute left-1/2 bottom-full mb-1.5 -translate-x-1/2 z-10 w-56 rounded-md border border-gray-100 bg-white px-3 py-2 text-xs text-gray-600 shadow-md">
+        <div className="absolute left-1/2 bottom-full mb-1.5 -translate-x-1/2 z-10 w-56 rounded-md border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-xs text-gray-600 dark:text-gray-300 shadow-md">
           {text}
         </div>
       )}
@@ -549,36 +549,36 @@ function AISummarySection({
   }
 
   return (
-    <div className="rounded-lg bg-white p-6 shadow-sm">
+    <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
       <div className="flex items-center gap-2 mb-3">
-        <SparkleIcon className="h-4 w-4 text-husky-purple" />
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">AI-Generated Summary</h2>
-        <span className="rounded-full bg-husky-light px-2 py-0.5 text-xs font-medium text-husky-metallic">Powered by Gemini</span>
+        <SparkleIcon className="h-4 w-4 text-husky-purple dark:text-husky-purpleLight" />
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">AI-Generated Summary</h2>
+        <span className="rounded-full bg-husky-light dark:bg-husky-purple/20 px-2 py-0.5 text-xs font-medium text-husky-metallic dark:text-husky-gold">Powered by Gemini</span>
       </div>
 
       {!hasEnough ? (
-        <div className="rounded-md bg-gray-50 border border-dashed border-gray-200 px-4 py-5 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="rounded-md bg-gray-50 dark:bg-gray-900 border border-dashed border-gray-200 dark:border-gray-700 px-4 py-5 text-center">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             AI summaries require <span className="font-semibold">5 verified reviews</span>.
           </p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
             {verifiedCount === 0
               ? "No verified reviews yet."
               : `${5 - verifiedCount} more verified review${5 - verifiedCount !== 1 ? "s" : ""} needed.`}
           </p>
           {reviewCount > verifiedCount && (
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
               {reviewCount - verifiedCount} unverified review{reviewCount - verifiedCount !== 1 ? "s" : ""} not counted toward this threshold.
             </p>
           )}
         </div>
       ) : summary ? (
         <div className="space-y-3">
-          <p className="text-sm text-gray-700 leading-relaxed">{summary}</p>
+          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{summary}</p>
 
           <div className="flex flex-wrap items-center justify-between gap-2">
             {updatedAt && (
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-400 dark:text-gray-500">
                 Last updated {new Date(updatedAt.seconds * 1000).toLocaleDateString()}
                 {summaryReviewCount > 0 && ` · based on ${summaryReviewCount} verified review${summaryReviewCount !== 1 ? "s" : ""}`}
               </p>
@@ -587,14 +587,14 @@ function AISummarySection({
             {/* Stale nudge — shown when enough new reviews have come in since last generation */}
             {isStale && (
               <div className="flex items-center gap-2">
-                <p className="text-xs text-amber-600">
+                <p className="text-xs text-amber-600 dark:text-amber-400">
                   {verifiedCount - summaryReviewCount} new review{verifiedCount - summaryReviewCount !== 1 ? "s" : ""} since last summary
                 </p>
                 <button
                   type="button"
                   onClick={fetchSummary}
                   disabled={loading}
-                  className="flex items-center gap-1.5 rounded-md border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700 hover:bg-amber-100 disabled:opacity-60 transition-colors"
+                  className="flex items-center gap-1.5 rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-xs font-medium text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/30 disabled:opacity-60 transition-colors"
                 >
                   {loading ? <><Spinner small /> Regenerating...</> : "↺ Regenerate"}
                 </button>
@@ -602,12 +602,12 @@ function AISummarySection({
             )}
           </div>
 
-          {error && <p className="text-xs text-red-600">{error}</p>}
+          {error && <p className="text-xs text-red-600 dark:text-red-400">{error}</p>}
         </div>
       ) : (
         <div className="flex flex-col items-start gap-3">
-          <p className="text-sm text-gray-500">This professor has enough verified reviews for an AI summary.</p>
-          {error && <p className="text-xs text-red-600">{error}</p>}
+          <p className="text-sm text-gray-500 dark:text-gray-400">This professor has enough verified reviews for an AI summary.</p>
+          {error && <p className="text-xs text-red-600 dark:text-red-400">{error}</p>}
           <button
             type="button"
             onClick={fetchSummary}
@@ -630,47 +630,47 @@ function ReviewCard({ review: r }: { review: Review }) {
     : null;
 
   return (
-    <div className="rounded-lg border border-gray-100 bg-gray-50 p-4 space-y-2">
+    <div className="rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-4 space-y-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <StarRow rating={r.scores.overall} size="sm" />
-          <span className="text-xs font-medium text-gray-700">{r.course.code}</span>
-          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">{r.campus}</span>
-          <span className="text-xs text-gray-400">{r.term.quarter} {r.term.year}</span>
+          <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{r.course.code}</span>
+          <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs text-gray-500 dark:text-gray-400">{r.campus}</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">{r.term.quarter} {r.term.year}</span>
         </div>
 
         <div className="flex items-center gap-3">
           {r.verified ? (
-            <span className="flex items-center gap-1 rounded-full bg-green-50 border border-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+            <span className="flex items-center gap-1 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-400">
               ✓ Verified
             </span>
           ) : (
-            <span className="flex items-center gap-1 rounded-full bg-gray-100 border border-gray-200 px-2 py-0.5 text-xs font-medium text-gray-500">
+            <span className="flex items-center gap-1 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 px-2 py-0.5 text-xs font-medium text-gray-500 dark:text-gray-400">
               Unverified
             </span>
           )}
-          <span className="text-xs text-gray-500">
-            Clarity: <span className="font-medium text-gray-700">{r.scores.clarity}/5</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            Clarity: <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.clarity}/5</span>
           </span>
-          <span className="text-xs text-gray-500">
-            Helpfulness: <span className="font-medium text-gray-700">{r.scores.helpfulness}/5</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            Helpfulness: <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.helpfulness}/5</span>
           </span>
-          <span className="text-xs text-gray-500">
-            Difficulty: <span className="font-medium text-gray-700">{r.scores.difficulty}/5</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            Difficulty: <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.difficulty}/5</span>
           </span>
           {r.scores.would_take_again
-            ? <span className="text-xs text-green-600 font-medium">Would take again ✓</span>
-            : <span className="text-xs text-red-500 font-medium">Wouldn't take again</span>}
-          {date && <span className="text-xs text-gray-400">{date}</span>}
+            ? <span className="text-xs text-green-600 dark:text-green-400 font-medium">Would take again ✓</span>
+            : <span className="text-xs text-red-500 dark:text-red-400 font-medium">Wouldn't take again</span>}
+          {date && <span className="text-xs text-gray-400 dark:text-gray-500">{date}</span>}
         </div>
       </div>
 
-      <p className="text-sm text-gray-700 leading-relaxed">{r.body}</p>
+      <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{r.body}</p>
 
       {r.tags && r.tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5 pt-1">
           {r.tags.map((t) => (
-            <span key={t} className="rounded-full bg-husky-light px-2 py-0.5 text-xs text-husky-metallic">#{t}</span>
+            <span key={t} className="rounded-full bg-husky-light dark:bg-husky-purple/20 px-2 py-0.5 text-xs text-husky-metallic dark:text-husky-gold">#{t}</span>
           ))}
         </div>
       )}
@@ -685,8 +685,8 @@ function NoReviewsState({ professorId }: { professorId: string }) {
   return (
     <div className="flex flex-col items-center gap-3 py-10 text-center">
       <div className="text-4xl">📝</div>
-      <p className="text-sm font-medium text-gray-700">No peer reviews yet.</p>
-      <p className="text-xs text-gray-400">Be the first to leave a verified review.</p>
+      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">No peer reviews yet.</p>
+      <p className="text-xs text-gray-400 dark:text-gray-500">Be the first to leave a verified review.</p>
       <button type="button" onClick={() => router.push(`/professors/${professorId}/review`)}
         className="mt-1 rounded-md bg-husky-purple px-4 py-2 text-sm font-medium text-white hover:bg-husky-purple/90 transition-colors">
         Write a Review
@@ -706,8 +706,8 @@ function BuzzWord({ tag, count, total }: { tag: string; count: number; total: nu
   return (
     <div
       className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 border cursor-default ${isNegative
-        ? "border-red-100 bg-red-50 text-red-600"
-        : "border-husky-purple/20 bg-husky-light text-husky-purple"
+        ? "border-red-100 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
+        : "border-husky-purple/20 bg-husky-light dark:bg-husky-purple/20 text-husky-purple dark:text-husky-purpleLight"
         }`}
       title={`${count} mention${count !== 1 ? "s" : ""} (${pct}% of reviews)`}
     >
@@ -726,7 +726,7 @@ function StarRow({ rating, size }: { rating: number; size: "sm" | "md" }) {
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((i) => (
-        <svg key={i} className={`${s} ${i <= Math.round(rating) ? "fill-yellow-400 text-yellow-400" : "fill-gray-200 text-gray-200"}`} viewBox="0 0 24 24">
+        <svg key={i} className={`${s} ${i <= Math.round(rating) ? "fill-yellow-400 text-yellow-400" : "fill-gray-200 dark:fill-gray-600 text-gray-200 dark:text-gray-700"}`} viewBox="0 0 24 24">
           <path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
         </svg>
       ))}
