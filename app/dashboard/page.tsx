@@ -35,27 +35,27 @@ function DashboardView({ user }: { user: User }) {
         onClose={() => setReviewModalOpen(false)}
       />
 
-      <header className="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-white p-6 shadow-sm">
+      <header className="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
         <div className="flex items-center gap-4">
           {user.photoURL ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={user.photoURL}
               alt={user.displayName ?? user.email ?? "Profile"}
-              className="h-12 w-12 rounded-full border border-gray-200"
+              className="h-12 w-12 rounded-full border border-gray-200 dark:border-gray-700"
             />
           ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-husky-light text-husky-purple">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-husky-light dark:bg-husky-purple/20 text-husky-purple dark:text-husky-purpleLight">
               <span className="text-lg font-semibold">
                 {(user.displayName ?? user.email ?? "U")[0]?.toUpperCase()}
               </span>
             </div>
           )}
           <div>
-            <h1 className="text-xl font-semibold text-husky-purple">
+            <h1 className="text-xl font-semibold text-husky-purple dark:text-husky-purpleLight">
               Welcome, {user.displayName ?? "Husky"}
             </h1>
-            <p className="text-sm text-gray-600">{user.email}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">{user.email}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -63,7 +63,7 @@ function DashboardView({ user }: { user: User }) {
             type="button"
             onClick={handleLogout}
             disabled={loggingOut}
-            className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+            className="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 disabled:opacity-60"
           >
             {loggingOut ? "Signing out..." : "Log out"}
           </button>
@@ -116,26 +116,26 @@ function ActionCard({
     <button
       type="button"
       onClick={onClick}
-      className="rounded-lg border border-husky-purple/30 bg-white p-5 text-left shadow-sm transition hover:border-husky-purple hover:shadow-md focus:outline-none focus:ring-2 focus:ring-husky-purple"
+      className="rounded-lg border border-husky-purple/30 bg-white dark:bg-gray-800 p-5 text-left shadow-sm transition hover:border-husky-purple hover:shadow-md focus:outline-none focus:ring-2 focus:ring-husky-purple"
     >
       <div className="flex items-start justify-between">
         <span className="text-2xl">{icon}</span>
-        <span className="rounded-full bg-husky-light px-2 py-0.5 text-xs font-medium text-husky-purple">
+        <span className="rounded-full bg-husky-light dark:bg-husky-purple/20 px-2 py-0.5 text-xs font-medium text-husky-purple dark:text-husky-purpleLight">
           Live
         </span>
       </div>
-      <h3 className="mt-3 font-semibold text-husky-purple">{title}</h3>
-      <p className="mt-1 text-sm text-gray-600">{body}</p>
+      <h3 className="mt-3 font-semibold text-husky-purple dark:text-husky-purpleLight">{title}</h3>
+      <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">{body}</p>
     </button>
   );
 }
 
 function PlaceholderCard({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-lg border border-dashed border-gray-300 bg-white p-5">
-      <h3 className="font-semibold text-husky-purple">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600">{body}</p>
-      <span className="mt-3 inline-block rounded-full bg-husky-light px-2 py-0.5 text-xs font-medium text-husky-metallic">
+    <div className="rounded-lg border border-dashed border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-5">
+      <h3 className="font-semibold text-husky-purple dark:text-husky-purpleLight">{title}</h3>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">{body}</p>
+      <span className="mt-3 inline-block rounded-full bg-husky-light dark:bg-husky-purple/20 px-2 py-0.5 text-xs font-medium text-husky-metallic dark:text-husky-gold">
         Coming soon
       </span>
     </div>

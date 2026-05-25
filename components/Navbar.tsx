@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { User } from "firebase/auth";
 import { subscribeToAuth, signOutCurrentUser } from "@/lib/auth";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -29,13 +30,13 @@ export default function Navbar() {
   }
 
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-lg font-semibold text-husky-purple">
+          <span className="text-lg font-semibold text-husky-purple dark:text-husky-purpleLight">
             Rate My Husky
           </span>
-          <span className="rounded-full bg-husky-light px-2 py-0.5 text-xs font-medium text-husky-metallic">
+          <span className="rounded-full bg-husky-light dark:bg-husky-purple/20 px-2 py-0.5 text-xs font-medium text-husky-metallic dark:text-husky-gold">
             UW only
           </span>
         </Link>
@@ -49,8 +50,8 @@ export default function Navbar() {
                   href={link.href}
                   className={
                     active
-                      ? "font-medium text-husky-purple"
-                      : "text-gray-600 hover:text-husky-purple"
+                      ? "font-medium text-husky-purple dark:text-husky-purpleLight"
+                      : "text-gray-600 dark:text-gray-300 hover:text-husky-purple dark:hover:text-husky-purpleLight"
                   }
                 >
                   {link.label}
@@ -58,6 +59,10 @@ export default function Navbar() {
               </li>
             );
           })}
+
+          <li className="flex items-center">
+            <ThemeToggle />
+          </li>
 
           <li>
             {user ? (

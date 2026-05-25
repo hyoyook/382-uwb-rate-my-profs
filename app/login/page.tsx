@@ -46,16 +46,16 @@ export default function LoginPage() {
 
   return (
     <section className="mx-auto max-w-md">
-      <div className="rounded-lg bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-semibold text-husky-purple">Sign in</h1>
-        <p className="mt-2 text-sm text-gray-600">
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-8 shadow-sm">
+        <h1 className="text-2xl font-semibold text-husky-purple dark:text-husky-purpleLight">Sign in</h1>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
           Rate My Husky is restricted to current UW students. Use the Google
           account associated with your <strong>@uw.edu</strong> address.
         </p>
 
         <div className="mt-6">
           {checking ? (
-            <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
               <span
                 aria-hidden="true"
                 className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-husky-purple border-t-transparent"
@@ -70,13 +70,13 @@ export default function LoginPage() {
         {error ? (
           <div
             role="alert"
-            className="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+            className="mt-4 rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-400"
           >
             {error}
           </div>
         ) : null}
 
-        <p className="mt-6 text-xs text-gray-500">
+        <p className="mt-6 text-xs text-gray-500 dark:text-gray-400">
           By signing in, you agree that reviews you post can be moderated and
           that misuse may be reported to UW per university policy.
         </p>

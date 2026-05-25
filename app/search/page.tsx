@@ -86,28 +86,28 @@ function SearchView({ user: _user }: { user: User }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/dashboard" className="text-sm text-gray-500 hover:text-husky-purple transition-colors">
+        <Link href="/dashboard" className="text-sm text-gray-500 dark:text-gray-400 hover:text-husky-purple dark:hover:text-husky-purpleLight transition-colors">
           ← Dashboard
         </Link>
-        <span className="text-gray-300">/</span>
-        <h1 className="text-xl font-semibold text-husky-purple">Browse Professors</h1>
+        <span className="text-gray-300 dark:text-gray-600">/</span>
+        <h1 className="text-xl font-semibold text-husky-purple dark:text-husky-purpleLight">Browse Professors</h1>
       </div>
 
-      <div className="rounded-lg bg-white p-5 shadow-sm space-y-4">
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-5 shadow-sm space-y-4">
         <div className="relative">
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             placeholder="Search by name, course code, or department..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-md border border-gray-300 py-2.5 pl-9 pr-4 text-sm focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+            className="w-full rounded-md border border-gray-300 dark:border-gray-600 py-2.5 pl-9 pr-4 text-sm focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
           />
         </div>
 
         <div className="flex flex-wrap gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-gray-500">Campus</label>
+            <label className="text-xs font-medium text-gray-500 dark:text-gray-400">Campus</label>
             <div className="flex gap-1.5">
               {CAMPUSES.map((c) => (
                 <button
@@ -116,7 +116,7 @@ function SearchView({ user: _user }: { user: User }) {
                   onClick={() => setCampus(c)}
                   className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${campus === c
                     ? "bg-husky-purple text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                     }`}
                 >
                   {c}
@@ -126,7 +126,7 @@ function SearchView({ user: _user }: { user: User }) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-gray-500">Min Rating</label>
+            <label className="text-xs font-medium text-gray-500 dark:text-gray-400">Min Rating</label>
             <div className="flex gap-1.5">
               {RATING_OPTIONS.map((r) => (
                 <button
@@ -135,7 +135,7 @@ function SearchView({ user: _user }: { user: User }) {
                   onClick={() => setMinRating(r.value)}
                   className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${minRating === r.value
                     ? "bg-husky-purple text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                     }`}
                 >
                   {r.label}
@@ -145,20 +145,20 @@ function SearchView({ user: _user }: { user: User }) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-gray-500">Course Code</label>
+            <label className="text-xs font-medium text-gray-500 dark:text-gray-400">Course Code</label>
             <input
               type="text"
               placeholder="e.g. CSS 342"
               value={courseFilter}
               onChange={(e) => setCourseFilter(e.target.value)}
-              className="rounded-md border border-gray-300 px-3 py-1 text-xs focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple w-32"
+              className="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-1 text-xs focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple w-32"
             />
           </div>
         </div>
       </div>
 
       {!loading && (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           {filtered.length === 0
             ? "No professors match your filters."
             : `${filtered.length} professor${filtered.length !== 1 ? "s" : ""} found`}
@@ -184,26 +184,26 @@ function ProfessorCard({ professor: p }: { professor: Professor }) {
     <button
       type="button"
       onClick={() => router.push(`/professors/${p.id}`)}
-      className="w-full rounded-lg border border-gray-200 bg-white px-5 py-4 text-left shadow-sm transition hover:border-husky-purple hover:shadow-md focus:outline-none focus:ring-2 focus:ring-husky-purple"
+      className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-4 text-left shadow-sm transition hover:border-husky-purple hover:shadow-md focus:outline-none focus:ring-2 focus:ring-husky-purple"
     >
       <div className="flex items-center gap-4">
         {/* Name + meta */}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-semibold text-gray-900">{p.name}</h3>
-            <span className="text-xs text-husky-metallic">{p.campus.join(" / ")}</span>
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100">{p.name}</h3>
+            <span className="text-xs text-husky-metallic dark:text-husky-gold">{p.campus.join(" / ")}</span>
           </div>
-          <p className="text-xs text-gray-500 mt-0.5 truncate">{p.department}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">{p.department}</p>
 
           {/* Course pills */}
           <div className="mt-2 flex flex-wrap gap-1.5">
             {p.courses_taught.slice(0, 5).map((c) => (
-              <span key={c} className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+              <span key={c} className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs text-gray-600 dark:text-gray-300">
                 {c}
               </span>
             ))}
             {p.courses_taught.length > 5 && (
-              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-400">
+              <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs text-gray-400 dark:text-gray-500">
                 +{p.courses_taught.length - 5} more
               </span>
             )}
@@ -211,14 +211,14 @@ function ProfessorCard({ professor: p }: { professor: Professor }) {
         </div>
 
         {/* Rating — right side */}
-        <div className="flex shrink-0 flex-col items-center gap-1 pl-4 border-l border-gray-100">
+        <div className="flex shrink-0 flex-col items-center gap-1 pl-4 border-l border-gray-100 dark:border-gray-700">
           <div className="flex items-center gap-1">
             <StarIcon className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-            <span className="text-lg font-bold text-husky-purple">
+            <span className="text-lg font-bold text-husky-purple dark:text-husky-purpleLight">
               {p.overall_rating > 0 ? p.overall_rating.toFixed(1) : "—"}
             </span>
           </div>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-gray-400 dark:text-gray-500">
             {p.ratings_count > 0
               ? `${p.ratings_count} review${p.ratings_count !== 1 ? "s" : ""}`
               : "No reviews"}

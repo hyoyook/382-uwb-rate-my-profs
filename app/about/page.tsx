@@ -1,11 +1,11 @@
 export default function AboutPage() {
   return (
     <article className="space-y-8">
-      <header className="rounded-lg bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-husky-purple">
+      <header className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
+        <h1 className="text-2xl font-semibold text-husky-purple dark:text-husky-purpleLight">
           About Rate My Husky
         </h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
           Documentation and project notes. Replace these placeholders as the
           project matures.
         </p>
@@ -72,9 +72,9 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-lg bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-husky-purple">{title}</h2>
-      <div className="mt-3 text-sm leading-relaxed text-gray-700">
+    <section className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-husky-purple dark:text-husky-purpleLight">{title}</h2>
+      <div className="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
         {children}
       </div>
     </section>

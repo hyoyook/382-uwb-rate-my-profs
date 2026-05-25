@@ -21,7 +21,7 @@ export default function HomePage() {
   if (checking) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="flex items-center gap-3 text-gray-600">
+        <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
           <Spinner />
           <span>Loading...</span>
         </div>
@@ -37,11 +37,11 @@ function SignedInHome({ user }: { user: User }) {
 
   return (
     <section className="space-y-8">
-      <div className="rounded-lg bg-white p-8 shadow-sm">
-        <h1 className="text-3xl font-bold text-husky-purple sm:text-4xl">
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-8 shadow-sm">
+        <h1 className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight sm:text-4xl">
           Welcome back, {firstName}
         </h1>
-        <p className="mt-3 max-w-2xl text-lg text-gray-700">
+        <p className="mt-3 max-w-2xl text-lg text-gray-700 dark:text-gray-300">
           You&apos;re signed in as{" "}
           <span className="font-medium">{user.email}</span>. Browse professors,
           read verified student reviews, and share your own feedback.
@@ -55,7 +55,7 @@ function SignedInHome({ user }: { user: User }) {
           </Link>
           <Link
             href="/search"
-            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900"
           >
             Browse professors
           </Link>
@@ -83,11 +83,11 @@ function SignedInHome({ user }: { user: User }) {
 function SignedOutHome() {
   return (
     <section className="space-y-8">
-      <div className="rounded-lg bg-white p-8 shadow-sm">
-        <h1 className="text-3xl font-bold text-husky-purple sm:text-4xl">
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-8 shadow-sm">
+        <h1 className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight sm:text-4xl">
           Rate My Husky
         </h1>
-        <p className="mt-3 max-w-2xl text-lg text-gray-700">
+        <p className="mt-3 max-w-2xl text-lg text-gray-700 dark:text-gray-300">
           A verified UW-only professor review platform. Sign in with your{" "}
           <span className="font-medium">@uw.edu</span> Google account to browse
           professors, read student reviews, and see AI-generated summaries of
@@ -102,7 +102,7 @@ function SignedOutHome() {
           </Link>
           <Link
             href="/about"
-            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900"
           >
             Learn more
           </Link>
@@ -129,9 +129,9 @@ function SignedOutHome() {
 
 function FeatureCard({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5">
-      <h3 className="font-semibold text-husky-purple">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600">{body}</p>
+    <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
+      <h3 className="font-semibold text-husky-purple dark:text-husky-purpleLight">{title}</h3>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">{body}</p>
     </div>
   );
 }

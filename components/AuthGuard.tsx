@@ -49,7 +49,7 @@ export default function AuthGuard({ children, redirectTo = "/login" }: Props) {
   if (checking) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="flex items-center gap-3 text-gray-600">
+        <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
           <Spinner />
           <span>Checking your UW credentials...</span>
         </div>
