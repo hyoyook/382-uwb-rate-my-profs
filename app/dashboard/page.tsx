@@ -8,7 +8,6 @@ import type { User } from "firebase/auth";
 import AuthGuard from "@/components/AuthGuard";
 import ProfessorSearchModal from "@/components/ProfessorSearchModal";
 import { signOutCurrentUser } from "@/lib/auth";
-import { auth } from "@/lib/firebaseClient";
 
 export default function DashboardPage() {
   return (
@@ -27,13 +26,6 @@ function DashboardView({ user }: { user: User }) {
     setLoggingOut(true);
     await signOutCurrentUser();
     router.replace("/login");
-  }
-
-  // TODO: TESTING ONLY — remove before merging to main
-  async function handleGetToken() {
-    const token = await auth.currentUser?.getIdToken();
-    console.log("TOKEN:", token);
-    alert("Token copied to console (Cmd+Option+J)");
   }
 
   return (
@@ -67,14 +59,6 @@ function DashboardView({ user }: { user: User }) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {/* TODO: TESTING ONLY — remove before merging to main */}
-          <button
-            type="button"
-            onClick={handleGetToken}
-            className="rounded-md border border-red-300 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-100"
-          >
-            Get Token (dev)
-          </button>
           <button
             type="button"
             onClick={handleLogout}
