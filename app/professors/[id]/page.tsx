@@ -40,6 +40,7 @@ type Professor = {
   bio: string;
   courses_taught: string[];
   iasystem_ratings: IAsystemEntry[];
+  ias_review_id?: string;
   overall_rating: number;
   ratings_count: number;
   tags: string[];
@@ -65,13 +66,6 @@ type Review = {
   tags: string[];
   verified: boolean;
   created_at: { seconds: number } | null;
-};
-
-const SUMMATIVE_LABELS: Record<keyof IAsystemEntry["summative_items"], string> = {
-  course_as_whole: "Course as a whole",
-  course_content: "Course content",
-  instructor_contribution: "Instructor contribution",
-  instructor_effectiveness: "Instructor effectiveness",
 };
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -254,7 +248,27 @@ function ProfessorView({ user }: { user: User }) {
       </div>
 
       {/* ── IASystem Ratings ─────────────────────────────────────────────────── */}
-      <IAsystemPanel entries={professor.iasystem_ratings ?? []} />
+      {professor.ias_review_id && (
+        <Link
+          href={`/professors/${professor.id}/ias`}
+          className="group flex items-center justify-between gap-4 rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm transition-colors hover:bg-husky-light/40 dark:hover:bg-husky-purple/10"
+        >
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-husky-light dark:bg-husky-purple/20 text-2xl">
+              🏛️
+            </div>
+            <div>
+              <h2 className="font-semibold text-gray-900 dark:text-gray-100">IASystem Ratings</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                View numerical ordinal ratings from official UW course evaluations.
+              </p>
+            </div>
+          </div>
+          <span className="shrink-0 rounded-md bg-husky-purple px-4 py-2 text-sm font-medium text-white transition-colors group-hover:bg-husky-purple/90">
+            View IAS Reviews →
+          </span>
+        </Link>
+      )}
 
       {/* ── AI Summary ────────────────────────────────────────────────────────── */}
       <AISummarySection
@@ -359,132 +373,6 @@ function ProfessorView({ user }: { user: User }) {
           </div>
         )}
       </div>
-    </div>
-  );
-}
-
-// ─── IASystem Panel ───────────────────────────────────────────────────────────
-
-function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
-  const [selectedIdx, setSelectedIdx] = useState(0);
-
-  const selected = entries[selectedIdx] ?? null;
-
-  return (
-    <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">IASystem Ratings</h2>
-
-        {entries.length > 0 && (
-          <select
-            value={selectedIdx}
-            onChange={(e) => setSelectedIdx(Number(e.target.value))}
-            className="rounded-md border border-gray-200 dark:border-gray-700 px-2 py-1 text-xs text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-husky-purple"
-          >
-            {entries.map((e, i) => (
-              <option key={i} value={i}>
-                {e.course_code} {e.section} · {e.quarter} {e.year}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
-
-      {!selected ? (
-        <div className="rounded-md border border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-6 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400">No IASystem data available for this professor.</p>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {/* Left: 4 summative bar items */}
-            <div className="space-y-3">
-              {(Object.keys(SUMMATIVE_LABELS) as Array<keyof IAsystemEntry["summative_items"]>).map((key) => {
-                const val = selected.summative_items[key] ?? 0;
-                return (
-                  <div key={key} className="flex items-center gap-3">
-                    <span className="w-44 text-xs text-gray-600 dark:text-gray-300 shrink-0">{SUMMATIVE_LABELS[key]}</span>
-                    <div className="flex-1 h-2 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-husky-purple transition-all duration-500"
-                        style={{ width: `${(val / 5) * 100}%` }}
-                      />
-                    </div>
-                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300 w-8 text-right">
-                      {val > 0 ? val.toFixed(1) : "—"}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Right: Overall Summative + CEI */}
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light dark:bg-husky-purple/20 py-4 px-6 gap-1">
-                <div className="flex items-center gap-1">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Overall Summative</span>
-                  <Tooltip text="Average of the four summative items. Reported on a 0–5 scale." />
-                </div>
-                <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
-                  {selected.overall_summative > 0 ? selected.overall_summative.toFixed(1) : "—"}
-                </span>
-                <span className="text-xs text-gray-400 dark:text-gray-500">out of 5.0</span>
-              </div>
-
-              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light dark:bg-husky-purple/20 py-4 px-6 gap-1">
-                <div className="flex items-center gap-1">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">CEI</span>
-                  <Tooltip text="Course Evaluation Index — a composite score weighted across all evaluation items. Reported on a 1–7 scale." />
-                </div>
-                <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
-                  {selected.cei > 0 ? selected.cei.toFixed(1) : "—"}
-                </span>
-                <span className="text-xs text-gray-400 dark:text-gray-500">out of 7.0</span>
-              </div>
-
-              <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
-                {selected.responses} / {selected.enrollment} responses
-              </p>
-            </div>
-          </div>
-
-          {/* AI summary of written comments */}
-          {selected.ai_summary && (
-            <div className="mt-4 rounded-md border border-husky-light dark:border-husky-purple/30 bg-husky-light/40 dark:bg-husky-purple/10 px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-1">Student Comments Summary</p>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{selected.ai_summary}</p>
-            </div>
-          )}
-        </>
-      )}
-
-      <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">Source: UW IASystem official evaluation data.</p>
-    </div>
-  );
-}
-
-// ─── Tooltip ──────────────────────────────────────────────────────────────────
-
-function Tooltip({ text }: { text: string }) {
-  const [visible, setVisible] = useState(false);
-  return (
-    <div className="relative inline-flex items-center">
-      <button
-        type="button"
-        onMouseEnter={() => setVisible(true)}
-        onMouseLeave={() => setVisible(false)}
-        onFocus={() => setVisible(true)}
-        onBlur={() => setVisible(false)}
-        className="flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500 text-xs hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight focus:outline-none"
-        aria-label="More information"
-      >
-        i
-      </button>
-      {visible && (
-        <div className="absolute left-1/2 bottom-full mb-1.5 -translate-x-1/2 z-10 w-56 rounded-md border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-xs text-gray-600 dark:text-gray-300 shadow-md">
-          {text}
-        </div>
-      )}
     </div>
   );
 }

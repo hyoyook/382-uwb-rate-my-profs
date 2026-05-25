@@ -11,14 +11,22 @@ interface Professor {
     name: string;
     department: string;
     campus: string[];
+    ias_review_id?: string;
 }
 
 interface Props {
     open: boolean;
     onClose: () => void;
+    /** Where selecting a professor navigates. "review" → write a review, "ias" → IAS ratings. */
+    mode?: "review" | "ias";
 }
 
-export default function ProfessorSearchModal({ open, onClose }: Props) {
+const MODE_COPY = {
+    review: { heading: "Select a professor to review", path: "review" },
+    ias: { heading: "Select a professor to view IAS ratings", path: "ias" },
+} as const;
+
+export default function ProfessorSearchModal({ open, onClose, mode = "review" }: Props) {
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -62,14 +70,19 @@ export default function ProfessorSearchModal({ open, onClose }: Props) {
         return () => document.removeEventListener("keydown", onKey);
     }, [open, onClose]);
 
-    const filtered = professors.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.department?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filtered = professors.filter((p) => {
+        // In IAS mode, only surface professors that actually have IAS data linked.
+        if (mode === "ias" && !p.ias_review_id) return false;
+        const q = searchQuery.toLowerCase();
+        return (
+            p.name.toLowerCase().includes(q) ||
+            p.department?.toLowerCase().includes(q)
+        );
+    });
 
     function handleSelect(prof: Professor) {
         onClose();
-        router.push(`/professors/${prof.id}/review`);
+        router.push(`/professors/${prof.id}/${MODE_COPY[mode].path}`);
     }
 
     if (!open) return null;
@@ -85,7 +98,7 @@ export default function ProfessorSearchModal({ open, onClose }: Props) {
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 px-5 py-4">
                     <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-                        Select a professor to review
+                        {MODE_COPY[mode].heading}
                     </h2>
                     <button
                         type="button"

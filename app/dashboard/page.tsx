@@ -20,7 +20,7 @@ export default function DashboardPage() {
 function DashboardView({ user }: { user: User }) {
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
-  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [searchMode, setSearchMode] = useState<"review" | "ias" | null>(null);
 
   async function handleLogout() {
     setLoggingOut(true);
@@ -31,8 +31,9 @@ function DashboardView({ user }: { user: User }) {
   return (
     <section className="space-y-8">
       <ProfessorSearchModal
-        open={reviewModalOpen}
-        onClose={() => setReviewModalOpen(false)}
+        open={searchMode !== null}
+        mode={searchMode ?? "review"}
+        onClose={() => setSearchMode(null)}
       />
 
       <header className="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
@@ -84,17 +85,21 @@ function DashboardView({ user }: { user: User }) {
           title="Submit Review"
           body="Post a structured review with ratings, difficulty, and written feedback."
           icon="✏️"
-          onClick={() => setReviewModalOpen(true)}
+          onClick={() => setSearchMode("review")}
+        />
+
+        {/* ── Active card: IASystem Ratings ── */}
+        <ActionCard
+          title="IASystem Ratings"
+          body="View numerical ordinal ratings from official course evaluations."
+          icon="🏛️"
+          onClick={() => setSearchMode("ias")}
         />
 
         {/* ── Placeholder cards ── */}
         <PlaceholderCard
           title="AI Review Summaries"
           body="Skim long review threads with model-generated overviews."
-        />
-        <PlaceholderCard
-          title="IASystem Ratings"
-          body="View numerical ordinal ratings from official course evaluations."
         />
       </div>
     </section>
