@@ -1,7 +1,8 @@
 // app/api/summary/[id]/route.ts
 import { NextResponse, type NextRequest } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
-import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
+import { adminDb } from "@/lib/firebaseAdmin";
+import { requireUwUser } from "@/lib/serverAuth";
 import { flashModel } from "@/lib/gemini";
 
 export const runtime = "nodejs";
@@ -12,14 +13,6 @@ const PROFESSORS_COLLECTION = "professors";
 const MIN_VERIFIED = 5;
 const SAMPLE_RECENT = 5;
 const SAMPLE_RANDOM = 5;
-
-function extractBearerToken(req: NextRequest): string | null {
-    const header = req.headers.get("authorization");
-    if (!header) return null;
-    const [scheme, token] = header.split(" ");
-    if (scheme !== "Bearer" || !token) return null;
-    return token;
-}
 
 /** Fisher-Yates sample — returns up to n items picked at random from arr */
 function sampleRandom<T>(arr: T[], n: number): T[] {
@@ -35,16 +28,9 @@ export async function GET(
     req: NextRequest,
     { params }: { params: { id: string } }
 ) {
-    // 1. Auth
-    const idToken = extractBearerToken(req);
-    if (!idToken) {
-        return NextResponse.json({ error: "Missing Authorization bearer token." }, { status: 401 });
-    }
-    try {
-        await adminAuth.verifyIdToken(idToken, true);
-    } catch {
-        return NextResponse.json({ error: "Invalid or expired ID token." }, { status: 401 });
-    }
+    // 1. Auth — must be a verified @uw.edu account.
+    const authResult = await requireUwUser(req);
+    if (!authResult.ok) return authResult.response;
 
     const professorId = params.id;
 
