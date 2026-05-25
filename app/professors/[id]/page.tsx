@@ -80,7 +80,7 @@ export default function ProfessorPage() {
   return <AuthGuard>{(user) => <ProfessorView user={user} />}</AuthGuard>;
 }
 
-function ProfessorView({ user: _user }: { user: User }) {
+function ProfessorView({ user }: { user: User }) {
   const params = useParams();
   const router = useRouter();
   const professorId = params.id as string;
@@ -262,6 +262,7 @@ function ProfessorView({ user: _user }: { user: User }) {
         reviewCount={reviews.length}
         verifiedCount={verifiedCount}
         hasEnough={hasEnoughForSummary}
+        user={user}
       />
 
       {/* ── Buzz-words ───────────────────────────────────────────────────────── */}
@@ -490,29 +491,58 @@ function Tooltip({ text }: { text: string }) {
 
 // ─── AI Summary ───────────────────────────────────────────────────────────────
 
+// How many new verified reviews since last summary triggers the stale nudge
+const STALE_THRESHOLD = 3;
+
 function AISummarySection({
-  professor, reviewCount, verifiedCount, hasEnough,
+  professor, reviewCount, verifiedCount, hasEnough, user,
 }: {
   professor: Professor;
   reviewCount: number;
   verifiedCount: number;
   hasEnough: boolean;
+  user: User;
 }) {
   const [loading, setLoading] = useState(false);
   const [summary, setSummary] = useState<string | null>(professor.summary);
+  const [summaryReviewCount, setSummaryReviewCount] = useState<number>(
+    professor.summary_review_count ?? 0
+  );
+  const [updatedAt, setUpdatedAt] = useState<{ seconds: number } | null>(
+    professor.summary_updated_at
+  );
   const [error, setError] = useState<string | null>(null);
+
+  const isStale =
+    !!summary &&
+    verifiedCount - summaryReviewCount >= STALE_THRESHOLD;
 
   async function fetchSummary() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/summary/${professor.id}`);
-      if (!res.ok) throw new Error("Failed to fetch summary");
-      const data = await res.json();
-      setSummary(data.summary);
+      const token = await user.getIdToken();
+      const res = await fetch(`/api/summary/${professor.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      let data: Record<string, unknown> = {};
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error(`Server error (${res.status})`);
+      }
+
+      if (!res.ok) {
+        throw new Error((data.error as string) ?? `Server error (${res.status})`);
+      }
+
+      setSummary(data.summary as string);
+      setSummaryReviewCount(data.review_count as number);
+      setUpdatedAt({ seconds: Math.floor(Date.now() / 1000) });
     } catch (err) {
       setError("Couldn't load summary. Try again later.");
-      console.error(err);
+      console.error("[AISummarySection]", err);
     } finally {
       setLoading(false);
     }
@@ -543,20 +573,47 @@ function AISummarySection({
           )}
         </div>
       ) : summary ? (
-        <div>
+        <div className="space-y-3">
           <p className="text-sm text-gray-700 leading-relaxed">{summary}</p>
-          {professor.summary_updated_at && (
-            <p className="mt-2 text-xs text-gray-400">
-              Last updated {new Date(professor.summary_updated_at.seconds * 1000).toLocaleDateString()}
-            </p>
-          )}
+
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            {updatedAt && (
+              <p className="text-xs text-gray-400">
+                Last updated {new Date(updatedAt.seconds * 1000).toLocaleDateString()}
+                {summaryReviewCount > 0 && ` · based on ${summaryReviewCount} verified review${summaryReviewCount !== 1 ? "s" : ""}`}
+              </p>
+            )}
+
+            {/* Stale nudge — shown when enough new reviews have come in since last generation */}
+            {isStale && (
+              <div className="flex items-center gap-2">
+                <p className="text-xs text-amber-600">
+                  {verifiedCount - summaryReviewCount} new review{verifiedCount - summaryReviewCount !== 1 ? "s" : ""} since last summary
+                </p>
+                <button
+                  type="button"
+                  onClick={fetchSummary}
+                  disabled={loading}
+                  className="flex items-center gap-1.5 rounded-md border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700 hover:bg-amber-100 disabled:opacity-60 transition-colors"
+                >
+                  {loading ? <><Spinner small /> Regenerating...</> : "↺ Regenerate"}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {error && <p className="text-xs text-red-600">{error}</p>}
         </div>
       ) : (
         <div className="flex flex-col items-start gap-3">
           <p className="text-sm text-gray-500">This professor has enough verified reviews for an AI summary.</p>
           {error && <p className="text-xs text-red-600">{error}</p>}
-          <button type="button" onClick={fetchSummary} disabled={loading}
-            className="flex items-center gap-2 rounded-md bg-husky-purple px-4 py-2 text-sm font-medium text-white hover:bg-husky-purple/90 disabled:opacity-60 transition-colors">
+          <button
+            type="button"
+            onClick={fetchSummary}
+            disabled={loading}
+            className="flex items-center gap-2 rounded-md bg-husky-purple px-4 py-2 text-sm font-medium text-white hover:bg-husky-purple/90 disabled:opacity-60 transition-colors"
+          >
             {loading ? <><Spinner small /> Generating...</> : "Generate Summary"}
           </button>
         </div>
