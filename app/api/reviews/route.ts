@@ -1,7 +1,8 @@
 // app/api/reviews/route.ts
 import { NextResponse, type NextRequest } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
-import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
+import { adminDb } from "@/lib/firebaseAdmin";
+import { requireUwUser } from "@/lib/serverAuth";
 import { flashModel } from "@/lib/gemini";
 
 export const runtime = "nodejs";
@@ -13,14 +14,6 @@ const RATE_LIMIT_MAX = 3;
 const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function extractBearerToken(req: NextRequest): string | null {
-    const header = req.headers.get("authorization");
-    if (!header) return null;
-    const [scheme, token] = header.split(" ");
-    if (scheme !== "Bearer" || !token) return null;
-    return token;
-}
 
 function isValidScore(n: unknown, min = 1, max = 5): boolean {
     return typeof n === "number" && Number.isInteger(n) && n >= min && n <= max;
@@ -89,21 +82,12 @@ Review: "${body.replace(/"/g, '\\"')}"
 // ─── POST /api/reviews ────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
-    // 1. Auth
-    const idToken = extractBearerToken(req);
-    if (!idToken) {
-        return NextResponse.json({ error: "Missing Authorization bearer token." }, { status: 401 });
-    }
+    // 1. Auth — must be a verified @uw.edu account.
+    const authResult = await requireUwUser(req);
+    if (!authResult.ok) return authResult.response;
+    const { decoded, email } = authResult;
 
-    let decoded;
-    try {
-        decoded = await adminAuth.verifyIdToken(idToken, true);
-    } catch (err) {
-        console.error("[/api/reviews] verifyIdToken failed:", err);
-        return NextResponse.json({ error: "Invalid or expired ID token." }, { status: 401 });
-    }
-
-    const netid = decoded.email?.split("@")[0] ?? decoded.uid;
+    const netid = email.split("@")[0];
 
     // 2. Parse body
     let data: {
@@ -217,7 +201,7 @@ export async function POST(req: NextRequest) {
         id: docId,
         professor_id,
         author_id: decoded.uid,
-        verified: true,                        // always true — enforced by @uw.edu auth
+        verified: true,                        // enforced by requireUwUser above
         created_at: FieldValue.serverTimestamp(),
         status: "published" as const,
         flagged: false,
