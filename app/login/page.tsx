@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import GoogleSignInButton from "@/components/GoogleSignInButton";
 import {
+  DOMAIN_REJECTION_MESSAGE,
   isAllowedEmail,
   signInWithGoogle,
   signOutCurrentUser,
@@ -24,6 +25,7 @@ export default function LoginPage() {
         return;
       }
       if (u && !isAllowedEmail(u.email)) {
+        setError(DOMAIN_REJECTION_MESSAGE);
         await signOutCurrentUser();
       }
       setChecking(false);
@@ -47,6 +49,15 @@ export default function LoginPage() {
   return (
     <section className="mx-auto max-w-md">
       <div className="rounded-lg bg-white dark:bg-gray-800 p-8 shadow-sm">
+        {error ? (
+          <div
+            role="alert"
+            className="mb-4 rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-400"
+          >
+            {error}
+          </div>
+        ) : null}
+
         <h1 className="text-2xl font-semibold text-husky-purple dark:text-husky-purpleLight">Sign in</h1>
         <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
           Rate My Husky is restricted to current UW students. Use the Google
@@ -66,15 +77,6 @@ export default function LoginPage() {
             <GoogleSignInButton onClick={handleSignIn} loading={loading} />
           )}
         </div>
-
-        {error ? (
-          <div
-            role="alert"
-            className="mt-4 rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-400"
-          >
-            {error}
-          </div>
-        ) : null}
 
         <p className="mt-6 text-xs text-gray-500 dark:text-gray-400">
           By signing in, you agree that reviews you post can be moderated and
