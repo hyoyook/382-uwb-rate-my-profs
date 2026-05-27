@@ -2,12 +2,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { User } from "firebase/auth";
 
 import AuthGuard from "@/components/AuthGuard";
 import ProfessorSearchModal from "@/components/ProfessorSearchModal";
 import { signOutCurrentUser } from "@/lib/auth";
+import { canUserWriteReviews } from "@/lib/reviewEligibility";
+
+type ReviewAccessState = "checking" | "allowed" | "blocked";
 
 export default function DashboardPage() {
   return (
@@ -21,6 +24,25 @@ function DashboardView({ user }: { user: User }) {
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [reviewAccess, setReviewAccess] = useState<ReviewAccessState>("checking");
+
+  useEffect(() => {
+    let active = true;
+
+    canUserWriteReviews(user.email)
+      .then((canWrite) => {
+        if (!active) return;
+        setReviewAccess(canWrite ? "allowed" : "blocked");
+      })
+      .catch(() => {
+        if (!active) return;
+        setReviewAccess("allowed");
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [user.email]);
 
   async function handleLogout() {
     setLoggingOut(true);
@@ -82,9 +104,15 @@ function DashboardView({ user }: { user: User }) {
         {/* ── Active card: Submit Review ── */}
         <ActionCard
           title="Submit Review"
-          body="Post a structured review with ratings, difficulty, and written feedback."
+          body={
+            reviewAccess === "blocked"
+              ? "Professor accounts cannot submit reviews."
+              : "Post a structured review with ratings, difficulty, and written feedback."
+          }
           icon="✏️"
           onClick={() => setReviewModalOpen(true)}
+          disabled={reviewAccess !== "allowed"}
+          badge={reviewAccess === "blocked" ? "Restricted" : "Live"}
         />
 
         {/* ── Placeholder cards ── */}
@@ -106,22 +134,37 @@ function ActionCard({
   body,
   icon,
   onClick,
+  disabled = false,
+  badge = "Live",
 }: {
   title: string;
   body: string;
   icon: string;
   onClick: () => void;
+  disabled?: boolean;
+  badge?: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="rounded-lg border border-husky-purple/30 bg-white dark:bg-gray-800 p-5 text-left shadow-sm transition hover:border-husky-purple hover:shadow-md focus:outline-none focus:ring-2 focus:ring-husky-purple"
+      disabled={disabled}
+      className={`rounded-lg border p-5 text-left shadow-sm transition focus:outline-none focus:ring-2 focus:ring-husky-purple ${
+        disabled
+          ? "cursor-not-allowed border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 opacity-70"
+          : "border-husky-purple/30 bg-white dark:bg-gray-800 hover:border-husky-purple hover:shadow-md"
+      }`}
     >
       <div className="flex items-start justify-between">
         <span className="text-2xl">{icon}</span>
-        <span className="rounded-full bg-husky-light dark:bg-husky-purple/20 px-2 py-0.5 text-xs font-medium text-husky-purple dark:text-husky-purpleLight">
-          Live
+        <span
+          className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+            disabled
+              ? "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+              : "bg-husky-light dark:bg-husky-purple/20 text-husky-purple dark:text-husky-purpleLight"
+          }`}
+        >
+          {badge}
         </span>
       </div>
       <h3 className="mt-3 font-semibold text-husky-purple dark:text-husky-purpleLight">{title}</h3>
