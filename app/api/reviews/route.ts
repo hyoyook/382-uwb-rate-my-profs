@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 
 const REVIEWS_COLLECTION = "reviews";
 const PROFESSORS_COLLECTION = "professors";
+const USERS_COLLECTION = "users";
 const RATE_LIMIT_MAX = 3;
 const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000;
 
@@ -17,6 +18,43 @@ const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 function isValidScore(n: unknown, min = 1, max = 5): boolean {
     return typeof n === "number" && Number.isInteger(n) && n >= min && n <= max;
+}
+
+async function isProfessorAccount(uid: string, email: string): Promise<boolean> {
+    // Primary check: explicit user role flags on users/{uid}
+    const userSnap = await adminDb.collection(USERS_COLLECTION).doc(uid).get();
+    if (userSnap.exists) {
+        const userData = userSnap.data() as {
+            role?: unknown;
+            roles?: unknown;
+            isProfessor?: unknown;
+            is_professor?: unknown;
+        };
+
+        if (userData.isProfessor === true || userData.is_professor === true) {
+            return true;
+        }
+
+        if (typeof userData.role === "string" && userData.role.toLowerCase() === "professor") {
+            return true;
+        }
+
+        if (
+            Array.isArray(userData.roles) &&
+            userData.roles.some((r) => typeof r === "string" && r.toLowerCase() === "professor")
+        ) {
+            return true;
+        }
+    }
+
+    // Fallback check: if this UW email appears in professors collection, treat as professor.
+    const professorByEmailSnap = await adminDb
+        .collection(PROFESSORS_COLLECTION)
+        .where("email", "==", email)
+        .limit(1)
+        .get();
+
+    return !professorByEmailSnap.empty;
 }
 
 async function moderateReview(body: string): Promise<{ pass: boolean; reason: string }> {
@@ -86,6 +124,18 @@ export async function POST(req: NextRequest) {
     const authResult = await requireUwUser(req);
     if (!authResult.ok) return authResult.response;
     const { decoded, email } = authResult;
+
+    // Professors cannot submit reviews.
+    const professorAccount = await isProfessorAccount(decoded.uid, email);
+    if (professorAccount) {
+        return NextResponse.json(
+            {
+                error: "Professor accounts cannot submit reviews.",
+                reason: "professor_accounts_cannot_review",
+            },
+            { status: 403 }
+        );
+    }
 
     const netid = email.split("@")[0];
 

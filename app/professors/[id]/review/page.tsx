@@ -291,6 +291,11 @@ function ReviewView({ user }: { user: User }) {
                 setErrorMsg(reasonMessages[data.reason] ?? data.reason);
                 return;
             }
+            if (res.status === 403 && data.reason === "professor_accounts_cannot_review") {
+                setSubmitState("error");
+                setErrorMsg("Professor accounts cannot submit reviews.");
+                return;
+            }
             if (!res.ok) {
                 setSubmitState("error");
                 setErrorMsg(data.error ?? "Something went wrong. Please try again.");
