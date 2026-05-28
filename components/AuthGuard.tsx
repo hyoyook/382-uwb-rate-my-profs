@@ -5,6 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import type { User } from "firebase/auth";
 
 import { isAllowedEmail, signOutCurrentUser, subscribeToAuth } from "@/lib/auth";
+import { canUserWriteReviews } from "@/lib/reviewEligibility";
 
 interface Props {
   children: (user: User) => ReactNode;
@@ -38,6 +39,22 @@ export default function AuthGuard({ children, redirectTo = "/login" }: Props) {
         router.replace(redirectTo);
         return;
       }
+
+      // Run professor eligibility check on page load so restriction/log state is
+      // refreshed whenever a signed-in user lands on a protected page.
+      void canUserWriteReviews(u.email)
+        .then((canWrite) => {
+          console.log("[AuthGuard] Professor status check complete", {
+            email: u.email,
+            canWriteReviews: canWrite,
+          });
+        })
+        .catch((err) => {
+          console.error("[AuthGuard] Professor status check failed", {
+            email: u.email,
+            error: err,
+          });
+        });
 
       setUser(u);
       setChecking(false);

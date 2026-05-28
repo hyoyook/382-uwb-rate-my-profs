@@ -19,6 +19,58 @@ function isValidScore(n: unknown, min = 1, max = 5): boolean {
     return typeof n === "number" && Number.isInteger(n) && n >= min && n <= max;
 }
 
+type ProfessorProfileLite = {
+    id: string;
+    name?: string;
+    email?: string;
+};
+
+async function findProfessorByEmail(email: string): Promise<ProfessorProfileLite | null> {
+    const normalized = email.trim().toLowerCase();
+
+    const exactSnap = await adminDb
+        .collection(PROFESSORS_COLLECTION)
+        .where("email", "==", email)
+        .limit(1)
+        .get();
+    if (!exactSnap.empty) {
+        const doc = exactSnap.docs[0];
+        return { id: doc.id, ...(doc.data() as Omit<ProfessorProfileLite, "id">) };
+    }
+
+    if (normalized !== email) {
+        const normalizedSnap = await adminDb
+            .collection(PROFESSORS_COLLECTION)
+            .where("email", "==", normalized)
+            .limit(1)
+            .get();
+        if (!normalizedSnap.empty) {
+            const doc = normalizedSnap.docs[0];
+            return { id: doc.id, ...(doc.data() as Omit<ProfessorProfileLite, "id">) };
+        }
+    }
+
+    return null;
+}
+
+async function isProfessorAccount(email: string): Promise<boolean> {
+    console.log("[/api/reviews] Professor check conducted for email:", email);
+
+    // Source of truth: if this UW email appears in professors collection, treat as professor.
+    const professor = await findProfessorByEmail(email);
+    if (professor) {
+        console.log("[/api/reviews] Professor matched:", {
+            professorId: professor.id,
+            professorName: professor.name ?? "(unknown)",
+            professorEmail: professor.email ?? email,
+        });
+        return true;
+    }
+
+    console.log("[/api/reviews] Professor check result: no professor match", { email });
+    return false;
+}
+
 async function moderateReview(body: string): Promise<{ pass: boolean; reason: string }> {
     if (!process.env.GEMINI_API_KEY) {
         console.warn("[/api/reviews] GEMINI_API_KEY not set — skipping moderation");
@@ -86,6 +138,18 @@ export async function POST(req: NextRequest) {
     const authResult = await requireUwUser(req);
     if (!authResult.ok) return authResult.response;
     const { decoded, email } = authResult;
+
+    // Professors cannot submit reviews.
+    const professorAccount = await isProfessorAccount(email);
+    if (professorAccount) {
+        return NextResponse.json(
+            {
+                error: "Professor accounts cannot submit reviews.",
+                reason: "professor_accounts_cannot_review",
+            },
+            { status: 403 }
+        );
+    }
 
     const netid = email.split("@")[0];
 

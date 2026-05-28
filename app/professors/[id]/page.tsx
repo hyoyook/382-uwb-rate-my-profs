@@ -5,11 +5,12 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  doc, getDoc, collection, query, where, getDocs, orderBy,
+  doc, getDoc, collection, query, where, getDocs,
 } from "firebase/firestore";
 import { db } from "@/lib/firebaseClient";
 import AuthGuard from "@/components/AuthGuard";
 import type { User } from "firebase/auth";
+import { canUserWriteReviews } from "@/lib/reviewEligibility";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -74,6 +75,8 @@ const SUMMATIVE_LABELS: Record<keyof IAsystemEntry["summative_items"], string> =
   instructor_effectiveness: "Instructor effectiveness",
 };
 
+type ReviewAccessState = "checking" | "allowed" | "blocked";
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function ProfessorPage() {
@@ -89,6 +92,7 @@ function ProfessorView({ user }: { user: User }) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [reviewAccess, setReviewAccess] = useState<ReviewAccessState>("checking");
 
   const [starFilter, setStarFilter] = useState<number | null>(null);
   const [courseFilter, setCourseFilter] = useState<string>("All");
@@ -120,6 +124,24 @@ function ProfessorView({ user }: { user: User }) {
     }
     load();
   }, [professorId]);
+
+  useEffect(() => {
+    let active = true;
+
+    canUserWriteReviews(user.email)
+      .then((canWrite) => {
+        if (!active) return;
+        setReviewAccess(canWrite ? "allowed" : "blocked");
+      })
+      .catch(() => {
+        if (!active) return;
+        setReviewAccess("allowed");
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [user.email]);
 
   const reviewCampuses = useMemo(() => {
     const s = new Set(reviews.map((r) => r.campus));
@@ -158,6 +180,7 @@ function ProfessorView({ user }: { user: User }) {
   }
 
   const hasReviews = reviews.length > 0;
+  const canWriteReview = reviewAccess === "allowed";
   const verifiedCount = reviews.filter((r) => r.verified).length;
   const unverifiedCount = reviews.filter((r) => !r.verified).length;
   const verifiedAvg = verifiedCount > 0
@@ -194,12 +217,23 @@ function ProfessorView({ user }: { user: User }) {
 
           <button
             type="button"
+            disabled={!canWriteReview}
             onClick={() => router.push(`/professors/${professor.id}/review`)}
-            className="rounded-md bg-husky-purple px-4 py-2 text-sm font-medium text-white hover:bg-husky-purple/90 transition-colors"
+            className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+              canWriteReview
+                ? "bg-husky-purple text-white hover:bg-husky-purple/90"
+                : "cursor-not-allowed bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+            }`}
           >
-            ✏️ Write a Review
+            {canWriteReview ? "✏️ Write a Review" : "✏️ Review Disabled"}
           </button>
         </div>
+
+        {!canWriteReview && (
+          <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+            Professor accounts cannot submit reviews.
+          </p>
+        )}
 
         {professor.bio && (
           <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{professor.bio}</p>
@@ -341,7 +375,7 @@ function ProfessorView({ user }: { user: User }) {
         </div>
 
         {!hasReviews ? (
-          <NoReviewsState professorId={professor.id} />
+          <NoReviewsState professorId={professor.id} canWriteReview={canWriteReview} />
         ) : filteredReviews.length === 0 ? (
           <p className="py-8 text-center text-sm text-gray-400 dark:text-gray-500">No reviews match your filters.</p>
         ) : (
@@ -680,16 +714,30 @@ function ReviewCard({ review: r }: { review: Review }) {
 
 // ─── No reviews state ─────────────────────────────────────────────────────────
 
-function NoReviewsState({ professorId }: { professorId: string }) {
+function NoReviewsState({
+  professorId,
+  canWriteReview,
+}: {
+  professorId: string;
+  canWriteReview: boolean;
+}) {
   const router = useRouter();
   return (
     <div className="flex flex-col items-center gap-3 py-10 text-center">
       <div className="text-4xl">📝</div>
       <p className="text-sm font-medium text-gray-700 dark:text-gray-300">No peer reviews yet.</p>
       <p className="text-xs text-gray-400 dark:text-gray-500">Be the first to leave a verified review.</p>
-      <button type="button" onClick={() => router.push(`/professors/${professorId}/review`)}
-        className="mt-1 rounded-md bg-husky-purple px-4 py-2 text-sm font-medium text-white hover:bg-husky-purple/90 transition-colors">
-        Write a Review
+      <button
+        type="button"
+        disabled={!canWriteReview}
+        onClick={() => router.push(`/professors/${professorId}/review`)}
+        className={`mt-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+          canWriteReview
+            ? "bg-husky-purple text-white hover:bg-husky-purple/90"
+            : "cursor-not-allowed bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+        }`}
+      >
+        {canWriteReview ? "Write a Review" : "Review Disabled"}
       </button>
     </div>
   );
