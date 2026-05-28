@@ -98,6 +98,7 @@ function ProfessorView({ user }: { user: User }) {
   const [courseFilter, setCourseFilter] = useState<string>("All");
   const [campusFilter, setCampusFilter] = useState<string>("All");
   const [verifiedOnly, setVerifiedOnly] = useState(false);
+  const [sortOrder, setSortOrder] = useState<"posted" | "term">("posted");
 
   useEffect(() => {
     async function load() {
@@ -149,14 +150,29 @@ function ProfessorView({ user }: { user: User }) {
   }, [reviews]);
 
   const filteredReviews = useMemo(() => {
-    return reviews.filter((r) => {
+    const QUARTER_ORDER: Record<string, number> = { Autumn: 4, Summer: 3, Spring: 2, Winter: 1 };
+
+    const filtered = reviews.filter((r) => {
       const starOk = starFilter === null || r.scores.overall === starFilter;
       const courseOk = courseFilter === "All" || r.course.code === courseFilter;
       const campusOk = campusFilter === "All" || r.campus === campusFilter;
       const verifiedOk = !verifiedOnly || r.verified;
       return starOk && courseOk && campusOk && verifiedOk;
     });
-  }, [reviews, starFilter, courseFilter, campusFilter, verifiedOnly]);
+
+    if (sortOrder === "term") {
+      filtered.sort((a, b) => {
+        const yearDiff = b.term.year - a.term.year;
+        if (yearDiff !== 0) return yearDiff;
+        return (QUARTER_ORDER[b.term.quarter] ?? 0) - (QUARTER_ORDER[a.term.quarter] ?? 0);
+      });
+    } else {
+      // "posted" — sort by created_at descending (same as initial load order)
+      filtered.sort((a, b) => (b.created_at?.seconds ?? 0) - (a.created_at?.seconds ?? 0));
+    }
+
+    return filtered;
+  }, [reviews, starFilter, courseFilter, campusFilter, verifiedOnly, sortOrder]);
 
   const buzzWords = useMemo(() => {
     const freq: Record<string, number> = {};
@@ -219,11 +235,10 @@ function ProfessorView({ user }: { user: User }) {
             type="button"
             disabled={!canWriteReview}
             onClick={() => router.push(`/professors/${professor.id}/review`)}
-            className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-              canWriteReview
-                ? "bg-husky-purple text-white hover:bg-husky-purple/90"
-                : "cursor-not-allowed bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
-            }`}
+            className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${canWriteReview
+              ? "bg-husky-purple text-white hover:bg-husky-purple/90"
+              : "cursor-not-allowed bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+              }`}
           >
             {canWriteReview ? "✏️ Write a Review" : "✏️ Review Disabled"}
           </button>
@@ -370,6 +385,19 @@ function ProfessorView({ user }: { user: User }) {
                   ✓ Verified
                 </button>
               </div>
+
+              {/* Sort order */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-gray-500 dark:text-gray-400">Sort:</span>
+                <button type="button" onClick={() => setSortOrder("posted")}
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${sortOrder === "posted" ? "bg-husky-purple text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
+                  Most Recent Post
+                </button>
+                <button type="button" onClick={() => setSortOrder("term")}
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${sortOrder === "term" ? "bg-husky-purple text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
+                  Most Recent Term
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -452,28 +480,30 @@ function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
               })}
             </div>
 
-            {/* Right: Overall Summative + CEI */}
+            {/* Right: Overall Summative + CEI side by side */}
             <div className="flex flex-col gap-3">
-              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light dark:bg-husky-purple/20 py-4 px-6 gap-1">
-                <div className="flex items-center gap-1">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Overall Summative</span>
-                  <Tooltip text="Average of the four summative items. Reported on a 0–5 scale." />
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light dark:bg-husky-purple/20 py-3 px-4 gap-0.5">
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Overall</span>
+                    <Tooltip text="Average of the four summative items. Reported on a 0–5 scale." />
+                  </div>
+                  <span className="text-2xl font-bold text-husky-purple dark:text-husky-purpleLight">
+                    {selected.overall_summative > 0 ? selected.overall_summative.toFixed(1) : "—"}
+                  </span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">out of 5.0</span>
                 </div>
-                <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
-                  {selected.overall_summative > 0 ? selected.overall_summative.toFixed(1) : "—"}
-                </span>
-                <span className="text-xs text-gray-400 dark:text-gray-500">out of 5.0</span>
-              </div>
 
-              <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light dark:bg-husky-purple/20 py-4 px-6 gap-1">
-                <div className="flex items-center gap-1">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">CEI</span>
-                  <Tooltip text="Course Evaluation Index — a composite score weighted across all evaluation items. Reported on a 1–7 scale." />
+                <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light dark:bg-husky-purple/20 py-3 px-4 gap-0.5">
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">CEI</span>
+                    <Tooltip text="Course Evaluation Index — a composite score weighted across all evaluation items. Reported on a 1–7 scale." />
+                  </div>
+                  <span className="text-2xl font-bold text-husky-purple dark:text-husky-purpleLight">
+                    {selected.cei > 0 ? selected.cei.toFixed(1) : "—"}
+                  </span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">out of 7.0</span>
                 </div>
-                <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
-                  {selected.cei > 0 ? selected.cei.toFixed(1) : "—"}
-                </span>
-                <span className="text-xs text-gray-400 dark:text-gray-500">out of 7.0</span>
               </div>
 
               <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
@@ -666,36 +696,28 @@ function ReviewCard({ review: r }: { review: Review }) {
   return (
     <div className="rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-4 space-y-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
+        {/* Left: what/when */}
         <div className="flex items-center gap-2">
           <StarRow rating={r.scores.overall} size="sm" />
           <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{r.course.code}</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">Taken {r.term.quarter} {r.term.year}</span>
           <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs text-gray-500 dark:text-gray-400">{r.campus}</span>
-          <span className="text-xs text-gray-400 dark:text-gray-500">{r.term.quarter} {r.term.year}</span>
         </div>
 
-        <div className="flex items-center gap-3">
+        {/* Right: scores/meta */}
+        <div className="flex flex-wrap items-center gap-2">
           {r.verified ? (
-            <span className="flex items-center gap-1 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-400">
-              ✓ Verified
-            </span>
+            <span className="flex items-center gap-1 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-400">✓ Verified</span>
           ) : (
-            <span className="flex items-center gap-1 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 px-2 py-0.5 text-xs font-medium text-gray-500 dark:text-gray-400">
-              Unverified
-            </span>
+            <span className="flex items-center gap-1 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 px-2 py-0.5 text-xs font-medium text-gray-500 dark:text-gray-400">Unverified</span>
           )}
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            Clarity: <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.clarity}/5</span>
-          </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            Helpfulness: <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.helpfulness}/5</span>
-          </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            Difficulty: <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.difficulty}/5</span>
-          </span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">Clarity <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.clarity}</span></span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">Help <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.helpfulness}</span></span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">Diff <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.difficulty}</span></span>
           {r.scores.would_take_again
             ? <span className="text-xs text-green-600 dark:text-green-400 font-medium">Would take again ✓</span>
             : <span className="text-xs text-red-500 dark:text-red-400 font-medium">Wouldn't take again</span>}
-          {date && <span className="text-xs text-gray-400 dark:text-gray-500">{date}</span>}
+          {date && <span className="text-xs text-gray-400 dark:text-gray-500">· Posted {date}</span>}
         </div>
       </div>
 
@@ -731,11 +753,10 @@ function NoReviewsState({
         type="button"
         disabled={!canWriteReview}
         onClick={() => router.push(`/professors/${professorId}/review`)}
-        className={`mt-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-          canWriteReview
-            ? "bg-husky-purple text-white hover:bg-husky-purple/90"
-            : "cursor-not-allowed bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
-        }`}
+        className={`mt-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${canWriteReview
+          ? "bg-husky-purple text-white hover:bg-husky-purple/90"
+          : "cursor-not-allowed bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+          }`}
       >
         {canWriteReview ? "Write a Review" : "Review Disabled"}
       </button>
