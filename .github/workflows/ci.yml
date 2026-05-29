@@ -1,0 +1,25 @@
+# This workflow runs on pushes to the main branch and on pull requests. 
+# It checks out the code, sets up Node.js, installs dependencies, 
+#   runs type checking, and builds the project. 
+# The GEMINI_API_KEY is set to a dummy value for the build step.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+        env:
+          GEMINI_API_KEY: dummy-key-for-build
