@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import type { User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -17,6 +17,24 @@ interface Professor {
     department: string;
     campus: string[];
     courses_taught: string[];
+}
+
+interface ExistingReview {
+    id: string;
+    course: { code: string; name: string };
+    term: { quarter: string; year: number };
+    scores: {
+        overall: number;
+        difficulty: number;
+        clarity: number;
+        helpfulness: number;
+        would_take_again: boolean;
+    };
+    body: string;
+    tags: string[];
+    grade_received: string | null;
+    attendance_mandatory: boolean | null;
+    textbook_required: boolean | null;
 }
 
 type SubmitState = "idle" | "submitting" | "success" | "error" | "moderated";
@@ -37,7 +55,7 @@ const TAGS = [
     "Attendance required",
 ];
 
-// ─── Route export — AuthGuard wraps everything ────────────────────────────────
+// ─── Route export ─────────────────────────────────────────────────────────────
 
 export default function WriteReviewPage() {
     return (
@@ -49,17 +67,13 @@ export default function WriteReviewPage() {
 
 // ─── Star Rating ──────────────────────────────────────────────────────────────
 
-function StarRating({
-    value,
-    onChange,
-    label,
-}: {
+function StarRating({ value, onChange, label, disabled }: {
     value: number;
     onChange: (v: number) => void;
     label: React.ReactNode;
+    disabled?: boolean;
 }) {
     const [hovered, setHovered] = useState(0);
-
     return (
         <div>
             <span className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
@@ -68,10 +82,11 @@ function StarRating({
                     <button
                         key={star}
                         type="button"
-                        onClick={() => onChange(star)}
-                        onMouseEnter={() => setHovered(star)}
+                        onClick={() => !disabled && onChange(star)}
+                        onMouseEnter={() => !disabled && setHovered(star)}
                         onMouseLeave={() => setHovered(0)}
-                        className="text-2xl leading-none transition-transform hover:scale-110 focus:outline-none"
+                        disabled={disabled}
+                        className="text-2xl leading-none transition-transform hover:scale-110 focus:outline-none disabled:cursor-default"
                         aria-label={`${star} star${star !== 1 ? "s" : ""}`}
                     >
                         <span className={star <= (hovered || value) ? "text-husky-gold" : "text-gray-300 dark:text-gray-600"}>
@@ -89,13 +104,7 @@ function StarRating({
 
 // ─── Difficulty Picker ────────────────────────────────────────────────────────
 
-function DifficultyPicker({
-    value,
-    onChange,
-}: {
-    value: number;
-    onChange: (v: number) => void;
-}) {
+function DifficultyPicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
     const labels = ["", "Very Easy", "Easy", "Medium", "Hard", "Very Hard"];
     return (
         <div>
@@ -125,10 +134,77 @@ function DifficultyPicker({
     );
 }
 
-// ─── Inner view — receives verified user from AuthGuard ───────────────────────
+// ─── Submit Confirmation Modal ────────────────────────────────────────────────
+
+function SubmitConfirmModal({
+    isEdit,
+    onConfirm,
+    onCancel,
+    submitting,
+}: {
+    isEdit: boolean;
+    onConfirm: () => void;
+    onCancel: () => void;
+    submitting: boolean;
+}) {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <div className="w-full max-w-sm rounded-xl bg-white dark:bg-gray-800 p-6 shadow-xl space-y-4">
+                <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-husky-light dark:bg-husky-purple/20">
+                        <svg className="h-5 w-5 text-husky-purple dark:text-husky-purpleLight" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m0 3.75h.007v.007H12v-.007zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                            {isEdit ? "Update your review?" : "Submit your review?"}
+                        </h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                            {isEdit
+                                ? "Your updated review will be visible to all UW students."
+                                : "This will become visible to all UW students."}
+                        </p>
+                    </div>
+                </div>
+
+                <div className="flex gap-2 pt-1">
+                    <button
+                        type="button"
+                        onClick={onCancel}
+                        disabled={submitting}
+                        className="flex-1 rounded-md border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    >
+                        Go back
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onConfirm}
+                        disabled={submitting}
+                        className="flex-1 flex items-center justify-center gap-2 rounded-md bg-husky-purple px-4 py-2 text-sm font-medium text-white hover:bg-husky-purple/90 disabled:opacity-60 transition-colors"
+                    >
+                        {submitting ? (
+                            <>
+                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                                {isEdit ? "Updating…" : "Submitting…"}
+                            </>
+                        ) : (
+                            isEdit ? "Yes, update" : "Yes, submit"
+                        )}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ─── Inner view ───────────────────────────────────────────────────────────────
 
 function ReviewView({ user }: { user: User }) {
     const { id } = useParams<{ id: string }>();
+    const searchParams = useSearchParams();
+    const editReviewId = searchParams.get("edit"); // present when editing
+    const isEdit = !!editReviewId;
 
     // Professor state
     const [professor, setProfessor] = useState<Professor | null>(null);
@@ -136,8 +212,8 @@ function ReviewView({ user }: { user: User }) {
     const [remainingToday, setRemainingToday] = useState(3);
 
     // Form state
-    const [courseCodeSelect, setCourseCodeSelect] = useState(""); // dropdown value; "other" = free-text mode
-    const [courseCodeOther, setCourseCodeOther] = useState("");   // free-text input when "other" selected
+    const [courseCodeSelect, setCourseCodeSelect] = useState("");
+    const [courseCodeOther, setCourseCodeOther] = useState("");
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [quarter, setQuarter] = useState("");
     const [year, setYear] = useState("");
@@ -157,6 +233,7 @@ function ReviewView({ user }: { user: User }) {
     // Submission state
     const [submitState, setSubmitState] = useState<SubmitState>("idle");
     const [errorMsg, setErrorMsg] = useState("");
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     // Fetch professor
     useEffect(() => {
@@ -170,6 +247,50 @@ function ReviewView({ user }: { user: User }) {
             })
             .finally(() => setLoadingProf(false));
     }, [id]);
+
+    // If editing, fetch existing review and pre-fill form
+    useEffect(() => {
+        if (!editReviewId) return;
+        getDoc(doc(db, "reviews", editReviewId))
+            .then((snap) => {
+                if (!snap.exists()) return;
+                const data = snap.data() as ExistingReview;
+
+                // Pre-fill course code
+                const code = data.course?.code ?? "";
+                // Use select if it matches a course in the list, otherwise "other"
+                setCourseCodeSelect(code); // will fall back to "other" if not found — handled in render
+                setCourseCodeOther(code);
+
+                // Lock term — just display, don't allow change
+                setQuarter(data.term?.quarter ?? "");
+                setYear(String(data.term?.year ?? ""));
+
+                // Scores
+                setOverall(data.scores?.overall ?? 0);
+                setDifficulty(data.scores?.difficulty ?? 0);
+                setClarity(data.scores?.clarity ?? 0);
+                setHelpfulness(data.scores?.helpfulness ?? 0);
+                setWouldTakeAgain(data.scores?.would_take_again ?? null);
+
+                // Body + tags
+                setReview(data.body ?? "");
+                setSelectedTags(data.tags ?? []);
+
+                // Optional
+                setGrade(data.grade_received ?? "");
+                setAttendanceMandatory(
+                    data.attendance_mandatory === true ? "yes"
+                        : data.attendance_mandatory === false ? "no"
+                            : ""
+                );
+                setTextbookRequired(
+                    data.textbook_required === true ? "yes"
+                        : data.textbook_required === false ? "no"
+                            : ""
+                );
+            });
+    }, [editReviewId]);
 
     // Tag toggle
     function toggleTag(tag: string) {
@@ -188,17 +309,12 @@ function ReviewView({ user }: { user: User }) {
         setCustomTagInput("");
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────────
-
-    // Normalize course code: uppercase, collapse spaces, ensure single space between prefix and number.
-    // Handles "&" in prefixes (e.g. "B & A 300" → "B & A 300" stays intact after collapse).
+    // Normalize course code
     function normalizeCourseCode(raw: string): string {
         const upper = raw.toUpperCase().trim();
-        // Insert space between a letter/& run and the numeric part if missing
         return upper.replace(/([A-Z&]+)\s*(\d)/, "$1 $2").replace(/\s{2,}/g, " ");
     }
 
-    // Derive the effective course code from dropdown + other field
     const courseCode =
         courseCodeSelect === "other"
             ? normalizeCourseCode(courseCodeOther)
@@ -234,7 +350,8 @@ function ReviewView({ user }: { user: User }) {
         return errors;
     }
 
-    async function handleSubmit() {
+    // Step 1: validate + show confirmation modal
+    function handleSubmitClick() {
         const errors = getValidationErrors();
         if (errors.length > 0) {
             setValidationErrors(errors);
@@ -242,39 +359,55 @@ function ReviewView({ user }: { user: User }) {
             return;
         }
         setValidationErrors([]);
+        setShowConfirmModal(true);
+    }
+
+    // Step 2: confirmed — actually submit
+    async function handleConfirmedSubmit() {
         setSubmitState("submitting");
         setErrorMsg("");
 
-        // Always get a fresh token at submission time — never stale
         const token = await user.getIdToken();
 
         try {
-            const res = await fetch("/api/reviews", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    professor_id: id,
-                    course_code: courseCode,
-                    quarter,
-                    year: parseInt(year),
-                    scores: {
-                        overall,
-                        difficulty,
-                        clarity,
-                        helpfulness,
-                        would_take_again: wouldTakeAgain,
-                    },
-                    body: review.trim(),
-                    tags: selectedTags,
-                    grade_received: grade || null,
-                    attendance_mandatory: attendanceMandatory === "yes" ? true : attendanceMandatory === "no" ? false : null,
-                    textbook_required: textbookRequired === "yes" ? true : textbookRequired === "no" ? false : null,
-                }),
-            });
+            let res: Response;
 
+            if (isEdit) {
+                // PATCH — edit existing review
+                res = await fetch("/api/reviews", {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                    body: JSON.stringify({
+                        review_id: editReviewId,
+                        scores: { overall, difficulty, clarity, helpfulness, would_take_again: wouldTakeAgain },
+                        body: review.trim(),
+                        tags: selectedTags,
+                        grade_received: grade || null,
+                        attendance_mandatory: attendanceMandatory === "yes" ? true : attendanceMandatory === "no" ? false : null,
+                        textbook_required: textbookRequired === "yes" ? true : textbookRequired === "no" ? false : null,
+                    }),
+                });
+            } else {
+                // POST — new review
+                res = await fetch("/api/reviews", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                    body: JSON.stringify({
+                        professor_id: id,
+                        course_code: courseCode,
+                        quarter,
+                        year: parseInt(year),
+                        scores: { overall, difficulty, clarity, helpfulness, would_take_again: wouldTakeAgain },
+                        body: review.trim(),
+                        tags: selectedTags,
+                        grade_received: grade || null,
+                        attendance_mandatory: attendanceMandatory === "yes" ? true : attendanceMandatory === "no" ? false : null,
+                        textbook_required: textbookRequired === "yes" ? true : textbookRequired === "no" ? false : null,
+                    }),
+                });
+            }
+
+            setShowConfirmModal(false);
             const data = await res.json();
 
             if (res.status === 429) {
@@ -303,9 +436,11 @@ function ReviewView({ user }: { user: User }) {
             }
 
             setSubmitState("success");
-            // Use server-returned remaining count if available, otherwise decrement locally
-            setRemainingToday((prev) => data.remaining ?? Math.max(0, prev - 1));
+            if (!isEdit) {
+                setRemainingToday((prev) => data.remaining ?? Math.max(0, prev - 1));
+            }
         } catch {
+            setShowConfirmModal(false);
             setSubmitState("error");
             setErrorMsg("Network error — check your connection and try again.");
         }
@@ -320,7 +455,6 @@ function ReviewView({ user }: { user: User }) {
         );
     }
 
-    // ── Professor not found ────────────────────────────────────────────────────
     if (!professor) {
         return (
             <div className="rounded-lg bg-white dark:bg-gray-800 p-8 shadow-sm text-center">
@@ -341,9 +475,11 @@ function ReviewView({ user }: { user: User }) {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Review submitted!</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    {isEdit ? "Review updated!" : "Review submitted!"}
+                </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Your review for <span className="font-medium">{professor.name}</span> has been published.
+                    Your review for <span className="font-medium">{professor.name}</span> has been {isEdit ? "updated" : "published"}.
                 </p>
                 <div className="flex justify-center gap-3 pt-2">
                     <Link
@@ -363,363 +499,372 @@ function ReviewView({ user }: { user: User }) {
         );
     }
 
+    // Determine if course code from existing review matches a known course
+    const knownCourses = professor.courses_taught ?? [];
+    const resolvedCourseCodeSelect = isEdit
+        ? (knownCourses.includes(courseCodeSelect) ? courseCodeSelect : "other")
+        : courseCodeSelect;
+
     // ── Main form ──────────────────────────────────────────────────────────────
     return (
-        <div className="space-y-6">
-
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
-                <Link href="/search" className="hover:text-husky-purple dark:hover:text-husky-purpleLight">Search</Link>
-                <span>›</span>
-                <Link href={`/professors/${id}`} className="hover:text-husky-purple dark:hover:text-husky-purpleLight">{professor.name}</Link>
-                <span>›</span>
-                <span className="text-gray-900 dark:text-gray-100">Write a Review</span>
-            </nav>
-
-            {/* Header card */}
-            <div className="rounded-lg bg-white dark:bg-gray-800 px-8 py-6 shadow-sm">
-                <div className="flex items-start justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold text-husky-purple dark:text-husky-purpleLight">{professor.name}</h1>
-                        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
-                            {professor.department} · {professor.campus?.join(", ")}
-                        </p>
-                    </div>
-                    {/* Rate limit indicator */}
-                    <div className="group relative rounded-md border border-gray-200 dark:border-gray-700 px-3 py-2 text-right cursor-default">
-                        <p className="flex items-center justify-end gap-1 text-xs text-gray-500 dark:text-gray-400">
-                            Reviews left today
-                            <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-gray-400 dark:border-gray-500 text-[9px] font-bold text-gray-400 dark:text-gray-500 leading-none select-none">i</span>
-                        </p>
-                        <p className={`text-lg font-bold ${remainingToday === 0 ? "text-red-500 dark:text-red-400" : "text-husky-purple dark:text-husky-purpleLight"}`}>
-                            {remainingToday}/3
-                        </p>
-                        {/* Tooltip */}
-                        <div className="pointer-events-none absolute right-0 top-full mt-2 w-56 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2.5 text-left text-xs text-gray-600 dark:text-gray-300 shadow-md opacity-0 transition-opacity group-hover:opacity-100 z-10">
-                            <p className="font-medium text-gray-800 dark:text-gray-200 mb-0.5">Why only 3? 😅</p>
-                            <p>We limit reviews to keep things genuine — no spam, no brigading. You can submit up to 3 reviews every 24 hours.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Validation errors */}
-            {validationErrors.length > 0 && (
-                <div className="rounded-md border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-4 py-3 text-sm text-red-700 dark:text-red-400">
-                    <p className="mb-1.5 font-semibold">Please fix the following before submitting:</p>
-                    <ul className="list-disc list-inside space-y-0.5">
-                        {validationErrors.map((e) => (
-                            <li key={e}>{e}</li>
-                        ))}
-                    </ul>
-                </div>
+        <>
+            {/* Confirmation modal */}
+            {showConfirmModal && (
+                <SubmitConfirmModal
+                    isEdit={isEdit}
+                    onConfirm={handleConfirmedSubmit}
+                    onCancel={() => setShowConfirmModal(false)}
+                    submitting={submitState === "submitting"}
+                />
             )}
 
-            {/* Form card */}
-            <div className="rounded-lg bg-white dark:bg-gray-800 px-8 py-7 shadow-sm space-y-8">
+            <div className="space-y-6">
+                {/* Breadcrumb */}
+                <nav className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
+                    <Link href="/search" className="hover:text-husky-purple dark:hover:text-husky-purpleLight">Search</Link>
+                    <span>›</span>
+                    <Link href={`/professors/${id}`} className="hover:text-husky-purple dark:hover:text-husky-purpleLight">{professor.name}</Link>
+                    <span>›</span>
+                    <span className="text-gray-900 dark:text-gray-100">{isEdit ? "Edit Review" : "Write a Review"}</span>
+                </nav>
 
-                {/* ── Section 1: Course info ── */}
-                <section className="space-y-5">
-                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Course Details</h2>
-
-                    <div className="grid gap-5 sm:grid-cols-2">
-                        <div className="sm:col-span-2">
-                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Course Code <span className="text-red-500 dark:text-red-400">*</span>
-                            </label>
-                            <select
-                                value={courseCodeSelect}
-                                onChange={(e) => { setCourseCodeSelect(e.target.value); setCourseCodeOther(""); }}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                            >
-                                <option value="">Select a course…</option>
-                                {(professor.courses_taught ?? []).map((c) => (
-                                    <option key={c} value={c}>{c}</option>
-                                ))}
-                                <option value="other">Other (type it in)</option>
-                            </select>
-                            {courseCodeSelect === "other" && (
-                                <div className="mt-2">
-                                    <input
-                                        type="text"
-                                        placeholder="e.g. CSS 343 or B & A 300"
-                                        value={courseCodeOther}
-                                        onChange={(e) => setCourseCodeOther(e.target.value)}
-                                        className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                                        autoFocus
-                                    />
-                                    {courseCodeOther.trim() && (
-                                        <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
-                                            Will be saved as: <span className="font-medium text-gray-700 dark:text-gray-300">{normalizeCourseCode(courseCodeOther)}</span>
-                                        </p>
-                                    )}
+                {/* Header card */}
+                <div className="rounded-lg bg-white dark:bg-gray-800 px-8 py-6 shadow-sm">
+                    <div className="flex items-start justify-between">
+                        <div>
+                            <h1 className="text-2xl font-bold text-husky-purple dark:text-husky-purpleLight">{professor.name}</h1>
+                            <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+                                {professor.department} · {professor.campus?.join(", ")}
+                            </p>
+                            {isEdit && (
+                                <span className="mt-2 inline-block rounded-full bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 px-3 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">
+                                    ✏️ Editing existing review
+                                </span>
+                            )}
+                        </div>
+                        {/* Rate limit indicator — only shown for new reviews */}
+                        {!isEdit && (
+                            <div className="group relative rounded-md border border-gray-200 dark:border-gray-700 px-3 py-2 text-right cursor-default">
+                                <p className="flex items-center justify-end gap-1 text-xs text-gray-500 dark:text-gray-400">
+                                    Reviews left today
+                                    <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-gray-400 dark:border-gray-500 text-[9px] font-bold text-gray-400 dark:text-gray-500 leading-none select-none">i</span>
+                                </p>
+                                <p className={`text-lg font-bold ${remainingToday === 0 ? "text-red-500 dark:text-red-400" : "text-husky-purple dark:text-husky-purpleLight"}`}>
+                                    {remainingToday}/3
+                                </p>
+                                <div className="pointer-events-none absolute right-0 top-full mt-2 w-56 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2.5 text-left text-xs text-gray-600 dark:text-gray-300 shadow-md opacity-0 transition-opacity group-hover:opacity-100 z-10">
+                                    <p className="font-medium text-gray-800 dark:text-gray-200 mb-0.5">Why only 3? 😅</p>
+                                    <p>We limit reviews to keep things genuine — no spam, no brigading. You can submit up to 3 reviews every 24 hours.</p>
                                 </div>
-                            )}
-                        </div>
-
-                        <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Quarter <span className="text-red-500 dark:text-red-400">*</span>
-                            </label>
-                            <select
-                                value={quarter}
-                                onChange={(e) => setQuarter(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                            >
-                                <option value="">Select quarter…</option>
-                                {QUARTERS.map((q) => <option key={q} value={q}>{q}</option>)}
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Year <span className="text-red-500 dark:text-red-400">*</span>
-                            </label>
-                            <select
-                                value={year}
-                                onChange={(e) => setYear(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                            >
-                                <option value="">Select year…</option>
-                                {[...YEARS].reverse().map((y) => <option key={y} value={y}>{y}</option>)}
-                            </select>
-                        </div>
-                    </div>
-                </section>
-
-                <hr className="border-gray-100 dark:border-gray-700" />
-
-                {/* ── Section 2: Ratings ── */}
-                <section className="space-y-5">
-                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Ratings</h2>
-
-                    <StarRating
-                        label={<>Overall Rating <span className="text-red-500 dark:text-red-400">*</span></>}
-                        value={overall}
-                        onChange={setOverall}
-                    />
-
-                    <StarRating
-                        label={<>Clarity <span className="text-red-500 dark:text-red-400">*</span></>}
-                        value={clarity}
-                        onChange={setClarity}
-                    />
-
-                    <StarRating
-                        label={<>Helpfulness <span className="text-red-500 dark:text-red-400">*</span></>}
-                        value={helpfulness}
-                        onChange={setHelpfulness}
-                    />
-
-                    <DifficultyPicker value={difficulty} onChange={setDifficulty} />
-
-                    <div>
-                        <span className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Would you take this professor again? <span className="text-red-500 dark:text-red-400">*</span>
-                        </span>
-                        <div className="flex gap-3">
-                            {([true, false] as const).map((val) => (
-                                <button
-                                    key={String(val)}
-                                    type="button"
-                                    onClick={() => setWouldTakeAgain(val)}
-                                    className={`rounded-md border px-5 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-husky-purple focus:ring-offset-1 ${wouldTakeAgain === val
-                                        ? "border-husky-purple bg-husky-purple text-white"
-                                        : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight"
-                                        }`}
-                                >
-                                    {val ? "Yes" : "No"}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                <hr className="border-gray-100 dark:border-gray-700" />
-
-                {/* ── Section 3: Written review ── */}
-                <section className="space-y-4">
-                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Your Review</h2>
-
-                    <div>
-                        <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Written Review <span className="text-red-500 dark:text-red-400">*</span>
-                        </label>
-                        <textarea
-                            rows={5}
-                            placeholder="Describe your experience — lectures, workload, exams, how the professor communicates…"
-                            value={review}
-                            onChange={(e) => setReview(e.target.value)}
-                            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 ${reviewTooShort
-                                ? "border-red-400 focus:border-red-400 focus:ring-red-400"
-                                : "border-gray-300 dark:border-gray-600 focus:border-husky-purple focus:ring-husky-purple"
-                                }`}
-                        />
-                        <div className="mt-1 flex justify-between text-xs">
-                            {reviewTooShort ? (
-                                <span className="text-red-500 dark:text-red-400">
-                                    {MIN_REVIEW_LENGTH - review.trim().length} more characters needed
-                                </span>
-                            ) : (
-                                <span className="text-gray-400 dark:text-gray-500">Minimum {MIN_REVIEW_LENGTH} characters</span>
-                            )}
-                            <span className={review.trim().length >= MIN_REVIEW_LENGTH ? "text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500"}>
-                                {review.trim().length} / {MIN_REVIEW_LENGTH}+
-                            </span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <span className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Tags <span className="font-normal text-gray-400 dark:text-gray-500">(optional)</span>
-                        </span>
-                        <div className="flex flex-wrap gap-2">
-                            {TAGS.map((tag) => (
-                                <button
-                                    key={tag}
-                                    type="button"
-                                    onClick={() => toggleTag(tag)}
-                                    className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors focus:outline-none ${selectedTags.includes(tag)
-                                        ? "border-husky-purple bg-husky-purple text-white"
-                                        : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight"
-                                        }`}
-                                >
-                                    {tag}
-                                </button>
-                            ))}
-                            {/* Custom tags already added */}
-                            {selectedTags.filter((t) => !TAGS.includes(t)).map((tag) => (
-                                <span
-                                    key={tag}
-                                    className="flex items-center gap-1 rounded-full border border-husky-purple bg-husky-purple px-3 py-1 text-xs font-medium text-white"
-                                >
-                                    {tag}
-                                    <button
-                                        type="button"
-                                        onClick={() => toggleTag(tag)}
-                                        className="ml-0.5 leading-none hover:text-husky-gold focus:outline-none"
-                                        aria-label={`Remove tag ${tag}`}
-                                    >
-                                        ×
-                                    </button>
-                                </span>
-                            ))}
-                        </div>
-                        {/* Custom tag input */}
-                        {selectedTags.filter((t) => !TAGS.includes(t)).length < MAX_CUSTOM_TAGS && (
-                            <div className="mt-2 flex items-center gap-2">
-                                <input
-                                    type="text"
-                                    placeholder="Add your own tag…"
-                                    value={customTagInput}
-                                    maxLength={20}
-                                    onChange={(e) => setCustomTagInput(e.target.value)}
-                                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } }}
-                                    className="rounded-full border border-dashed border-gray-300 dark:border-gray-600 px-3 py-1 text-xs text-gray-600 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple w-44"
-                                />
-                                {customTagInput.trim() && (
-                                    <button
-                                        type="button"
-                                        onClick={addCustomTag}
-                                        className="rounded-full border border-husky-purple px-3 py-1 text-xs font-medium text-husky-purple dark:text-husky-purpleLight hover:bg-husky-purple hover:text-white transition-colors focus:outline-none"
-                                    >
-                                        Add
-                                    </button>
-                                )}
                             </div>
                         )}
-                        {selectedTags.filter((t) => !TAGS.includes(t)).length >= MAX_CUSTOM_TAGS && (
-                            <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Maximum {MAX_CUSTOM_TAGS} custom tags reached.</p>
-                        )}
                     </div>
-                </section>
+                </div>
 
-                <hr className="border-gray-100 dark:border-gray-700" />
-
-                {/* ── Section 4: Optional extras ── */}
-                <section className="space-y-5">
-                    <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Optional Details</h2>
-
-                    <div className="grid gap-5 sm:grid-cols-3">
-                        <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Grade Received</label>
-                            <select
-                                value={grade}
-                                onChange={(e) => setGrade(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                            >
-                                <option value="">Select…</option>
-                                {GRADES.map((g) => <option key={g} value={g}>{g}</option>)}
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Attendance Required</label>
-                            <select
-                                value={attendanceMandatory}
-                                onChange={(e) => setAttendanceMandatory(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                            >
-                                <option value="">Select…</option>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Textbook Required</label>
-                            <select
-                                value={textbookRequired}
-                                onChange={(e) => setTextbookRequired(e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                            >
-                                <option value="">Select…</option>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                            </select>
-                        </div>
-                    </div>
-                </section>
-
-                {/* ── Error / moderation banner ── */}
-                {(submitState === "error" || submitState === "moderated") && (
-                    <div className={`rounded-md border px-4 py-3 text-sm ${submitState === "moderated"
-                        ? "border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-300"
-                        : "border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400"
-                        }`}>
-                        {submitState === "moderated" && (
-                            <p className="mb-0.5 font-medium">Review flagged for moderation</p>
-                        )}
-                        {errorMsg}
+                {/* Validation errors */}
+                {validationErrors.length > 0 && (
+                    <div className="rounded-md border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-4 py-3 text-sm text-red-700 dark:text-red-400">
+                        <p className="mb-1.5 font-semibold">Please fix the following before submitting:</p>
+                        <ul className="list-disc list-inside space-y-0.5">
+                            {validationErrors.map((e) => <li key={e}>{e}</li>)}
+                        </ul>
                     </div>
                 )}
 
-                {/* ── Submit row ── */}
-                <div className="flex items-center justify-between pt-1">
-                    <Link href={`/professors/${id}`} className="text-sm text-gray-500 dark:text-gray-400 hover:text-husky-purple dark:hover:text-husky-purpleLight">
-                        ← Cancel
-                    </Link>
-                    <button
-                        type="button"
-                        onClick={handleSubmit}
-                        disabled={!isValid || submitState === "submitting" || remainingToday === 0}
-                        className="flex items-center gap-2 rounded-md bg-husky-purple px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-husky-purple/90 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        {submitState === "submitting" ? (
-                            <>
-                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                                Submitting…
-                            </>
-                        ) : (
-                            "Submit Review"
-                        )}
-                    </button>
-                </div>
+                {/* Form card */}
+                <div className="rounded-lg bg-white dark:bg-gray-800 px-8 py-7 shadow-sm space-y-8">
 
-                <p className="text-center text-xs text-gray-400 dark:text-gray-500">
-                    Submitting a review for a course you've already reviewed will overwrite your previous one.
-                </p>
+                    {/* ── Section 1: Course info ── */}
+                    <section className="space-y-5">
+                        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Course Details</h2>
+
+                        <div className="grid gap-5 sm:grid-cols-2">
+                            <div className="sm:col-span-2">
+                                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Course Code <span className="text-red-500 dark:text-red-400">*</span>
+                                    {isEdit && <span className="ml-2 text-xs font-normal text-gray-400 dark:text-gray-500">(locked — cannot be changed)</span>}
+                                </label>
+                                {isEdit ? (
+                                    // Locked display in edit mode
+                                    <div className="flex items-center gap-2 rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm text-gray-600 dark:text-gray-400">
+                                        <svg className="h-3.5 w-3.5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                        </svg>
+                                        {courseCode || courseCodeOther || "—"}
+                                    </div>
+                                ) : (
+                                    <>
+                                        <select
+                                            value={courseCodeSelect}
+                                            onChange={(e) => { setCourseCodeSelect(e.target.value); setCourseCodeOther(""); }}
+                                            className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                        >
+                                            <option value="">Select a course…</option>
+                                            {(professor.courses_taught ?? []).map((c) => (
+                                                <option key={c} value={c}>{c}</option>
+                                            ))}
+                                            <option value="other">Other (type it in)</option>
+                                        </select>
+                                        {courseCodeSelect === "other" && (
+                                            <div className="mt-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="e.g. CSS 343 or B & A 300"
+                                                    value={courseCodeOther}
+                                                    onChange={(e) => setCourseCodeOther(e.target.value)}
+                                                    className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                                    autoFocus
+                                                />
+                                                {courseCodeOther.trim() && (
+                                                    <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+                                                        Will be saved as: <span className="font-medium text-gray-700 dark:text-gray-300">{normalizeCourseCode(courseCodeOther)}</span>
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+
+                            {/* Quarter — locked in edit mode */}
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Quarter <span className="text-red-500 dark:text-red-400">*</span>
+                                    {isEdit && <span className="ml-2 text-xs font-normal text-gray-400 dark:text-gray-500">(locked)</span>}
+                                </label>
+                                {isEdit ? (
+                                    <div className="flex items-center gap-2 rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm text-gray-600 dark:text-gray-400">
+                                        <svg className="h-3.5 w-3.5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                        </svg>
+                                        {quarter || "—"}
+                                    </div>
+                                ) : (
+                                    <select
+                                        value={quarter}
+                                        onChange={(e) => setQuarter(e.target.value)}
+                                        className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                    >
+                                        <option value="">Select quarter…</option>
+                                        {QUARTERS.map((q) => <option key={q} value={q}>{q}</option>)}
+                                    </select>
+                                )}
+                            </div>
+
+                            {/* Year — locked in edit mode */}
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Year <span className="text-red-500 dark:text-red-400">*</span>
+                                    {isEdit && <span className="ml-2 text-xs font-normal text-gray-400 dark:text-gray-500">(locked)</span>}
+                                </label>
+                                {isEdit ? (
+                                    <div className="flex items-center gap-2 rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm text-gray-600 dark:text-gray-400">
+                                        <svg className="h-3.5 w-3.5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                        </svg>
+                                        {year || "—"}
+                                    </div>
+                                ) : (
+                                    <select
+                                        value={year}
+                                        onChange={(e) => setYear(e.target.value)}
+                                        className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple"
+                                    >
+                                        <option value="">Select year…</option>
+                                        {[...YEARS].reverse().map((y) => <option key={y} value={y}>{y}</option>)}
+                                    </select>
+                                )}
+                            </div>
+                        </div>
+                    </section>
+
+                    <hr className="border-gray-100 dark:border-gray-700" />
+
+                    {/* ── Section 2: Ratings ── */}
+                    <section className="space-y-5">
+                        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Ratings</h2>
+
+                        <StarRating label={<>Overall Rating <span className="text-red-500 dark:text-red-400">*</span></>} value={overall} onChange={setOverall} />
+                        <StarRating label={<>Clarity <span className="text-red-500 dark:text-red-400">*</span></>} value={clarity} onChange={setClarity} />
+                        <StarRating label={<>Helpfulness <span className="text-red-500 dark:text-red-400">*</span></>} value={helpfulness} onChange={setHelpfulness} />
+                        <DifficultyPicker value={difficulty} onChange={setDifficulty} />
+
+                        <div>
+                            <span className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Would you take this professor again? <span className="text-red-500 dark:text-red-400">*</span>
+                            </span>
+                            <div className="flex gap-3">
+                                {([true, false] as const).map((val) => (
+                                    <button
+                                        key={String(val)}
+                                        type="button"
+                                        onClick={() => setWouldTakeAgain(val)}
+                                        className={`rounded-md border px-5 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-husky-purple focus:ring-offset-1 ${wouldTakeAgain === val
+                                            ? "border-husky-purple bg-husky-purple text-white"
+                                            : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight"
+                                            }`}
+                                    >
+                                        {val ? "Yes" : "No"}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    <hr className="border-gray-100 dark:border-gray-700" />
+
+                    {/* ── Section 3: Written review ── */}
+                    <section className="space-y-4">
+                        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Your Review</h2>
+
+                        <div>
+                            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Written Review <span className="text-red-500 dark:text-red-400">*</span>
+                            </label>
+                            <textarea
+                                rows={5}
+                                placeholder="Describe your experience — lectures, workload, exams, how the professor communicates…"
+                                value={review}
+                                onChange={(e) => setReview(e.target.value)}
+                                className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 ${reviewTooShort
+                                    ? "border-red-400 focus:border-red-400 focus:ring-red-400"
+                                    : "border-gray-300 dark:border-gray-600 focus:border-husky-purple focus:ring-husky-purple"
+                                    }`}
+                            />
+                            <div className="mt-1 flex justify-between text-xs">
+                                {reviewTooShort ? (
+                                    <span className="text-red-500 dark:text-red-400">
+                                        {MIN_REVIEW_LENGTH - review.trim().length} more characters needed
+                                    </span>
+                                ) : (
+                                    <span className="text-gray-400 dark:text-gray-500">Minimum {MIN_REVIEW_LENGTH} characters</span>
+                                )}
+                                <span className={review.trim().length >= MIN_REVIEW_LENGTH ? "text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500"}>
+                                    {review.trim().length} / {MIN_REVIEW_LENGTH}+
+                                </span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Tags <span className="font-normal text-gray-400 dark:text-gray-500">(optional)</span>
+                            </span>
+                            <div className="flex flex-wrap gap-2">
+                                {TAGS.map((tag) => (
+                                    <button
+                                        key={tag}
+                                        type="button"
+                                        onClick={() => toggleTag(tag)}
+                                        className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors focus:outline-none ${selectedTags.includes(tag)
+                                            ? "border-husky-purple bg-husky-purple text-white"
+                                            : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight"
+                                            }`}
+                                    >
+                                        {tag}
+                                    </button>
+                                ))}
+                                {selectedTags.filter((t) => !TAGS.includes(t)).map((tag) => (
+                                    <span key={tag} className="flex items-center gap-1 rounded-full border border-husky-purple bg-husky-purple px-3 py-1 text-xs font-medium text-white">
+                                        {tag}
+                                        <button type="button" onClick={() => toggleTag(tag)} className="ml-0.5 leading-none hover:text-husky-gold focus:outline-none" aria-label={`Remove tag ${tag}`}>×</button>
+                                    </span>
+                                ))}
+                            </div>
+                            {selectedTags.filter((t) => !TAGS.includes(t)).length < MAX_CUSTOM_TAGS && (
+                                <div className="mt-2 flex items-center gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Add your own tag…"
+                                        value={customTagInput}
+                                        maxLength={20}
+                                        onChange={(e) => setCustomTagInput(e.target.value)}
+                                        onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } }}
+                                        className="rounded-full border border-dashed border-gray-300 dark:border-gray-600 px-3 py-1 text-xs text-gray-600 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple w-44"
+                                    />
+                                    {customTagInput.trim() && (
+                                        <button type="button" onClick={addCustomTag} className="rounded-full border border-husky-purple px-3 py-1 text-xs font-medium text-husky-purple dark:text-husky-purpleLight hover:bg-husky-purple hover:text-white transition-colors focus:outline-none">
+                                            Add
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                            {selectedTags.filter((t) => !TAGS.includes(t)).length >= MAX_CUSTOM_TAGS && (
+                                <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Maximum {MAX_CUSTOM_TAGS} custom tags reached.</p>
+                            )}
+                        </div>
+                    </section>
+
+                    <hr className="border-gray-100 dark:border-gray-700" />
+
+                    {/* ── Section 4: Optional extras ── */}
+                    <section className="space-y-5">
+                        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Optional Details</h2>
+
+                        <div className="grid gap-5 sm:grid-cols-3">
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Grade Received</label>
+                                <select value={grade} onChange={(e) => setGrade(e.target.value)}
+                                    className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple">
+                                    <option value="">Select…</option>
+                                    {GRADES.map((g) => <option key={g} value={g}>{g}</option>)}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Attendance Required</label>
+                                <select value={attendanceMandatory} onChange={(e) => setAttendanceMandatory(e.target.value)}
+                                    className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple">
+                                    <option value="">Select…</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Textbook Required</label>
+                                <select value={textbookRequired} onChange={(e) => setTextbookRequired(e.target.value)}
+                                    className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 focus:border-husky-purple focus:outline-none focus:ring-1 focus:ring-husky-purple">
+                                    <option value="">Select…</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ── Error / moderation banner ── */}
+                    {(submitState === "error" || submitState === "moderated") && (
+                        <div className={`rounded-md border px-4 py-3 text-sm ${submitState === "moderated"
+                            ? "border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-300"
+                            : "border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400"
+                            }`}>
+                            {submitState === "moderated" && <p className="mb-0.5 font-medium">Review flagged for moderation</p>}
+                            {errorMsg}
+                        </div>
+                    )}
+
+                    {/* ── Submit row ── */}
+                    <div className="flex items-center justify-between pt-1">
+                        <Link href={`/professors/${id}`} className="text-sm text-gray-500 dark:text-gray-400 hover:text-husky-purple dark:hover:text-husky-purpleLight">
+                            ← Cancel
+                        </Link>
+                        <button
+                            type="button"
+                            onClick={handleSubmitClick}
+                            disabled={!isValid || submitState === "submitting" || (!isEdit && remainingToday === 0)}
+                            className="flex items-center gap-2 rounded-md bg-husky-purple px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-husky-purple/90 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            {isEdit ? "Update Review" : "Submit Review"}
+                        </button>
+                    </div>
+
+                    <p className="text-center text-xs text-gray-400 dark:text-gray-500">
+                        {isEdit
+                            ? "Updating will overwrite your previous review text and scores."
+                            : "Submitting a review for a course you've already reviewed will overwrite your previous one."}
+                    </p>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

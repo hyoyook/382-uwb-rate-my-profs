@@ -21,8 +21,8 @@ type IAsystemEntry = {
   year: number;
   responses: number;
   enrollment: number;
-  overall_summative: number;
-  cei: number;
+  overall_summative: number;   // 0–5
+  cei: number;                 // 1–7
   summative_items: {
     course_as_whole: number;
     course_content: number;
@@ -52,7 +52,6 @@ type Professor = {
 type Review = {
   id: string;
   professor_id: string;
-  author_id: string;
   course: { code: string; name: string };
   campus: string;
   term: { quarter: string; year: number };
@@ -67,13 +66,7 @@ type Review = {
   tags: string[];
   verified: boolean;
   created_at: { seconds: number } | null;
-  updated_at: { seconds: number } | null;
-  votes: { helpful: number; not_helpful: number };
 };
-
-// Firestore docs include dynamic voter_helpful_{uid} / voter_not_helpful_{uid} fields.
-// Cast through this alias when reading or writing those keys.
-type ReviewRecord = Review & Record<string, unknown>;
 
 const SUMMATIVE_LABELS: Record<keyof IAsystemEntry["summative_items"], string> = {
   course_as_whole: "Course as a whole",
@@ -96,7 +89,7 @@ function ProfessorView({ user }: { user: User }) {
   const professorId = params.id as string;
 
   const [professor, setProfessor] = useState<Professor | null>(null);
-  const [reviews, setReviews] = useState<ReviewRecord[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [reviewAccess, setReviewAccess] = useState<ReviewAccessState>("checking");
@@ -120,7 +113,8 @@ function ProfessorView({ user }: { user: User }) {
           where("professor_id", "==", professorId)
         );
         const reviewsSnap = await getDocs(reviewsQ);
-        const fetched = reviewsSnap.docs.map((d) => ({ id: d.id, ...d.data() } as ReviewRecord));
+        const fetched = reviewsSnap.docs.map((d) => ({ id: d.id, ...d.data() } as Review));
+        // Sort client-side — avoids needing a Firestore composite index on professor_id + created_at
         fetched.sort((a, b) => (b.created_at?.seconds ?? 0) - (a.created_at?.seconds ?? 0));
         setReviews(fetched);
       } catch (err) {
@@ -134,29 +128,21 @@ function ProfessorView({ user }: { user: User }) {
 
   useEffect(() => {
     let active = true;
+
     canUserWriteReviews(user.email)
-      .then((canWrite) => { if (!active) return; setReviewAccess(canWrite ? "allowed" : "blocked"); })
-      .catch(() => { if (!active) return; setReviewAccess("allowed"); });
-    return () => { active = false; };
-  }, [user.email]);
-
-  function handleVoteUpdate(reviewId: string, newVotes: { helpful: number; not_helpful: number }, userVote: string | null) {
-    setReviews((prev) =>
-      prev.map((r) => {
-        if (r.id !== reviewId) return r;
-        const updated: ReviewRecord = { ...r, votes: newVotes };
-        delete updated[`voter_helpful_${user.uid}`];
-        delete updated[`voter_not_helpful_${user.uid}`];
-        if (userVote === "helpful") updated[`voter_helpful_${user.uid}`] = true;
-        if (userVote === "not_helpful") updated[`voter_not_helpful_${user.uid}`] = true;
-        return updated;
+      .then((canWrite) => {
+        if (!active) return;
+        setReviewAccess(canWrite ? "allowed" : "blocked");
       })
-    );
-  }
+      .catch(() => {
+        if (!active) return;
+        setReviewAccess("allowed");
+      });
 
-  function handleReviewDeleted(reviewId: string) {
-    setReviews((prev) => prev.filter((r) => r.id !== reviewId));
-  }
+    return () => {
+      active = false;
+    };
+  }, [user.email]);
 
   const reviewCampuses = useMemo(() => {
     const s = new Set(reviews.map((r) => r.campus));
@@ -165,6 +151,7 @@ function ProfessorView({ user }: { user: User }) {
 
   const filteredReviews = useMemo(() => {
     const QUARTER_ORDER: Record<string, number> = { Autumn: 4, Summer: 3, Spring: 2, Winter: 1 };
+
     const filtered = reviews.filter((r) => {
       const starOk = starFilter === null || r.scores.overall === starFilter;
       const courseOk = courseFilter === "All" || r.course.code === courseFilter;
@@ -172,6 +159,7 @@ function ProfessorView({ user }: { user: User }) {
       const verifiedOk = !verifiedOnly || r.verified;
       return starOk && courseOk && campusOk && verifiedOk;
     });
+
     if (sortOrder === "term") {
       filtered.sort((a, b) => {
         const yearDiff = b.term.year - a.term.year;
@@ -179,8 +167,10 @@ function ProfessorView({ user }: { user: User }) {
         return (QUARTER_ORDER[b.term.quarter] ?? 0) - (QUARTER_ORDER[a.term.quarter] ?? 0);
       });
     } else {
+      // "posted" — sort by created_at descending (same as initial load order)
       filtered.sort((a, b) => (b.created_at?.seconds ?? 0) - (a.created_at?.seconds ?? 0));
     }
+
     return filtered;
   }, [reviews, starFilter, courseFilter, campusFilter, verifiedOnly, sortOrder]);
 
@@ -255,7 +245,9 @@ function ProfessorView({ user }: { user: User }) {
         </div>
 
         {!canWriteReview && (
-          <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">Professor accounts cannot submit reviews.</p>
+          <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+            Professor accounts cannot submit reviews.
+          </p>
         )}
 
         {professor.bio && (
@@ -263,6 +255,7 @@ function ProfessorView({ user }: { user: User }) {
         )}
 
         <div className="mt-5 grid grid-cols-3 gap-3">
+          {/* Overall rating */}
           <div className="flex flex-col items-center py-5 px-4 gap-1 rounded-2xl bg-husky-light dark:bg-husky-purple/20">
             <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Overall</span>
             <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
@@ -274,6 +267,7 @@ function ProfessorView({ user }: { user: User }) {
             </span>
           </div>
 
+          {/* Verified rating */}
           <div className="flex flex-col items-center py-5 px-4 gap-1 rounded-2xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800">
             <span className="text-xs font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">✓ Verified</span>
             <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
@@ -285,6 +279,7 @@ function ProfessorView({ user }: { user: User }) {
             </span>
           </div>
 
+          {/* Unverified rating */}
           <div className="flex flex-col items-center py-5 px-4 gap-1 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700">
             <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Unverified</span>
             <span className="text-3xl font-bold text-husky-purple dark:text-husky-purpleLight">
@@ -357,43 +352,49 @@ function ProfessorView({ user }: { user: User }) {
               </div>
 
               {/* Course filter */}
-              <select
-                value={courseFilter}
-                onChange={(e) => setCourseFilter(e.target.value)}
-                className="rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1 text-xs text-gray-600 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-husky-purple"
-              >
-                <option value="All">All courses</option>
-                {Array.from(new Set(reviews.map((r) => r.course.code))).sort().map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
-
-              {/* Campus filter */}
-              {reviewCampuses.length > 1 && (
-                <select
-                  value={campusFilter}
-                  onChange={(e) => setCampusFilter(e.target.value)}
-                  className="rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1 text-xs text-gray-600 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-husky-purple"
-                >
-                  <option value="All">All campuses</option>
-                  {reviewCampuses.map((c) => <option key={c} value={c}>{c}</option>)}
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-gray-500 dark:text-gray-400">Course:</span>
+                <select value={courseFilter} onChange={(e) => setCourseFilter(e.target.value)}
+                  className="rounded-md border border-gray-200 dark:border-gray-700 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-husky-purple">
+                  <option value="All">All</option>
+                  {professor.courses_taught.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
+              </div>
+
+              {/* Campus filter — only shows when reviews span multiple campuses */}
+              {reviewCampuses.length > 1 && (
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Campus:</span>
+                  <select value={campusFilter} onChange={(e) => setCampusFilter(e.target.value)}
+                    className="rounded-md border border-gray-200 dark:border-gray-700 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-husky-purple">
+                    <option value="All">All</option>
+                    {reviewCampuses.map((c) => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
               )}
 
-              {/* Verified toggle */}
-              <button type="button" onClick={() => setVerifiedOnly((v) => !v)}
-                className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${verifiedOnly ? "bg-green-600 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
-                ✓ Verified only
-              </button>
+              {/* Verified filter */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-gray-500 dark:text-gray-400">Source:</span>
+                <button type="button" onClick={() => setVerifiedOnly(false)}
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${!verifiedOnly ? "bg-husky-purple text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
+                  All
+                </button>
+                <button type="button" onClick={() => setVerifiedOnly(true)}
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${verifiedOnly ? "bg-green-600 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
+                  ✓ Verified
+                </button>
+              </div>
 
-              {/* Sort */}
-              <div className="flex items-center rounded-full border border-gray-200 dark:border-gray-700 overflow-hidden text-xs">
+              {/* Sort order */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-gray-500 dark:text-gray-400">Sort:</span>
                 <button type="button" onClick={() => setSortOrder("posted")}
-                  className={`px-3 py-1 transition-colors ${sortOrder === "posted" ? "bg-husky-purple text-white" : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"}`}>
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${sortOrder === "posted" ? "bg-husky-purple text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
                   Most Recent Post
                 </button>
                 <button type="button" onClick={() => setSortOrder("term")}
-                  className={`px-3 py-1 transition-colors ${sortOrder === "term" ? "bg-husky-purple text-white" : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"}`}>
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${sortOrder === "term" ? "bg-husky-purple text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
                   Most Recent Term
                 </button>
               </div>
@@ -404,18 +405,19 @@ function ProfessorView({ user }: { user: User }) {
         {!hasReviews ? (
           <NoReviewsState professorId={professor.id} canWriteReview={canWriteReview} />
         ) : filteredReviews.length === 0 ? (
-          <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">No reviews match the current filters.</p>
+          <p className="py-8 text-center text-sm text-gray-400 dark:text-gray-500">No reviews match your filters.</p>
         ) : (
-          <div className="space-y-3">
-            {filteredReviews.map((r) => (
-              <ReviewCard
-                key={r.id}
-                review={r}
-                currentUser={user}
-                onVoteUpdate={handleVoteUpdate}
-                onDeleted={handleReviewDeleted}
-              />
-            ))}
+          <div className="space-y-4">
+            {verifiedCount < 5 && (
+              <div className="flex items-center gap-2 rounded-md border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-3 py-2">
+                <span className="text-amber-600 dark:text-amber-400 text-sm">⚠</span>
+                <p className="text-xs text-amber-700 dark:text-amber-300">
+                  <span className="font-semibold">Limited verified data</span> — fewer than 5 verified reviews.
+                  AI summary not yet available.
+                </p>
+              </div>
+            )}
+            {filteredReviews.map((r) => <ReviewCard key={r.id} review={r} />)}
           </div>
         )}
       </div>
@@ -423,59 +425,62 @@ function ProfessorView({ user }: { user: User }) {
   );
 }
 
-// ─── IAsystem Panel ───────────────────────────────────────────────────────────
+// ─── IASystem Panel ───────────────────────────────────────────────────────────
 
 function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
   const [selectedIdx, setSelectedIdx] = useState(0);
-  if (!entries || entries.length === 0) return null;
-  const selected = entries[selectedIdx];
+
+  const selected = entries[selectedIdx] ?? null;
 
   return (
     <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-sm">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-4">IASystem Ratings</h2>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">IASystem Ratings</h2>
 
-      <div className="mb-4 flex flex-wrap gap-2">
-        {entries.map((e, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setSelectedIdx(i)}
-            className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${selectedIdx === i
-              ? "border-husky-purple bg-husky-purple text-white"
-              : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-husky-purple hover:text-husky-purple dark:hover:text-husky-purpleLight"
-              }`}
+        {entries.length > 0 && (
+          <select
+            value={selectedIdx}
+            onChange={(e) => setSelectedIdx(Number(e.target.value))}
+            className="rounded-md border border-gray-200 dark:border-gray-700 px-2 py-1 text-xs text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-husky-purple"
           >
-            {e.course_code} · {e.quarter} {e.year} {e.section && `· §${e.section}`}
-          </button>
-        ))}
+            {entries.map((e, i) => (
+              <option key={i} value={i}>
+                {e.course_code} {e.section} · {e.quarter} {e.year}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
-      {selected && (
+      {!selected ? (
+        <div className="rounded-md border border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-6 text-center">
+          <p className="text-sm text-gray-500 dark:text-gray-400">No IASystem data available for this professor.</p>
+        </div>
+      ) : (
         <>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {/* Left: 4 summative bar items */}
             <div className="space-y-3">
-              {(Object.keys(SUMMATIVE_LABELS) as (keyof IAsystemEntry["summative_items"])[]).map((key) => {
-                const val = selected.summative_items[key];
-                const pct = (val / 5) * 100;
+              {(Object.keys(SUMMATIVE_LABELS) as Array<keyof IAsystemEntry["summative_items"]>).map((key) => {
+                const val = selected.summative_items[key] ?? 0;
                 return (
-                  <div key={key} className="space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-600 dark:text-gray-400">{SUMMATIVE_LABELS[key]}</span>
-                      <span className="text-xs font-medium text-gray-700 dark:text-gray-300 w-8 text-right">
-                        {val > 0 ? val.toFixed(1) : "—"}
-                      </span>
-                    </div>
-                    <div className="h-1.5 w-full rounded-full bg-gray-100 dark:bg-gray-700">
+                  <div key={key} className="flex items-center gap-3">
+                    <span className="w-44 text-xs text-gray-600 dark:text-gray-300 shrink-0">{SUMMATIVE_LABELS[key]}</span>
+                    <div className="flex-1 h-2 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
                       <div
-                        className="h-1.5 rounded-full bg-husky-purple dark:bg-husky-purpleLight transition-all"
-                        style={{ width: `${pct}%` }}
+                        className="h-full rounded-full bg-husky-purple transition-all duration-500"
+                        style={{ width: `${(val / 5) * 100}%` }}
                       />
                     </div>
+                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300 w-8 text-right">
+                      {val > 0 ? val.toFixed(1) : "—"}
+                    </span>
                   </div>
                 );
               })}
             </div>
 
+            {/* Right: Overall Summative + CEI side by side */}
             <div className="flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col items-center justify-center rounded-xl bg-husky-light dark:bg-husky-purple/20 py-3 px-4 gap-0.5">
@@ -507,6 +512,7 @@ function IAsystemPanel({ entries }: { entries: IAsystemEntry[] }) {
             </div>
           </div>
 
+          {/* AI summary of written comments */}
           {selected.ai_summary && (
             <div className="mt-4 rounded-md border border-husky-light dark:border-husky-purple/30 bg-husky-light/40 dark:bg-husky-purple/10 px-4 py-3">
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-1">Student Comments Summary</p>
@@ -549,6 +555,7 @@ function Tooltip({ text }: { text: string }) {
 
 // ─── AI Summary ───────────────────────────────────────────────────────────────
 
+// How many new verified reviews since last summary triggers the stale nudge
 const STALE_THRESHOLD = 3;
 
 function AISummarySection({
@@ -562,11 +569,17 @@ function AISummarySection({
 }) {
   const [loading, setLoading] = useState(false);
   const [summary, setSummary] = useState<string | null>(professor.summary);
-  const [summaryReviewCount, setSummaryReviewCount] = useState<number>(professor.summary_review_count ?? 0);
-  const [updatedAt, setUpdatedAt] = useState<{ seconds: number } | null>(professor.summary_updated_at);
+  const [summaryReviewCount, setSummaryReviewCount] = useState<number>(
+    professor.summary_review_count ?? 0
+  );
+  const [updatedAt, setUpdatedAt] = useState<{ seconds: number } | null>(
+    professor.summary_updated_at
+  );
   const [error, setError] = useState<string | null>(null);
 
-  const isStale = !!summary && verifiedCount - summaryReviewCount >= STALE_THRESHOLD;
+  const isStale =
+    !!summary &&
+    verifiedCount - summaryReviewCount >= STALE_THRESHOLD;
 
   async function fetchSummary() {
     setLoading(true);
@@ -576,9 +589,18 @@ function AISummarySection({
       const res = await fetch(`/api/summary/${professor.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       let data: Record<string, unknown> = {};
-      try { data = await res.json(); } catch { throw new Error(`Server error (${res.status})`); }
-      if (!res.ok) throw new Error((data.error as string) ?? `Server error (${res.status})`);
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error(`Server error (${res.status})`);
+      }
+
+      if (!res.ok) {
+        throw new Error((data.error as string) ?? `Server error (${res.status})`);
+      }
+
       setSummary(data.summary as string);
       setSummaryReviewCount(data.review_count as number);
       setUpdatedAt({ seconds: Math.floor(Date.now() / 1000) });
@@ -617,6 +639,7 @@ function AISummarySection({
       ) : summary ? (
         <div className="space-y-3">
           <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{summary}</p>
+
           <div className="flex flex-wrap items-center justify-between gap-2">
             {updatedAt && (
               <p className="text-xs text-gray-400 dark:text-gray-500">
@@ -624,6 +647,8 @@ function AISummarySection({
                 {summaryReviewCount > 0 && ` · based on ${summaryReviewCount} verified review${summaryReviewCount !== 1 ? "s" : ""}`}
               </p>
             )}
+
+            {/* Stale nudge — shown when enough new reviews have come in since last generation */}
             {isStale && (
               <div className="flex items-center gap-2">
                 <p className="text-xs text-amber-600 dark:text-amber-400">
@@ -640,6 +665,7 @@ function AISummarySection({
               </div>
             )}
           </div>
+
           {error && <p className="text-xs text-red-600 dark:text-red-400">{error}</p>}
         </div>
       ) : (
@@ -662,259 +688,61 @@ function AISummarySection({
 
 // ─── Review card ──────────────────────────────────────────────────────────────
 
-function ReviewCard({
-  review: r,
-  currentUser,
-  onVoteUpdate,
-  onDeleted,
-}: {
-  review: ReviewRecord;
-  currentUser: User;
-  onVoteUpdate: (reviewId: string, votes: { helpful: number; not_helpful: number }, userVote: string | null) => void;
-  onDeleted: (reviewId: string) => void;
-}) {
-  const router = useRouter();
-  const isOwner = r.author_id === currentUser.uid;
-
-  // Cast to record to safely read dynamic per-user vote fields
-  const userVotedHelpful = r[`voter_helpful_${currentUser.uid}`] === true;
-  const userVotedNotHelpful = r[`voter_not_helpful_${currentUser.uid}`] === true;
-
-  const [voting, setVoting] = useState(false);
-  const [showOwnerMenu, setShowOwnerMenu] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteConfirmText, setDeleteConfirmText] = useState("");
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState("");
-
-  const postedDate = r.created_at
+function ReviewCard({ review: r }: { review: Review }) {
+  const date = r.created_at
     ? new Date(r.created_at.seconds * 1000).toLocaleDateString("en-US", { month: "short", year: "numeric" })
     : null;
 
-  const editedDate = r.updated_at
-    ? new Date(r.updated_at.seconds * 1000).toLocaleDateString("en-US", { month: "long", year: "numeric" })
-    : null;
-
-  async function handleVote(vote: "helpful" | "not_helpful") {
-    if (voting) return;
-    setVoting(true);
-    try {
-      const token = await currentUser.getIdToken();
-      const res = await fetch(`/api/reviews/${r.id}/vote`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ vote }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        onVoteUpdate(r.id, data.votes, data.userVote);
-      }
-    } catch (err) {
-      console.error("[ReviewCard] vote failed:", err);
-    } finally {
-      setVoting(false);
-    }
-  }
-
-  async function handleDelete() {
-    if (deleteConfirmText !== "DELETE") return;
-    setDeleting(true);
-    setDeleteError("");
-    try {
-      const token = await currentUser.getIdToken();
-      const res = await fetch("/api/reviews", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ review_id: r.id }),
-      });
-      if (res.ok) {
-        setShowDeleteModal(false);
-        onDeleted(r.id);
-      } else {
-        const data = await res.json();
-        setDeleteError(data.error ?? "Failed to delete review.");
-      }
-    } catch {
-      setDeleteError("Network error. Please try again.");
-    } finally {
-      setDeleting(false);
-    }
-  }
-
   return (
-    <>
-      <div className="rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-4 space-y-2">
-        {/* Top row */}
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          {/* Left: identity */}
-          <div className="flex items-center gap-2">
-            <StarRow rating={r.scores.overall} size="sm" />
-            <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{r.course.code}</span>
-            <span className="text-xs text-gray-400 dark:text-gray-500">Taken {r.term.quarter} {r.term.year}</span>
-            <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs text-gray-500 dark:text-gray-400">{r.campus}</span>
-          </div>
-
-          {/* Right: scores/meta + owner actions */}
-          <div className="flex flex-wrap items-center gap-2">
-            {r.verified ? (
-              <span className="flex items-center gap-1 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-400">✓ Verified</span>
-            ) : (
-              <span className="flex items-center gap-1 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 px-2 py-0.5 text-xs font-medium text-gray-500 dark:text-gray-400">Unverified</span>
-            )}
-            <span className="text-xs text-gray-500 dark:text-gray-400">Clarity <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.clarity}</span></span>
-            <span className="text-xs text-gray-500 dark:text-gray-400">Help <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.helpfulness}</span></span>
-            <span className="text-xs text-gray-500 dark:text-gray-400">Diff <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.difficulty}</span></span>
-            {r.scores.would_take_again
-              ? <span className="text-xs text-green-600 dark:text-green-400 font-medium">Would take again ✓</span>
-              : <span className="text-xs text-red-500 dark:text-red-400 font-medium">Wouldn't take again</span>}
-            {postedDate && <span className="text-xs text-gray-400 dark:text-gray-500">· Posted {postedDate}</span>}
-
-            {/* Owner actions — gear dropdown */}
-            {isOwner && (
-              <div className="relative ml-1">
-                <button
-                  type="button"
-                  onClick={() => setShowOwnerMenu((v) => !v)}
-                  className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors text-sm leading-none px-1"
-                  aria-label="Review options"
-                >
-                  ⚙️
-                </button>
-                {showOwnerMenu && (
-                  <>
-                    {/* Click-outside backdrop */}
-                    <div className="fixed inset-0 z-10" onClick={() => setShowOwnerMenu(false)} />
-                    <div className="absolute right-0 top-full mt-1 z-20 w-28 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md overflow-hidden">
-                      <button
-                        type="button"
-                        onClick={() => { setShowOwnerMenu(false); router.push(`/professors/${r.professor_id}/review?edit=${r.id}`); }}
-                        className="w-full px-3 py-2 text-left text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                      >
-                        ✏️ Edit
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => { setShowOwnerMenu(false); setShowDeleteModal(true); setDeleteConfirmText(""); setDeleteError(""); }}
-                        className="w-full px-3 py-2 text-left text-xs text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                      >
-                        🗑️ Delete
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
+    <div className="rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-4 space-y-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        {/* Left: what/when */}
+        <div className="flex items-center gap-2">
+          <StarRow rating={r.scores.overall} size="sm" />
+          <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{r.course.code}</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">Taken {r.term.quarter} {r.term.year}</span>
+          <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs text-gray-500 dark:text-gray-400">{r.campus}</span>
         </div>
 
-        {/* Body */}
-        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{r.body}</p>
-
-        {/* Tags */}
-        {r.tags && r.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 pt-1">
-            {r.tags.map((t) => (
-              <span key={t} className="rounded-full bg-husky-light dark:bg-husky-purple/20 px-2 py-0.5 text-xs text-husky-metallic dark:text-husky-gold">#{t}</span>
-            ))}
-          </div>
-        )}
-
-        {/* Bottom row: votes (left) + last edited (right) */}
-        <div className="flex items-center justify-between pt-1 gap-2">
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-gray-400 dark:text-gray-500">Helpful?</span>
-            <button
-              type="button"
-              onClick={() => handleVote("helpful")}
-              disabled={voting}
-              className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium transition-colors disabled:opacity-60 ${userVotedHelpful
-                  ? "border-green-400 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400"
-                  : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:border-green-400 hover:text-green-600"
-                }`}
-              aria-label="Mark as helpful"
-            >
-              👍 {r.votes?.helpful ?? 0}
-            </button>
-            <button
-              type="button"
-              onClick={() => handleVote("not_helpful")}
-              disabled={voting}
-              className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium transition-colors disabled:opacity-60 ${userVotedNotHelpful
-                  ? "border-red-400 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
-                  : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:border-red-300 hover:text-red-500"
-                }`}
-              aria-label="Mark as not helpful"
-            >
-              👎 {r.votes?.not_helpful ?? 0}
-            </button>
-          </div>
-
-          {editedDate && (
-            <span className="text-xs text-gray-400 dark:text-gray-500 italic">(last edited {editedDate})</span>
+        {/* Right: scores/meta */}
+        <div className="flex flex-wrap items-center gap-2">
+          {r.verified ? (
+            <span className="flex items-center gap-1 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-400">✓ Verified</span>
+          ) : (
+            <span className="flex items-center gap-1 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 px-2 py-0.5 text-xs font-medium text-gray-500 dark:text-gray-400">Unverified</span>
           )}
+          <span className="text-xs text-gray-500 dark:text-gray-400">Clarity <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.clarity}</span></span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">Help <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.helpfulness}</span></span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">Diff <span className="font-medium text-gray-700 dark:text-gray-300">{r.scores.difficulty}</span></span>
+          {r.scores.would_take_again
+            ? <span className="text-xs text-green-600 dark:text-green-400 font-medium">Would take again ✓</span>
+            : <span className="text-xs text-red-500 dark:text-red-400 font-medium">Wouldn't take again</span>}
+          {date && <span className="text-xs text-gray-400 dark:text-gray-500">· Posted {date}</span>}
         </div>
       </div>
 
-      {/* ── Delete confirmation modal ── */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-sm rounded-xl bg-white dark:bg-gray-800 p-6 shadow-xl space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
-                <svg className="h-5 w-5 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Delete this review?</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">This action cannot be undone.</p>
-              </div>
-            </div>
+      <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{r.body}</p>
 
-            <p className="text-xs text-gray-600 dark:text-gray-400">
-              Type <span className="font-mono font-semibold text-red-600 dark:text-red-400">DELETE</span> to confirm.
-            </p>
-            <input
-              type="text"
-              value={deleteConfirmText}
-              onChange={(e) => setDeleteConfirmText(e.target.value)}
-              placeholder="Type DELETE to confirm"
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-400"
-              autoFocus
-            />
-
-            {deleteError && (
-              <p className="text-xs text-red-600 dark:text-red-400">{deleteError}</p>
-            )}
-
-            <div className="flex gap-2 pt-1">
-              <button
-                type="button"
-                onClick={() => setShowDeleteModal(false)}
-                disabled={deleting}
-                className="flex-1 rounded-md border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                disabled={deleteConfirmText !== "DELETE" || deleting}
-                className="flex-1 flex items-center justify-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
-              >
-                {deleting ? <><Spinner small /> Deleting…</> : "Delete Review"}
-              </button>
-            </div>
-          </div>
+      {r.tags && r.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          {r.tags.map((t) => (
+            <span key={t} className="rounded-full bg-husky-light dark:bg-husky-purple/20 px-2 py-0.5 text-xs text-husky-metallic dark:text-husky-gold">#{t}</span>
+          ))}
         </div>
       )}
-    </>
+    </div>
   );
 }
 
 // ─── No reviews state ─────────────────────────────────────────────────────────
 
-function NoReviewsState({ professorId, canWriteReview }: { professorId: string; canWriteReview: boolean }) {
+function NoReviewsState({
+  professorId,
+  canWriteReview,
+}: {
+  professorId: string;
+  canWriteReview: boolean;
+}) {
   const router = useRouter();
   return (
     <div className="flex flex-col items-center gap-3 py-10 text-center">
@@ -952,7 +780,9 @@ function BuzzWord({ tag, count, total }: { tag: string; count: number; total: nu
         }`}
       title={`${count} mention${count !== 1 ? "s" : ""} (${pct}% of reviews)`}
     >
-      <span className={`font-medium ${size}`}>{isNegative ? "∼" : "↗"} {tag.replace(/-/g, " ")}</span>
+      <span className={`font-medium ${size}`}>
+        {isNegative ? "∼" : "↗"} {tag.replace(/-/g, " ")}
+      </span>
       <span className="text-xs opacity-60">({count})</span>
     </div>
   );
@@ -973,7 +803,7 @@ function StarRow({ rating, size }: { rating: number; size: "sm" | "md" }) {
   );
 }
 
-// ─── Icons & utilities ────────────────────────────────────────────────────────
+// ─── Icons ────────────────────────────────────────────────────────────────────
 
 function SparkleIcon({ className }: { className?: string }) {
   return (
