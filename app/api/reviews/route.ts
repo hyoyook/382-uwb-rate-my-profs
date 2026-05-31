@@ -10,8 +10,6 @@ export const dynamic = "force-dynamic";
 
 const REVIEWS_COLLECTION = "reviews";
 const PROFESSORS_COLLECTION = "professors";
-const RATE_LIMIT_MAX = 3;
-const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -183,21 +181,6 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    // 5. Rate limit
-    const oneDayAgo = new Date(Date.now() - RATE_LIMIT_WINDOW_MS);
-    const recentSnap = await adminDb
-        .collection(REVIEWS_COLLECTION)
-        .where("author_id", "==", decoded.uid)
-        .where("created_at", ">=", oneDayAgo)
-        .get();
-
-    if (recentSnap.size >= RATE_LIMIT_MAX) {
-        return NextResponse.json(
-            { error: "Rate limit reached. Max 3 reviews per 24 hours.", remaining: 0 },
-            { status: 429 }
-        );
-    }
-
     // 6. Pre-filter spam
     const spamPatterns = [/buy\s+my/i, /http/i, /\bsucks\b/i, /^[a-z\s]{1,6}(\s[a-z]{1,6}){3,}$/i];
     if (spamPatterns.some((p) => p.test(reviewBody))) {
@@ -253,6 +236,13 @@ export async function POST(req: NextRequest) {
         voter_ids: [],
     };
 
+    // Check if this is an overwrite (same composite key already exists)
+    const existingReviewSnap = await reviewRef.get();
+    const isOverwrite = existingReviewSnap.exists;
+    const prevOverallForOverwrite: number = isOverwrite
+        ? (existingReviewSnap.data()!.scores?.overall ?? 0)
+        : 0;
+
     try {
         await reviewRef.set(reviewDoc);
     } catch (err) {
@@ -268,15 +258,29 @@ export async function POST(req: NextRequest) {
             const current = snap.data()!;
             const prevCount: number = current.ratings_count ?? 0;
             const prevAvg: number = current.overall_rating ?? 0;
-            const newCount = prevCount + 1;
-            const newAvg = Math.round(((prevAvg * prevCount + scores.overall) / newCount) * 10) / 10;
+
+            let newCount: number;
+            let newAvg: number;
+
+            if (isOverwrite) {
+                // Replace old score in the average, count stays the same
+                newCount = prevCount;
+                newAvg = prevCount === 0
+                    ? scores.overall
+                    : Math.round(((prevAvg * prevCount - prevOverallForOverwrite + scores.overall) / prevCount) * 10) / 10;
+            } else {
+                // New review — increment count
+                newCount = prevCount + 1;
+                newAvg = Math.round(((prevAvg * prevCount + scores.overall) / newCount) * 10) / 10;
+            }
+
             tx.update(profRef, { ratings_count: newCount, overall_rating: newAvg });
         });
     } catch (err) {
         console.error("[/api/reviews] professor aggregate update failed:", err);
     }
 
-    return NextResponse.json({ ok: true, id: docId, remaining: RATE_LIMIT_MAX - recentSnap.size - 1 });
+    return NextResponse.json({ ok: true, id: docId });
 }
 
 // ─── PATCH /api/reviews ───────────────────────────────────────────────────────

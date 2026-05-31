@@ -209,7 +209,6 @@ function ReviewView({ user }: { user: User }) {
     // Professor state
     const [professor, setProfessor] = useState<Professor | null>(null);
     const [loadingProf, setLoadingProf] = useState(true);
-    const [remainingToday, setRemainingToday] = useState(3);
 
     // Form state
     const [courseCodeSelect, setCourseCodeSelect] = useState("");
@@ -410,12 +409,6 @@ function ReviewView({ user }: { user: User }) {
             setShowConfirmModal(false);
             const data = await res.json();
 
-            if (res.status === 429) {
-                setSubmitState("error");
-                setErrorMsg("You've hit the 3-review daily limit. Try again tomorrow.");
-                setRemainingToday(0);
-                return;
-            }
             if (res.status === 400 && data.reason) {
                 setSubmitState("moderated");
                 const reasonMessages: Record<string, string> = {
@@ -436,9 +429,6 @@ function ReviewView({ user }: { user: User }) {
             }
 
             setSubmitState("success");
-            if (!isEdit) {
-                setRemainingToday((prev) => data.remaining ?? Math.max(0, prev - 1));
-            }
         } catch {
             setShowConfirmModal(false);
             setSubmitState("error");
@@ -542,22 +532,7 @@ function ReviewView({ user }: { user: User }) {
                                 </span>
                             )}
                         </div>
-                        {/* Rate limit indicator — only shown for new reviews */}
-                        {!isEdit && (
-                            <div className="group relative rounded-md border border-gray-200 dark:border-gray-700 px-3 py-2 text-right cursor-default">
-                                <p className="flex items-center justify-end gap-1 text-xs text-gray-500 dark:text-gray-400">
-                                    Reviews left today
-                                    <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-gray-400 dark:border-gray-500 text-[9px] font-bold text-gray-400 dark:text-gray-500 leading-none select-none">i</span>
-                                </p>
-                                <p className={`text-lg font-bold ${remainingToday === 0 ? "text-red-500 dark:text-red-400" : "text-husky-purple dark:text-husky-purpleLight"}`}>
-                                    {remainingToday}/3
-                                </p>
-                                <div className="pointer-events-none absolute right-0 top-full mt-2 w-56 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2.5 text-left text-xs text-gray-600 dark:text-gray-300 shadow-md opacity-0 transition-opacity group-hover:opacity-100 z-10">
-                                    <p className="font-medium text-gray-800 dark:text-gray-200 mb-0.5">Why only 3? 😅</p>
-                                    <p>We limit reviews to keep things genuine — no spam, no brigading. You can submit up to 3 reviews every 24 hours.</p>
-                                </div>
-                            </div>
-                        )}
+
                     </div>
                 </div>
 
@@ -851,7 +826,7 @@ function ReviewView({ user }: { user: User }) {
                         <button
                             type="button"
                             onClick={handleSubmitClick}
-                            disabled={!isValid || submitState === "submitting" || (!isEdit && remainingToday === 0)}
+                            disabled={!isValid || submitState === "submitting"}
                             className="flex items-center gap-2 rounded-md bg-husky-purple px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-husky-purple/90 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             {isEdit ? "Update Review" : "Submit Review"}
